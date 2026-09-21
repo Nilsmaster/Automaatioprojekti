@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" class="tchmi-html-designer">
+<head>
+  <meta charset="utf-8">
+  <title>Harjoitusty&#246;_HMI</title>
+  <meta name="tchmi-buildtime" content="2026-09-21T13:49:55">
+
+  <!-- target-densitydpi=device-dpi -->
+  <meta name="viewport" content="initial-scale=1.0"><script>
+	 TCHMI_CONSOLE_LOG_LEVEL  = 2;
+	 TCHMI_CONSOLE_LOG_TCHMISERVER_MESSAGES  = false;
+	 TCHMI_CONSOLE_LOG_ENGINEERING_COM_MESSAGES  = false;
+</script><script>
+	TCHMI_TARGET_PARTIAL = new URL(window.location.href).searchParams.get('TargetPartial') ?? undefined;
+</script><script>TCHMI_NUGET_METADATA = {
+  "Beckhoff.TwinCAT.HMI.Controls": {
+    "version": "14.3.234",
+    "authors": "Beckhoff",
+    "title": "Controls",
+    "description": "TwinCAT HMI is a development environment for web-based HMIs (Human Machine Interfaces). This package provides the controls for the TwinCAT HMI client."
+  },
+  "Beckhoff.TwinCAT.HMI.Framework": {
+    "version": "14.3.229",
+    "authors": "Beckhoff",
+    "title": "Framework",
+    "description": "TwinCAT HMI is a development environment for web-based HMIs (Human Machine Interfaces). This package provides the client framework for the TwinCAT HMI."
+  },
+  "Beckhoff.TwinCAT.HMI.Functions": {
+    "version": "14.3.229",
+    "authors": "Beckhoff",
+    "title": "Functions",
+    "description": "TwinCAT HMI is a development environment for web-based HMIs (Human Machine Interfaces). This package provides functions for use in the \"Actions and Conditions Editor\" and symbol expressions."
+  },
+  "Beckhoff.TwinCAT.HMI.Server.Engineering": {
+    "version": "22.0.7198",
+    "authors": "Beckhoff",
+    "title": "TcHmiSrv",
+    "description": "TwinCAT HMI is a development environment for web-based HMIs (Human Machine Interfaces). This package provides the TwinCAT HMI Server for the engineering."
+  },
+  "Beckhoff.TwinCAT.HMI.SqliteHistorize": {
+    "version": "22.0.7765",
+    "authors": "Beckhoff",
+    "title": "SqliteHistorize",
+    "description": "TwinCAT HMI is a development environment for web-based HMIs (Human Machine Interfaces). This package provides an extension for the TwinCAT HMI Server to historize data with SQLite."
+  },
+  "Microsoft.TypeScript.MSBuild": {
+    "version": "5.3.2",
+    "authors": "Microsoft",
+    "title": "Microsoft.TypeScript.MSBuild",
+    "description": "The TypeScript MSBuild task, and matching compiler version."
+  }
+};
+</script>
+
+  <script>
+		TCHMI_ENGINEERING = true;
+		TCHMI_DESIGNER = true;
+		TCHMI_CONFIG_OVERRIDE = {
+			"basePath": "Beckhoff.TwinCAT.HMI.Framework",
+			"tcHmiServer": {
+				"websocketOverwrite": {
+					"host": "127.0.0.1",
+					"port": 3000
+				},
+				"websocketIntervalTime": 200
+			}
+		};
+
+   	    window.onload = function load() {
+			if ((!('TcHmi' in window) || !window.TcHmi.System) && document.body) {
+				document.body.style.background = '#C8C8C8';
+				document.body.innerHTML = 'TwinCAT HMI Framework could not be loaded.';
+			}
+			window.onload = null;
+		};
+  </script>
+  <script type="importmap">
+{
+  "imports": {
+    "Beckhoff.TwinCAT.HMI.Controls/": "./Beckhoff.TwinCAT.HMI.Controls/",
+    "Beckhoff.TwinCAT.HMI.Controls": "./Beckhoff.TwinCAT.HMI.Controls/index.esm.js",
+    "Beckhoff.TwinCAT.HMI.Framework/": "./Beckhoff.TwinCAT.HMI.Framework/",
+    "Beckhoff.TwinCAT.HMI.Framework": "./Beckhoff.TwinCAT.HMI.Framework/index.esm.js",
+    "Beckhoff.TwinCAT.HMI.Functions/": "./Beckhoff.TwinCAT.HMI.Functions/",
+    "Beckhoff.TwinCAT.HMI.Functions": "./Beckhoff.TwinCAT.HMI.Functions/index.esm.js"
+  },
+  "scopes": {}
+}
+</script>
+
+<script src="/Beckhoff.TwinCAT.HMI.Framework/EsHelper.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Lib/jquery.min.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Lib/acorn.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/TcHmiFramework.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiControl.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiContainerControl.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiPartial.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiPopup.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiContainer.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiContent.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiGrid.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiHtmlHost.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiUserControl.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiView.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiRegion.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Framework/Controls/System/dist/TcHmiUserControlHost.esm.js" type="module"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiCallbackManager/TcHmiCallbackManager.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiContentTabs/TcHmiContentTabs.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiAccordion/TcHmiAccordion.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiCharting/TcHmiCharting.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiDirectoryBrowser/TcHmiDirectoryBrowser.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiPopups/TcHmiPopups.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiBanners/TcHmiBanners.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiJsonEditors/TcHmiJsonEditors.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiInteractiveWrite/TcHmiInteractiveWrite.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiSplitView/TcHmiSplitView.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiSevenSegmentElement/TcHmiSevenSegmentElement.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiValueBuffer/TcHmiValueBuffer.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiEventGrid/EventClassesProvider/EventClassesProvider.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiAccordionRegion/TcHmiAccordionRegion.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiAdsState/TcHmiAdsState.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiAudio/TcHmiAudio.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiButton/TcHmiButton.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiBarChart/TcHmiBarChart.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiCheckbox/TcHmiCheckbox.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiCombobox/TcHmiCombobox.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiDatagrid/TcHmiDatagrid.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiDateTimeDisplay/TcHmiDateTimeDisplay.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiDateTimeInput/TcHmiDateTimeInput.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiDateTimePicker/TcHmiDateTimePicker.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiEllipse/TcHmiEllipse.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiEventGrid/TcHmiEventGrid.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiEventLine/TcHmiEventLine.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiFileExplorer/TcHmiFileExplorer.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiHorizontalBarChart/TcHmiHorizontalBarChart.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiIFrame/TcHmiIFrame.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiImage/TcHmiImage.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiInput/TcHmiInput.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiKeyboard/TcHmiKeyboard.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/UiProvider/TcHmiKeyboard/TcHmiKeyboard.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiPieChart/TcHmiPieChart.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/UiProvider/TcHmiPopups/TcHmiPopups.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiLine/TcHmiLine.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiLinearGauge/TcHmiLinearGauge.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiLineChart/TcHmiLineChart.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiLoadingSpinner/TcHmiLoadingSpinner.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiLocalizationSelect/TcHmiLocalizationSelect.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiNumericInput/TcHmiNumericInput.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiObjectBrowser/TcHmiObjectBrowser.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiPasswordInput/TcHmiPasswordInput.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiPermissionManagement/TcHmiPermissionManagement.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiPolygon/TcHmiPolygon.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiPolyline/TcHmiPolyline.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiProgressBar/TcHmiProgressBar.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiRadialGauge/TcHmiRadialGauge.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiRadioButton/TcHmiRadioButton.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiRecipeEdit/TcHmiRecipeEdit.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiRecipeSelect/TcHmiRecipeSelect.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiRectangle/TcHmiRectangle.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiSparkline/TcHmiSparkline.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiSpinboxInput/TcHmiSpinboxInput.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiStateImage/TcHmiStateImage.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiTabNavigation/TcHmiTabNavigation.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiTachometer/TcHmiTachometer.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiTextblock/TcHmiTextblock.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiTextbox/TcHmiTextbox.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiThemeSelect/TcHmiThemeSelect.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiThermometer/TcHmiThermometer.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiTimespanInput/TcHmiTimespanInput.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiTimespanPicker/TcHmiTimespanPicker.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiToggleButton/TcHmiToggleButton.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiToggleSwitch/TcHmiToggleSwitch.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiTreeView/TcHmiTreeView.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiTrendLineChart/TcHmiTrendLineChart.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiTrendSparkline/TcHmiTrendSparkline.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiUserGuidance/TcHmiUserGuidance.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiUserManagement/TcHmiUserManagement.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiVideo/TcHmiVideo.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/ActivateRecipe.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/BigIntToNumber.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/CheckAccess.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/CheckBinding.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/CheckBindingEx.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/Concatenate.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/ConvertBooleanToEnum.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/ConvertBooleanToVisibility.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/CreateAuditLogEntry.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/CreateBinding.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/Decrement.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/DownloadRecipes.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/DownloadRecipeTypes.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/EnumToString.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/EnumToMemberName.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/ExportEvents.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/ForceLogout.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/ForceLogoutEx.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/FormatString.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/GaugeValueFormatter.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/GetAutoOpenSystemKeyboard.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/GetElementByIndex.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/GetLocale.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/GetLocalizedText.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/GetRegisteredLocales.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/GetTheme.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/GoToLoginPage.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/Increment.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/IsSafeInteger.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/LineChartTooltipFormatter.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/Log.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/Login.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/LoginEx.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/Logout.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/LogoutEx.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/NumberToBigInt.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/RemoveBinding.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/SetAttributeToThemeValue.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/SetAutoOpenSystemKeyboard.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/SetElementByIndex.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/SetLocaleEx.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/SetLocale.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/SetTheme.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/StartInterval.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/StopInterval.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/SymbolExists.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/TeachAsNewRecipe.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/Wait.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/TeachRecipe.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/ToDateString.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/ToDateTimeString.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/ToLowerCase.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/ToTimeString.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/ToUpperCase.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/TrimToLength.js" defer=""></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/UploadRecipeFiles.js" defer=""></script>
+</head>
+<body class="tchmi-body-designer">
+	<div id="Content1_2" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="800" data-tchmi-height="640" data-tchmi-zindex="2" data-tchmi-creator-partial-key="/Content/Etusivu.content">
+
+<div id="TcHmiImage_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="640" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-src="Images/Pumppuvoimala.PNG" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="800" data-tchmi-width-unit="px" data-tchmi-zindex="6" data-tchmi-creator-locked="True">
+</div>
+<div id="TcHmiLinearGauge_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiLinearGauge" data-tchmi-base-animation-time="1000" data-tchmi-decimal-digits="3" data-tchmi-height="118" data-tchmi-height-unit="px" data-tchmi-label-range="20" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-show-labels="False" data-tchmi-show-ticks="False" data-tchmi-show-value-text="False" data-tchmi-start-from-zero="True" data-tchmi-top="223" data-tchmi-top-unit="px" data-tchmi-width="259" data-tchmi-width-unit="px" data-tchmi-orientation="Vertical" data-tchmi-value="%s%ADS.PLC.GVL.nAltaanpinta%/s%" data-tchmi-zindex="3" data-tchmi-creator-locked="True">
+<script data-tchmi-target-attribute="data-tchmi-tick-definition" type="application/json">
+{
+  "mainTickRange": 20,
+  "subTickRange": 5
+}
+</script>
+
+
+
+
+
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-progress-foreground-color" type="application/json">
+{
+  "color": "rgba(52, 172, 219, 1)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-progress-background-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
+</div>
+<div id="TcHmiRectangle_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="49" data-tchmi-height-unit="px" data-tchmi-left="314" data-tchmi-left-unit="px" data-tchmi-top="494" data-tchmi-top-unit="px" data-tchmi-width="69" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-creator-locked="True">
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%ADS.PLC.MAIN.nTila%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/INT",
+                  "symbolExpression": "%s%ADS.PLC.MAIN.nTila%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/INT",
+                  "value": 1
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(246, 246, 56, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "elseif": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/INT",
+                  "symbolExpression": "%s%ADS.PLC.MAIN.nTila%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/INT",
+                  "value": 2
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(56, 246, 132, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "elseif": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/INT",
+                  "symbolExpression": "%s%ADS.PLC.MAIN.nTila%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/INT",
+                  "value": 3
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(56, 116, 246, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(227, 227, 227, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
+<div id="TcHmiTextblock_9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="106" data-tchmi-left-unit="px" data-tchmi-text="%f%%s%ADS.PLC.GVL.nAltaanpinta%/s%%/f%" data-tchmi-top="273" data-tchmi-top-unit="px" data-tchmi-width="51" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-zindex="5" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center" data-tchmi-creator-locked="True">
+</div>
+</div>
+</body>
+</html>

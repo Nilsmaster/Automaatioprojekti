@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "Painonappi": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "User control\\Painonappi sivut.usercontrol.json",
+      "id": "tchmi:project#/definitions/Painonappi",
+      "type": "object"
+    },
+    "Painonappi_sivut": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "User control\\Painonappi sivut.usercontrol.json",
+      "id": "tchmi:project#/definitions/Painonappi_sivut",
+      "type": "object"
+    },
+    "Anturi": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "User control\\Anturi.usercontrol.json",
+      "id": "tchmi:project#/definitions/Anturi",
+      "type": "object"
+    },
+    "Painonappi_boolean": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "User control\\Painonappi boolean.usercontrol.json",
+      "id": "tchmi:project#/definitions/Painonappi_boolean",
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "parameters": [
+    {
+      "allowSymbolExpressionsInObject": false,
+      "defaultValue": "Nappi",
+      "requiredOnCompile": false,
+      "bindable": true,
+      "propertySetterName": "setNimi",
+      "propertyGetterName": "getNimi",
+      "refTo": "",
+      "name": "data-tchmi-nimi",
+      "displayName": "Nimi",
+      "visible": true,
+      "type": "tchmi:general#/definitions/String",
+      "category": "input",
+      "description": "",
+      "readOnly": false,
+      "heritable": true,
+      "propertyName": "Nimi"
+    },
+    {
+      "allowSymbolExpressionsInObject": false,
+      "requiredOnCompile": false,
+      "bindable": true,
+      "propertySetterName": "setKohde",
+      "propertyGetterName": "getKohde",
+      "refTo": "",
+      "name": "data-tchmi-kohde",
+      "displayName": "Kohde",
+      "visible": true,
+      "type": "tchmi:general#/definitions/BOOL",
+      "category": "Output",
+      "description": "",
+      "readOnly": false,
+      "heritable": true,
+      "propertyName": "Kohde"
+    }
+  ],
+  "virtualRights": [],
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.3.229/runtimes/native1.12-tchmi/Schema/UserControlConfig.Schema.json",
+  "description": ""
+}

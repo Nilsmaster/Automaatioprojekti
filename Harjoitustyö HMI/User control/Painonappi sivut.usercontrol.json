@@ -1,0 +1,43 @@
+{
+  "parameters": [
+    {
+      "allowSymbolExpressionsInObject": false,
+      "defaultValue": "Nappi",
+      "requiredOnCompile": false,
+      "bindable": true,
+      "propertySetterName": "setNimi",
+      "propertyGetterName": "getNimi",
+      "refTo": "",
+      "name": "data-tchmi-nimi",
+      "displayName": "Nimi",
+      "visible": true,
+      "type": "tchmi:general#/definitions/String",
+      "category": "input",
+      "description": "",
+      "readOnly": false,
+      "heritable": true,
+      "propertyName": "Nimi"
+    },
+    {
+      "allowSymbolExpressionsInObject": false,
+      "defaultValue": "Content/Etusivu.content",
+      "requiredOnCompile": false,
+      "bindable": true,
+      "propertySetterName": "setContent",
+      "propertyGetterName": "getContent",
+      "refTo": "",
+      "name": "data-tchmi-content",
+      "displayName": "Content",
+      "visible": true,
+      "type": "tchmi:framework#/definitions/ContentPath",
+      "category": "input",
+      "description": "",
+      "readOnly": false,
+      "heritable": true,
+      "propertyName": "Content"
+    }
+  ],
+  "virtualRights": [],
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.3.229/runtimes/native1.12-tchmi/Schema/UserControlConfig.Schema.json",
+  "description": ""
+}

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_HINNAN_ARPOMINEN" Id="{35ed4ceb-fdb2-4e75-8a54-fe23768ff27a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HINNAN_ARPOMINEN
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	arrPrices:				ARRAY[1..96] OF REAL;	//Arvot
+END_VAR
+VAR
+	i:						INT;
+	nRange:					DINT :=10000;			//Vaihteluväli
+	frand:					Drand;
+	fPrice:					REAL;
+	fValue:					DINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i := 1 TO 96 DO
+frand();
+fValue:= LREAL_TO_DINT (fRand.num*nRange);
+fPrice:= DINT_TO_REAL (fValue)/1000; 
+arrPrices[i] := fPrice;
+END_FOR]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

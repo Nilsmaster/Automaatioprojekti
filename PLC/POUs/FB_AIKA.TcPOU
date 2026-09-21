@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_AIKA" Id="{b6623339-2dd0-4b42-9ec5-dfb7d48bedf2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AIKA
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	onIndex:			INT;
+END_VAR
+VAR
+	nCycles:			INT;
+	totalMinutes: 		INT; 
+	currentPrice: 		REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nCycles:= nCycles + gvl.nTime_multiplier;
+
+IF nCycles >= 99 THEN
+	gvl.nSeconds:= gvl.nSeconds + 1;
+	nCycles:= 0;
+END_IF
+
+IF gvl.nSeconds >= 60 THEN
+	gvl.nMinutes:= gvl.nMinutes + 1;
+	gvl.nSeconds:= 0;
+END_IF
+ 
+IF gvl.nMinutes = 60 THEN
+	gvl.nHours:= gvl.nHours + 1;
+	gvl.nMinutes:= 0;
+END_IF
+
+IF gvl.nHours = 24 THEN
+	gvl.nHours:= 0;
+END_IF
+
+//Lasketaan indeksiarvo ja varmistetaan että se ei mene yli 96
+totalMinutes := gvl.nHours * 60 + gvl.nMinutes;
+onIndex:= (totalMinutes / 15) + 1;
+
+IF onIndex > 96 THEN
+	onIndex := 96;
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

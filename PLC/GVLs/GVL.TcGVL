@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GVL" Id="{4525eb99-dc14-4c5d-a458-25eeb85211f8}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	nTime_multiplier:		INT:=1;
+	nSeconds:				INT;
+	nMinutes:				INT;
+	nHours:					INT;
+	nCycle:					INT;
+	nMontakohalvinta:		INT(1..95):=20;
+	nMontakokalleinta:		INT(1..95):=20;
+	nHintaRajaPumppaus:		REAL :=3.0;
+	nHintaRajaTuotanto:		REAL :=7.0;
+	nAltaanpinta:			INT;
+	fprice:					REAL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

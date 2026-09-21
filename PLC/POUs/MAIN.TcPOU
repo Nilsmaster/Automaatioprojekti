@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="MAIN" Id="{c189e62e-b60d-4fdc-9873-3c08087c316b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbArvonta:				FB_HINNAN_ARPOMINEN;
+	fbTime:					FB_AIKA;
+	fbRank:					FB_RANK_PRICES;
+	bPumpataan:				BOOL;
+	bTuotetaan:				BOOL;
+	nTila:					INT;
+	nStart:					BOOL;
+	nStop:					BOOL;
+	fAltaanpinta:			REAL;
+	fPinnanmuutos:			REAL:=0.0001;
+	nAltaanYlaraja:			BOOL;
+	nAltaanAlaraja:			BOOL;
+	nJarvenAlaraja:			BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbTime();
+fbRank(arrPrices:=fbArvonta.arrPrices);
+gvl.nAltaanpinta:= REAL_TO_INT(fAltaanpinta);
+gvl.fprice:= fbArvonta.arrPrices[fbTime.onIndex];
+
+//Suoritetaan arvonta vuorokauden vaihteessa
+IF gvl.nSeconds =0 AND gvl.nMinutes = 0 AND gvl.nHours = 0 THEN
+	fbArvonta();	
+END_IF
+
+
+//Varmistetaan että aikakerroin on välillä 1-100
+IF gvl.nTime_multiplier >100 THEN
+	gvl.nTime_multiplier:=100;
+END_IF
+IF gvl.nTime_multiplier <1 THEN
+	gvl.nTime_multiplier:=1;
+END_IF
+
+
+//Varmistetaan että ei mennä yli 96
+IF gvl.nMontakohalvinta+gvl.nMontakokalleinta > 96 THEN
+	gvl.nMontakokalleinta:= 96-gvl.nMontakohalvinta;
+END_IF
+
+//Altaan ylä ja alarajojen simulointi
+IF fAltaanpinta >=99 THEN
+	nAltaanYlaraja:= TRUE;
+	ELSE
+	nAltaanYlaraja:= FALSE;	
+END_IF
+
+IF fAltaanpinta <=1 THEN
+	nAltaanAlaraja:= TRUE;
+	ELSE
+	nAltaanAlaraja:= FALSE;	
+END_IF
+
+
+IF nStop THEN
+	nstart:=False;
+	nStop:= FALSE;
+	nTila:=0;
+END_IF
+
+CASE nTila OF
+	0:	//- Stop
+		bPumpataan:=FALSE;
+		bTuotetaan:=False;
+		IF nStart THEN
+			nTila:=1;
+			nStart:= FALSE;
+		END_IF
+		
+	1:	// 1 - Odotus
+		IF fbRank.rank[fbTime.onIndex] <= gvl.nMontakohalvinta AND fbArvonta.arrPrices[fbTime.onIndex] <=  gvl.nHintaRajaPumppaus AND fAltaanpinta <=100 THEN
+			nTila:=2;
+		ELSIF fbRank.rank[fbTime.onIndex] >= 96-gvl.nMontakokalleinta AND fbArvonta.arrPrices[fbTime.onIndex] >= gvl.nHintaRajaTuotanto AND fAltaanpinta >=0THEN
+			nTila:=3;
+		END_IF
+
+	2:	// 2 - Pumppaus
+		IF fbRank.rank[fbTime.onIndex] <= gvl.nMontakohalvinta AND fAltaanpinta <=100 THEN
+			bPumpataan:= TRUE;
+			fAltaanpinta:= fAltaanpinta + fPinnanmuutos*gvl.nTime_multiplier;
+		ELSE
+			bPumpataan:= FALSE;
+			nTila:=1;
+		END_IF		
+
+	3:	//3 - Tuotetaan sähköä
+		IF fbRank.rank[fbTime.onIndex] >= 96-gvl.nMontakokalleinta AND fAltaanpinta >=0 THEN
+			bTuotetaan:= TRUE;
+			fAltaanpinta:= fAltaanpinta - fPinnanmuutos*gvl.nTime_multiplier;
+		ELSE
+			bTuotetaan:= FALSE;
+			nTila:=1;
+		END_IF	
+
+
+END_CASE
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

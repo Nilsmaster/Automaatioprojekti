@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_RANK_PRICES" Id="{58904f87-fd29-413d-8ff1-384f653063a3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RANK_PRICES
+VAR_INPUT
+	arrPrices: 		ARRAY[1..96] OF REAL; // alkuperäiset hinnat
+END_VAR
+VAR_OUTPUT
+	rank: 			ARRAY[1..96] OF INT; // jokaisen i:n sijoitus 1..96
+END_VAR
+VAR
+	i:				INT;
+	j: 				INT;
+	arrItems: 		ARRAY[1..96] OF PriceItem; 
+	temp: 			PriceItem;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// 1. Kopioi hinnat ja indeksit
+FOR i := 1 TO 96 DO
+	arrItems[i].price := arrPrices[i];
+	arrItems[i].index := i; 
+END_FOR
+
+// 2. Järjestä nousevaan järjestykseen 
+FOR i := 1 TO 95 DO 
+	FOR j := i + 1 TO 96 DO
+		IF arrItems[j].price < arrItems[i].price THEN
+			temp := arrItems[i];
+			arrItems[i] := arrItems[j];
+			arrItems[j] := temp;
+		END_IF
+	END_FOR
+END_FOR
+
+// 3. Kirjoita rank alkuperäisille indekseille 
+FOR i := 1 TO 96 DO
+	rank[arrItems[i].index] := i;
+END_FOR
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

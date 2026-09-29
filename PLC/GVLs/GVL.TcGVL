@@ -14,11 +14,15 @@ VAR_GLOBAL
 	nHintaRajaTuotanto:		REAL :=7.0;
 	fprice:					REAL;
 	
-	// DUT:eissa määriteltiin mitä tietoja structit sisältää. Tässä tehdään muuttuja structisssa, jossa tieto asuu. yhdistetään HMI:hin
+	// DUT:eissa määriteltiin mitä tietoja structit sisältää. Tässä tehdään muuttuja structissa, jossa tieto asuu. yhdistetään HMI:hin
 	stEsimerkki				: ST_Esimerkki;
 	
 	stGenerator				: ST_GeneratorHmi;
+	// Laitoin genun GVL:ään -> helppo työntää rajapinnan kautta tietoja esim roomtempille.
+	fbGenerator				: FB_Generator;
 	
+	stRoomTemp				: ST_RoomTempHmi;
+	fbRoomtemp				: FB_RoomTemp;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

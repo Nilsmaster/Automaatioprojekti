@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_RoomTempHmi" Id="{f4f4a0b7-e6d2-41f2-b1fa-da251279a432}">
+    <Declaration><![CDATA[TYPE ST_RoomTempHmi :
+STRUCT
+	nRoomTemperature		: REAL;
+	sName					: STRING;
+	nValue					: INT := 5;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

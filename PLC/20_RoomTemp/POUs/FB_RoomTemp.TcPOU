@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_RoomTemp" Id="{4e3d660a-5e64-4e2e-a474-66c0f3afef75}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RoomTemp
+
+VAR
+	_bInit				: BOOL;
+	
+	fbRoomTempControl	: FB_RoomTempControl;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbRoomTempControl();]]></ST>
+    </Implementation>
+    <Method Name="FB_Init" Id="{eba7c06a-cc1a-472b-a54e-5993b983ee8a}">
+      <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
+//The return value is not evaluated. For a specific influence, you can also declare the
+//methods explicitly and provide additional code there with the standard initialization
+//code. You can evaluate the return value.
+METHOD FB_Init: BOOL
+VAR_INPUT
+    bInitRetains: BOOL; // TRUE: the retain variables are initialized (reset warm / reset cold)
+    bInCopyCode: BOOL;  // TRUE: the instance will be copied to the copy code afterward (online change)   
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bInit := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{09c6c418-4d03-4883-b3d1-b789aa6be4c5}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _bInit THEN
+	
+
+fbRoomTempControl.Init(	refHmi		:= GVL.stRoomTemp,
+						sName		:= 'Generaattori huone',
+						iGenerator	:= GVL.fbGenerator);
+
+
+_bInit := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

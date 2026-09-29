@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_Generator" Id="{1575a1ee-c0a7-4780-9734-e59977d26686}">
+    <Declaration><![CDATA[INTERFACE I_Generator
+]]></Declaration>
+    <Property Name="bRunning" Id="{ac15d8fa-7e3c-4295-8599-132768e1d47a}">
+      <Declaration><![CDATA[PROPERTY bRunning : BOOL]]></Declaration>
+      <Get Name="Get" Id="{9669bb61-6de5-4b78-875e-cb7f7c72208e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="nHeat" Id="{7b1fe630-7ff8-4bf2-b9a7-822bd5a1ed80}">
+      <Declaration><![CDATA[PROPERTY nHeat : REAL]]></Declaration>
+      <Get Name="Get" Id="{e4ee9f28-3b9b-4823-9a69-4a846ec51fa8}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{2be8a2dc-6d4a-484d-9829-cbfc3aa1b4fa}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

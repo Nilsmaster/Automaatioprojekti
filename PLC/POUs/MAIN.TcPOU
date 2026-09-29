@@ -9,7 +9,6 @@ VAR
 	fbArvonta:				FB_HINNAN_ARPOMINEN;
 	fbTime:					FB_AIKA;
 	fbRank:					FB_RANK_PRICES;
-	fbGenerator				: FB_Generator;
 
 
 
@@ -22,7 +21,7 @@ END_VAR
       <ST><![CDATA[fbTime();
 fbRank(arrPrices:=fbArvonta.arrPrices);
 gvl.fprice:= fbArvonta.arrPrices[fbTime.onIndex];
-nTila	:= fbGenerator.nTila;
+nTila	:= GVL.fbGenerator.nTila;
 
 //-------- ESIMERKKI ------------------------------
 // Alustetaan ensin esimerkkitoiminto, jonka jälkeen kutsutaan itse funktio
@@ -51,10 +50,14 @@ IF gvl.nMontakohalvinta+gvl.nMontakokalleinta > 96 THEN
 END_IF
 
 // Generaattori ja veden määrät
-fbGenerator.Init(		refHmi := GVL.stGenerator);
-fbGenerator.nRank 		:= fbRank.rank[fbTime.onIndex];
-fbGenerator.nArvonta 	:= fbArvonta.arrPrices[fbTime.onIndex];
-fbGenerator();
+GVL.fbGenerator.Init(		refHmi := GVL.stGenerator);
+GVL.fbGenerator.nRank 		:= fbRank.rank[fbTime.onIndex];
+GVL.fbGenerator.nArvonta 	:= fbArvonta.arrPrices[fbTime.onIndex];
+GVL.fbGenerator();
+
+// Huoneen lämpötilan simulointi
+GVL.fbRoomtemp.Init();
+GVL.fbRoomtemp();
 
 
 ]]></ST>

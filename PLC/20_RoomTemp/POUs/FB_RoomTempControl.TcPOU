@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_RoomTempControl" Id="{85271c55-e02b-400b-8b22-1ffc8f0ff4f7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RoomTempControl
+
+VAR
+	_refHmi			: REFERENCE TO ST_RoomTempHmi;
+	_bInit			: BOOL;
+	_nCycleTime		: REAL := 0.01;
+	_nRoomTemp		: REAL := 20.0;
+	_nHeatingRate	: REAL;
+	
+	// Interfaces
+	_iGenerator		: I_Generator;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF _iGenerator.bRunning THEN
+	_nHeatingRate := 0.5 * (_iGenerator.nHeat / 100.0) * (_refHmi.nValue / 100.0);
+	
+	_nRoomTemp := _nRoomTemp + (_nHeatingRate * _nCycleTime);
+
+ELSIF NOT _iGenerator.bRunning THEN
+	_nRoomTemp := _nRoomTemp - (0.0005 * _nCycleTime);
+	
+END_IF
+
+UpdateHmi();]]></ST>
+    </Implementation>
+    <Method Name="FB_Init" Id="{a8415529-4b20-40d4-b1e3-770eda8edf35}">
+      <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
+//The return value is not evaluated. For a specific influence, you can also declare the
+//methods explicitly and provide additional code there with the standard initialization
+//code. You can evaluate the return value.
+METHOD FB_Init: BOOL
+VAR_INPUT
+    bInitRetains: BOOL; // TRUE: the retain variables are initialized (reset warm / reset cold)
+    bInCopyCode: BOOL;  // TRUE: the instance will be copied to the copy code afterward (online change)   
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bInit := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{22fd7ed7-1bd2-4ad5-8128-eea6f8f4e8d2}">
+      <Declaration><![CDATA[METHOD Init
+VAR_INPUT
+	refHmi			: REFERENCE TO ST_RoomTempHmi;
+	sName			: STRING;
+	iGenerator		: I_Generator;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _bInit THEN
+	
+_refHmi 			REF= refHmi;
+
+_refHmi.sName		:= sName;
+_iGenerator			:= iGenerator;
+
+_bInit := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="UpdateHmi" Id="{0c9e6156-ecfc-4699-a54f-b2beaa50eb86}">
+      <Declaration><![CDATA[METHOD INTERNAL UpdateHmi
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+_refHmi.nRoomTemperature := _nRoomTemp;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

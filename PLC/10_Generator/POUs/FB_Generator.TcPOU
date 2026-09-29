@@ -34,6 +34,17 @@ GeneratorHeatSimulation();
 
 UpdateHmi();]]></ST>
     </Implementation>
+    <Property Name="bRunning" Id="{d3890f3d-e1f0-473f-a185-fc864f743634}">
+      <Declaration><![CDATA[PROPERTY bRunning : BOOL]]></Declaration>
+      <Get Name="Get" Id="{3156efc5-7954-4410-bf53-0e982b07b640}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bRunning := bPumpataan OR bTuotetaan;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="fAltaanpinta" Id="{7e7069a5-a1f0-48e6-aa36-cd7054ca119a}">
       <Declaration><![CDATA[PROPERTY fAltaanpinta : REAL]]></Declaration>
       <Get Name="Get" Id="{6299476c-c61c-415a-ad68-0b6c81976e16}">
@@ -74,13 +85,13 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 IF bPumpataan  THEN
-	_nHeat := 100;
+	_nHeat 		:= 100;
 	
 ELSIF bTuotetaan THEN
-	_nHeat := ( _refHmi.nSahkonKulutus / 350.0 ) * 100;
+	_nHeat 		:= ( _refHmi.nSahkonKulutus / 350.0 ) * 100;
 
 ELSE
-	_nHeat := 0;
+	_nHeat 		:= 0;
 	
 END_IF]]></ST>
       </Implementation>

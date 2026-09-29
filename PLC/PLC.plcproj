@@ -9,7 +9,7 @@
     <WriteProductVersion>false</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
     <Name>PLC</Name>
-    <ProgramVersion>3.1.4026.19</ProgramVersion>
+    <ProgramVersion>3.1.4026.26</ProgramVersion>
     <Application>{5c104487-e373-4e73-b3e8-436156f980b1}</Application>
     <TypeSystem>{b23de2af-410d-4042-a089-07826c9687fa}</TypeSystem>
     <Implicit_Task_Info>{fb7a8fc3-cbd9-4228-8918-0c4901c30dd6}</Implicit_Task_Info>
@@ -18,6 +18,15 @@
     <LibraryReferences>{d67610b3-8583-4005-a8df-5c9d1488dd1a}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="99_ESIMERKKI\DUTs\ST_Esimerkki.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="99_ESIMERKKI\DUTs\ST_EsimerkkiHMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="99_ESIMERKKI\POUs\FB_EsimerkkiToiminto.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\PriceItem.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -42,8 +51,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="99_ESIMERKKI\DUTs" />
+    <Folder Include="99_ESIMERKKI\POUs" />
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
+    <Folder Include="99_ESIMERKKI" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
   </ItemGroup>

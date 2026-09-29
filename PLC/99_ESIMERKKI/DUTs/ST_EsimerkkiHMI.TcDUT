@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EsimerkkiHMI" Id="{59b08854-8868-481f-aed6-818b7779f05f}">
+    <Declaration><![CDATA[TYPE ST_EsimerkkiHMI :
+STRUCT
+	bTieto1		: BOOL;
+	bTieto2		: BOOL;
+	nArvo1		: INT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_Esimerkki" Id="{4b75c15f-4245-4007-bca7-965f4c534882}">
+    <Declaration><![CDATA[TYPE ST_Esimerkki :
+STRUCT
+	
+	// Tähän structiin kerätään kaikki Esimerkkitoiminnot, jos niitä on useampia. Helpottaa HMI toimintoja.
+	
+	stEsimerkki_1			: ST_EsimerkkiHMI;
+	stEsimerkki_2			: ST_EsimerkkiHMI;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

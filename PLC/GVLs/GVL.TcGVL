@@ -14,6 +14,9 @@ VAR_GLOBAL
 	nHintaRajaTuotanto:		REAL :=7.0;
 	nAltaanpinta:			INT;
 	fprice:					REAL;
+	
+	// DUT:eissa määriteltiin mitä tietoja structit sisältää. Tässä tehdään muuttuja structisssa, jossa tieto asuu. yhdistetään HMI:hin
+	stEsimerkki				: ST_Esimerkki;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

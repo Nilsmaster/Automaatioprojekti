@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_EsimerkkiToiminto" Id="{1f5b8933-cb63-4ffd-9ffa-271c49760c75}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EsimerkkiToiminto
+
+VAR
+	// FB:n sisäiset muuttujat alkumerkki _
+	_refHmi		: REFERENCE TO ST_EsimerkkiHMI;
+	
+	// bInit muuttujaa käytetään silloin, kun ohjelma käynnistetään ensimmäistä kertaa, ja se muuttuu FB_Initissä TRUEKSI
+	_bInit		: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF _refHmi.bTieto1 THEN
+	_refHmi.nArvo1 := _refHmi.nArvo1 + 1;
+END_IF]]></ST>
+    </Implementation>
+    <Method Name="FB_Init" Id="{5efe3fee-3266-4876-a52a-fe1ef9fcae19}">
+      <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
+//The return value is not evaluated. For a specific influence, you can also declare the
+//methods explicitly and provide additional code there with the standard initialization
+//code. You can evaluate the return value.
+METHOD FB_Init: BOOL
+VAR_INPUT
+    bInitRetains: BOOL; // TRUE: the retain variables are initialized (reset warm / reset cold)
+    bInCopyCode: BOOL;  // TRUE: the instance will be copied to the copy code afterward (online change)   
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bInit := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{8ea0b17e-2ebc-4064-8436-9512ed69e98b}">
+      <Declaration><![CDATA[METHOD Init
+VAR_INPUT
+	
+	// Muuttuja näkyy ulkomaailmaan, sen takia sillä ei ole _ alkua.
+	refHmi		: REFERENCE TO ST_EsimerkkiHMI;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Alustetaan FB:ssä käytettävät muuttuja, nimet yms...
+
+IF _bInit THEN
+	// Välitetään GVL:ssä asuva data FB:n käyttöön.
+	// REFERENCE on viittaus GVL listassa olevaan muistialueeseeen.
+	_refHmi		REF= refHmi;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -3,6 +3,9 @@
   <POU Name="MAIN" Id="{c189e62e-b60d-4fdc-9873-3c08087c316b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+	// ESIMERKKI TOIMINTO
+	fbEsimerkkiToiminto		: FB_EsimerkkiToiminto;
+	// -------------------
 	fbArvonta:				FB_HINNAN_ARPOMINEN;
 	fbTime:					FB_AIKA;
 	fbRank:					FB_RANK_PRICES;
@@ -23,6 +26,12 @@ END_VAR
 fbRank(arrPrices:=fbArvonta.arrPrices);
 gvl.nAltaanpinta:= REAL_TO_INT(fAltaanpinta);
 gvl.fprice:= fbArvonta.arrPrices[fbTime.onIndex];
+
+//-------- ESIMERKKI ------------------------------
+// Alustetaan ensin esimerkkitoiminto, jonka jälkeen kutsutaan itse funktio
+fbEsimerkkiToiminto.Init( refHmi	:= GVL.stEsimerkki.stEsimerkki_1 ); // käy vain alustuksessa
+fbEsimerkkiToiminto();													// Pyörii joka kerta
+//--------------------------------------------------------------------------
 
 //Suoritetaan arvonta vuorokauden vaihteessa
 IF gvl.nSeconds =0 AND gvl.nMinutes = 0 AND gvl.nHours = 0 THEN

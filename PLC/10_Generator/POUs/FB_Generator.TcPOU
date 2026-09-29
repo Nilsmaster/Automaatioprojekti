@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Generator" Id="{d10616a0-dcdb-4a21-b5c8-641fd366119b}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_Generator
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Generator IMPLEMENTS I_Generator
 
 VAR
 	_refHmi					: REFERENCE TO ST_GeneratorHmi;
@@ -117,6 +117,25 @@ END_VAR
 ]]></Declaration>
         <Implementation>
           <ST><![CDATA[_nArvonta := nArvonta;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="nHeat" Id="{99deb9ac-e9aa-44c2-9c8f-fe8e316d4c9c}">
+      <Declaration><![CDATA[PROPERTY nHeat : REAL]]></Declaration>
+      <Get Name="Get" Id="{c474e008-b193-4973-a316-d16714d6e14d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nHeat := _nHeat;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{cb226c39-53d3-405f-8bd6-97d751ced203}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_nHeat := nHeat;]]></ST>
         </Implementation>
       </Set>
     </Property>

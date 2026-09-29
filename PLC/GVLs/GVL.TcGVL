@@ -12,11 +12,13 @@ VAR_GLOBAL
 	nMontakokalleinta:		INT(1..95):=20;
 	nHintaRajaPumppaus:		REAL :=3.0;
 	nHintaRajaTuotanto:		REAL :=7.0;
-	nAltaanpinta:			INT;
 	fprice:					REAL;
 	
 	// DUT:eissa määriteltiin mitä tietoja structit sisältää. Tässä tehdään muuttuja structisssa, jossa tieto asuu. yhdistetään HMI:hin
 	stEsimerkki				: ST_Esimerkki;
+	
+	stGenerator				: ST_GeneratorHmi;
+	
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

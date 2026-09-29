@@ -47,6 +47,138 @@
                 "startOffset": 1,
                 "type": "array"
             },
+            "ADS-PLC.FB_Generator": {
+                "additionalProperties": false,
+                "attributes": {
+                    "PouType": "FunctionBlock"
+                },
+                "properties": {
+                    "_fAltaanpinta": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/REAL"
+                            },
+                            {
+                                "propertyOrder": 7
+                            }
+                        ]
+                    },
+                    "_nArvonta": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/REAL"
+                            },
+                            {
+                                "propertyOrder": 6
+                            }
+                        ]
+                    },
+                    "_nRank": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/INT"
+                            },
+                            {
+                                "propertyOrder": 5
+                            }
+                        ]
+                    },
+                    "_nTila": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/INT"
+                            },
+                            {
+                                "propertyOrder": 11
+                            }
+                        ]
+                    },
+                    "bPumpataan": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "bTuotetaan": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "fPinnanmuutos": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/REAL"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    },
+                    "nAltaanAlaraja": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 10
+                            }
+                        ]
+                    },
+                    "nAltaanYlaraja": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 9
+                            }
+                        ]
+                    },
+                    "nStart": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "nStop": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "bPumpataan",
+                    "bTuotetaan",
+                    "nStart",
+                    "nStop",
+                    "_nRank",
+                    "_nArvonta",
+                    "_fAltaanpinta",
+                    "fPinnanmuutos",
+                    "nAltaanYlaraja",
+                    "nAltaanAlaraja",
+                    "_nTila"
+                ],
+                "type": "object"
+            },
             "ADS-PLC.INT--1..100": {
                 "allOf": [
                     {
@@ -68,6 +200,47 @@
                         "minimum": 1.0
                     }
                 ]
+            },
+            "ADS-PLC.ST_GeneratorHmi": {
+                "additionalProperties": false,
+                "properties": {
+                    "bAltaanTaso": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/INT"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "bStart": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "bStop": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "bStart",
+                    "bStop",
+                    "bAltaanTaso"
+                ],
+                "type": "object"
             }
         }
     },
@@ -301,7 +474,7 @@
     "RECORDING_MESSAGE_MAX_LENGTH": 5120,
     "REMOTESERVERS": {},
     "REMOTESERVERS_CERTIFICATES": [],
-    "REQUIREAUTH": 0,
+    "REQUIREAUTH": 1,
     "REQUIRE_CLIENT_CERTIFICATE": false,
     "SAMESITE_ATTRIBUTE": 2,
     "SELFSIGNEDROOTCA": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURpekNDQW5PZ0F3SUJBZ0lKQU12SXZ3NmFJcnY3TUEwR0NTcUdTSWIzRFFFQkN3VUFNRDh4Q3pBSkJnTlYKQkFZVEFrUkZNUnN3R1FZRFZRUUtEQkpVZDJsdVEwRlVJRWhOU1NCVFpYSjJaWEl4RXpBUkJnTlZCQU1NQ2twaApibTVsWDNKdmIzUXdJQmNOTWpVeE1qQXhNVGd4TkRNd1doZ1BNakEyTkRBek16RXhPREUwTXpCYU1EOHhDekFKCkJnTlZCQVlUQWtSRk1Sc3dHUVlEVlFRS0RCSlVkMmx1UTBGVUlFaE5TU0JUWlhKMlpYSXhFekFSQmdOVkJBTU0KQ2twaGJtNWxYM0p2YjNRd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUNnb0g5awpFTDUvWjV1eDJ3aWR4c1cxck9RK1ZQSFZRZHpSYStlOVRsc003U3RkaWFxdkJTL1pJYWp1VkVXYlBYVzhYbTB5ClJOQktvWHA0eUhGd1hZM2FNOENJQUxEZTRzd1BMdWhHNmZuRVNSUHBsY0ZTMTFnV2JzakdET2RXK1ZncVpQQzEKbHpVcHg1OEc4V1l4cW51U3pUemdUZTFNMzVzZnF2NmFkWUpjMmNaWEU4N0hEOXR2anBPaThpWkNkL3A0OTFrZAp1WGxYUFdQc2IraTRWdWFXNDQrRUVVVkdVcHJKTGQ0dERLc0Jaa1RDSEFpYVpBOGc1ZFJhZzRmdDVuZS9OUUFZCmJZVkJnYTNkaW5uR25jWjBuSGNJVkZHYmRySXNXaGJNTjhLRlpQUzI5VmlhQVZvT3Y2U2Z1T29BOVZFVEI0cE0KdUkrSEJuY0lSUk41dmhPNUFnTUJBQUdqZ1ljd2dZUXdVZ1lEVlIwUkJFc3dTWUlKYkc5allXeG9iM04waHdSLwpBQUFCaHhBQUFBQUFBQUFBQUFBQUFBQUFBQUFCZ2dWS1lXNXVaWUlGU21GdWJtV0hCTUNvUkhPSEVQNkFBQUFBCkFBQUFLRG5JMVQ0Q3U0OHdIUVlEVlIwT0JCWUVGSnhJaFd4dzh5QnhBSThHK0liR0RXUTRNcFM5TUE4R0ExVWQKRXdFQi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFHR3FYM2tCM01nVHI1bmNQYUJyVVlHTgphVE9GTUZSV2FEYmJ2MmR4SXZadWJmNGNiM1FTVUMyUU9ueW9LSWxjZjI4bmcvcjNtbzFsNVlJcmQ3VmFJZGoyCnE1cHV4Z2ZJVGZERXRSNGJoZUxuUkd6OGdhU1JKc3pYRWgyUWZMeUFQKzNDL0E4Y0hpMjAzNjVscjFENFNQckUKbEoyNmNHcEQvZkdTSHhVVUNMWDBCdWdrWXR4Y0NVSFNxVTRGNDR3ekhXMFdySEpSZ2lRdWZYcUU2THozcTBlLwpZQ3lGR0VkY3RjajZlVUlrQmJRY0psWHBrL0NqZnpKWWxYSEI5TFF0VU4xa1EzbzY0SkVZODNJZk9HYTgrR3ZhCkVlY3kwWnVKM2hVWVhHSUdVaXNMNHNob0hRMXBzTitCbVkweTg3M0RUQTlDRnlhbnlSZk9xMkpFOWdTaGZFcz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=",
@@ -950,23 +1123,47 @@
             },
             "USEMAPPING": true
         },
-        "ADS.PLC.MAIN.bPumpataan": {
+        "ADS.PLC.GVL.stGenerator": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
             "DYNAMIC": true,
-            "MAPPING": "PLC::MAIN::bPumpataan",
+            "MAPPING": "PLC::GVL::stGenerator",
             "SCHEMA": {
-                "$ref": "tchmi:general#/definitions/BOOL"
+                "$ref": "tchmi:server#/definitions/ADS-PLC.ST_GeneratorHmi"
             },
             "USEMAPPING": true
         },
-        "ADS.PLC.MAIN.bTuotetaan": {
+        "ADS.PLC.MAIN.fbGenerator.nStart": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
             "DYNAMIC": true,
-            "MAPPING": "PLC::MAIN::bTuotetaan",
+            "MAPPING": "PLC::MAIN::fbGenerator::nStart",
             "SCHEMA": {
-                "$ref": "tchmi:general#/definitions/BOOL"
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC.MAIN.fbGenerator.nStop": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC::MAIN::fbGenerator::nStop",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
             },
             "USEMAPPING": true
         },
@@ -1003,26 +1200,6 @@
                         "propertyOrder": 2
                     }
                 ]
-            },
-            "USEMAPPING": true
-        },
-        "ADS.PLC.MAIN.nStart": {
-            "ACCESS": 3,
-            "DOMAIN": "ADS",
-            "DYNAMIC": true,
-            "MAPPING": "PLC::MAIN::nStart",
-            "SCHEMA": {
-                "$ref": "tchmi:general#/definitions/BOOL"
-            },
-            "USEMAPPING": true
-        },
-        "ADS.PLC.MAIN.nStop": {
-            "ACCESS": 3,
-            "DOMAIN": "ADS",
-            "DYNAMIC": true,
-            "MAPPING": "PLC::MAIN::nStop",
-            "SCHEMA": {
-                "$ref": "tchmi:general#/definitions/BOOL"
             },
             "USEMAPPING": true
         },
@@ -4419,12 +4596,11 @@
                 "ADS.PLC.GVL.nMontakokalleinta": 3,
                 "ADS.PLC.GVL.nSeconds": 3,
                 "ADS.PLC.GVL.nTime_multiplier": 3,
-                "ADS.PLC.MAIN.bPumpataan": 3,
-                "ADS.PLC.MAIN.bTuotetaan": 3,
+                "ADS.PLC.GVL.stGenerator": 3,
+                "ADS.PLC.MAIN.fbGenerator.nStart": 3,
+                "ADS.PLC.MAIN.fbGenerator.nStop": 3,
                 "ADS.PLC.MAIN.fbRank.arrPrices": 3,
                 "ADS.PLC.MAIN.fbRank.rank": 3,
-                "ADS.PLC.MAIN.nStart": 3,
-                "ADS.PLC.MAIN.nStop": 3,
                 "ADS.PLC.MAIN.nTila": 3,
                 "ChangeUserSettings": 3,
                 "ConfirmAlarm": 3,

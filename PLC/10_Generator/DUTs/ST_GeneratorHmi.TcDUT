@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_GeneratorHmi" Id="{57cac3de-4acd-494b-a13d-3bb8e80ec31f}">
+    <Declaration><![CDATA[TYPE ST_GeneratorHmi :
+STRUCT
+	bStart			: BOOL;
+	bStop			: BOOL;
+	bAltaanTaso		: INT;
+	nSahkonKulutus	: INT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

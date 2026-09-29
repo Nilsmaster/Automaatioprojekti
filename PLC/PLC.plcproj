@@ -18,6 +18,12 @@
     <LibraryReferences>{d67610b3-8583-4005-a8df-5c9d1488dd1a}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="10_Generator\DUTs\ST_GeneratorHmi.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="10_Generator\POUs\FB_Generator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="99_ESIMERKKI\DUTs\ST_Esimerkki.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -51,11 +57,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="10_Generator\DUTs" />
+    <Folder Include="10_Generator\ITFs" />
+    <Folder Include="10_Generator\POUs" />
     <Folder Include="99_ESIMERKKI\DUTs" />
     <Folder Include="99_ESIMERKKI\POUs" />
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
     <Folder Include="99_ESIMERKKI" />
+    <Folder Include="10_Generator" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
   </ItemGroup>
@@ -82,8 +92,8 @@
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-        <Data>
-          <o xml:space="preserve" t="OptionKey">
+  <Data>
+    <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
@@ -135,6 +145,12 @@
             <v>410,5410</v>
           </d>
         </o>
+        <v>{eeeeeeee-3909-4298-8022-501ac3238667}</v>
+        <o>
+          <v n="Name">"{eeeeeeee-3909-4298-8022-501ac3238667}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
         <v>{F66C7017-BDD8-4114-926C-81D6D687E35F}</v>
         <o>
           <v n="Name">"{F66C7017-BDD8-4114-926C-81D6D687E35F}"</v>
@@ -147,14 +163,14 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-        </Data>
-        <TypeList>
-          <Type n="Boolean">System.Boolean</Type>
-          <Type n="Hashtable">System.Collections.Hashtable</Type>
-          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-          <Type n="String">System.String</Type>
-        </TypeList>
-      </XmlArchive>
+  </Data>
+  <TypeList>
+    <Type n="Boolean">System.Boolean</Type>
+    <Type n="Hashtable">System.Collections.Hashtable</Type>
+    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+    <Type n="String">System.String</Type>
+  </TypeList>
+</XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>

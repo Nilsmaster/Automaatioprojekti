@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Generator" Id="{d10616a0-dcdb-4a21-b5c8-641fd366119b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Generator
+
+VAR
+	_refHmi					: REFERENCE TO ST_GeneratorHmi;
+	_bInit					: BOOL;
+	bPumpataan:				BOOL;
+	bTuotetaan:				BOOL;
+	_nTila:					INT;
+	_nRank					: INT;
+	_nArvonta				: REAL;
+	_nHeat					: REAL;
+	
+	_fAltaanpinta:			REAL;
+	fPinnanmuutos:			REAL:=0.0001;
+	nAltaanYlaraja:			BOOL;
+	nAltaanAlaraja:			BOOL;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+
+
+
+PoolSimulation();
+
+StateMachine();
+
+GeneratorHeatSimulation();
+
+UpdateHmi();]]></ST>
+    </Implementation>
+    <Property Name="fAltaanpinta" Id="{7e7069a5-a1f0-48e6-aa36-cd7054ca119a}">
+      <Declaration><![CDATA[PROPERTY fAltaanpinta : REAL]]></Declaration>
+      <Get Name="Get" Id="{6299476c-c61c-415a-ad68-0b6c81976e16}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fAltaanpinta := _fAltaanpinta;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{c3f48042-f473-4d5f-ac4c-f3107056e410}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_fAltaanpinta := fAltaanpinta;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="FB_Init" Id="{fabdd05e-c118-4b95-abe4-2c9a0e7f5049}">
+      <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
+//The return value is not evaluated. For a specific influence, you can also declare the
+//methods explicitly and provide additional code there with the standard initialization
+//code. You can evaluate the return value.
+METHOD FB_Init: BOOL
+VAR_INPUT
+    bInitRetains: BOOL; // TRUE: the retain variables are initialized (reset warm / reset cold)
+    bInCopyCode: BOOL;  // TRUE: the instance will be copied to the copy code afterward (online change)   
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bInit := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GeneratorHeatSimulation" Id="{45afcf2f-b7e8-4e0a-a897-3a41fcbe1a05}">
+      <Declaration><![CDATA[METHOD GeneratorHeatSimulation : REAL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF bPumpataan  THEN
+	_nHeat := 100;
+	
+ELSIF bTuotetaan THEN
+	_nHeat := ( _refHmi.nSahkonKulutus / 350.0 ) * 100;
+
+ELSE
+	_nHeat := 0;
+	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{a6fafc93-d2a9-4ff1-910e-72b5f9ea2521}">
+      <Declaration><![CDATA[METHOD Init
+VAR_INPUT
+	refHmi		: REFERENCE TO ST_GeneratorHmi;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _bInit THEN
+	
+	_refHmi REF= refHmi;
+	
+	
+	_bInit := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="nArvonta" Id="{a19cc04f-e992-4c29-ab36-769bba218f7f}">
+      <Declaration><![CDATA[PROPERTY nArvonta : REAL]]></Declaration>
+      <Get Name="Get" Id="{dbd4c1d8-8e37-4c02-bba9-ed959b4c7f97}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nArvonta := _nArvonta;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{32b69f5e-aa76-4a63-a049-464f0eaef96d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_nArvonta := nArvonta;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="nRank" Id="{1a973952-e881-41b5-947d-886d7a5727e8}">
+      <Declaration><![CDATA[PROPERTY nRank : INT]]></Declaration>
+      <Get Name="Get" Id="{cd3e4f91-ec4c-4d4a-be74-8b0de1261cbf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nRank := _nRank;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{af603082-5bde-4e32-bd2c-9465e0f8c6df}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_nRank := nRank;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="nTila" Id="{ec5017f2-82de-406e-bb92-b607a6f395d9}">
+      <Declaration><![CDATA[PROPERTY nTila : INT]]></Declaration>
+      <Get Name="Get" Id="{84852fd2-ed2b-45e1-b1e4-3b9ba3b39b13}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nTila := _nTila;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="PoolSimulation" Id="{938d44b9-0190-4e44-b2c2-dee9da4dbca3}">
+      <Declaration><![CDATA[METHOD INTERNAL PoolSimulation
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Altaan ylä ja alarajojen simulointi
+IF _fAltaanpinta >=99 THEN
+	nAltaanYlaraja:= TRUE;
+	ELSE
+	nAltaanYlaraja:= FALSE;	
+END_IF
+
+IF _fAltaanpinta <=1 THEN
+	nAltaanAlaraja:= TRUE;
+	ELSE
+	nAltaanAlaraja:= FALSE;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StateMachine" Id="{0bf7a78a-c29b-4ae8-9615-8bbdceff9318}">
+      <Declaration><![CDATA[METHOD INTERNAL StateMachine
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _refHmi.bStop THEN
+	_refHmi.bStart:=FALSE;
+	_refHmi.bStop:= FALSE;
+	_nTila:=0;
+END_IF
+
+
+CASE _nTila OF
+	0:	//- Stop
+		bPumpataan:=FALSE;
+		bTuotetaan:=False;
+		IF _refHmi.bStart THEN
+			_nTila:=1;
+			_refHmi.bStart:= FALSE;
+		END_IF
+		
+	1:	// 1 - Odotus
+		IF _nRank <= gvl.nMontakohalvinta AND _nArvonta <=  gvl.nHintaRajaPumppaus AND _fAltaanpinta <=100 THEN
+			_nTila:=2;
+		ELSIF _nRank >= 96-gvl.nMontakokalleinta AND _nArvonta >= gvl.nHintaRajaTuotanto AND _fAltaanpinta >=0THEN
+			_nTila:=3;
+		END_IF
+
+	2:	// 2 - Pumppaus
+		IF _nRank <= gvl.nMontakohalvinta AND _fAltaanpinta <=100 THEN
+			bPumpataan:= TRUE;
+			_fAltaanpinta:= _fAltaanpinta + fPinnanmuutos*gvl.nTime_multiplier;
+		ELSE
+			bPumpataan:= FALSE;
+			_nTila:=1;
+		END_IF		
+
+	3:	//3 - Tuotetaan sähköä
+		IF _nRank >= 96-gvl.nMontakokalleinta AND _fAltaanpinta >=0 THEN
+			bTuotetaan:= TRUE;
+			_fAltaanpinta:= _fAltaanpinta - fPinnanmuutos*gvl.nTime_multiplier;
+		ELSE
+			bTuotetaan:= FALSE;
+			_nTila:=1;
+		END_IF	
+
+
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="UpdateHmi" Id="{8e70f5aa-d85d-48ca-8595-c1f8fe59b9c0}">
+      <Declaration><![CDATA[METHOD INTERNAL UpdateHmi
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_refHmi.bAltaanTaso := REAL_TO_INT(fAltaanpinta);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

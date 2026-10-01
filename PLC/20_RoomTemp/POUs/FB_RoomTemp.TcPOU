@@ -17,7 +17,9 @@ END_VAR
     <Implementation>
       <ST><![CDATA[
 _fbRoomTempControl();
-//_fbCoolingControl(); EI ole aloitettu]]></ST>
+//_fbCoolingControl(); EI ole aloitettu
+
+// ASDASD]]></ST>
     </Implementation>
     <Method Name="FB_Init" Id="{eba7c06a-cc1a-472b-a54e-5993b983ee8a}">
       <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.

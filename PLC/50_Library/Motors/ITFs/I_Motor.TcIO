@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_Motor" Id="{4d969e27-ae96-48de-93d6-06a00a18b9d7}">
+    <Declaration><![CDATA[INTERFACE I_Motor
+]]></Declaration>
+    <Property Name="bEnable" Id="{fdd803ef-7c3a-4993-b978-eb4399925c4e}">
+      <Declaration><![CDATA[PROPERTY bEnable : BOOL]]></Declaration>
+      <Get Name="Get" Id="{d14bd4f5-10b2-4a18-a17a-0d8aeb80e795}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{25671867-117e-4e39-bef0-2138bb2f5346}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="nSpeed" Id="{1b9f1cc0-8438-4c22-a52c-75b0388d68fd}">
+      <Declaration><![CDATA[PROPERTY nSpeed : INT]]></Declaration>
+      <Get Name="Get" Id="{f55835ad-359a-463a-9c3e-bba3564f1341}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{ce1ea666-8437-4c96-9cdd-0a9d4e9e7081}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

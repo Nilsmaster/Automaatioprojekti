@@ -1,25 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="FB_RoomTemp" Id="{4e3d660a-5e64-4e2e-a474-66c0f3afef75}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_RoomTemp
+  <POU Name="FB_CoolingControl" Id="{c09f89a4-7fd2-41a6-a90f-53be9d89a7cd}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CoolingControl
 
 VAR
-	_bInit					: BOOL;
+	_bInit			: BOOL;
 	
-	// fb:s
-	_fbRoomTempControl		: FB_RoomTempControl;
-	_fbCoolingControl		: FB_CoolingControl;
-	
-	// Motors
-		// Tähän tulee ABB 880 tamu FB, linkitetään initissä cooling controliin
+	_iMotor			: I_Motor;
+//	_iRoomtemp		: I_RoomTemp yms... 
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-_fbRoomTempControl();
-//_fbCoolingControl(); EI ole aloitettu]]></ST>
+      <ST><![CDATA[// rajapinnan kautta valvotaan huoneen läpmötilaa. keksitään PID yms säädin, joka nostaa tamun tehoja 
+// kun lämpötila nousee...]]></ST>
     </Implementation>
-    <Method Name="FB_Init" Id="{eba7c06a-cc1a-472b-a54e-5993b983ee8a}">
+    <Method Name="FB_Init" Id="{fcfc5886-4c00-430c-bcfe-6efe2b92512a}">
       <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
 //The return value is not evaluated. For a specific influence, you can also declare the
 //methods explicitly and provide additional code there with the standard initialization
@@ -33,7 +28,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[_bInit := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Init" Id="{09c6c418-4d03-4883-b3d1-b789aa6be4c5}">
+    <Method Name="Init" Id="{41d1ef6e-1d92-4a89-a068-5cd5a1e489d5}">
       <Declaration><![CDATA[METHOD Init : BOOL
 VAR_INPUT
 END_VAR
@@ -42,12 +37,13 @@ END_VAR
         <ST><![CDATA[IF _bInit THEN
 	
 
-_fbRoomTempControl.Init(	refHmi		:= GVL.stRoomTemp,
-							sName		:= 'Generaattori huone',
-							iGenerator	:= GVL.fbGenerator);
 
 
-_bInit := FALSE;
+
+
+
+	_bInit := FALSE;
+		
 END_IF]]></ST>
       </Implementation>
     </Method>

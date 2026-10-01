@@ -3,9 +3,12 @@
   <DUT Name="ST_RoomTempHmi" Id="{f4f4a0b7-e6d2-41f2-b1fa-da251279a432}">
     <Declaration><![CDATA[TYPE ST_RoomTempHmi :
 STRUCT
+	// PLC -> HMI
 	nRoomTemperature		: REAL;
 	sName					: STRING;
-	nValue					: INT := 5;
+	
+	// HMI -> PLC
+	nValue					: INT := 5; // skaalaus HMI:ltä
 	
 END_STRUCT
 END_TYPE

@@ -4,6 +4,8 @@
     <Declaration><![CDATA[FUNCTION_BLOCK FB_RoomTempControl
 
 VAR
+	// Seuraa onko generaattori päällä (tuottaa/varastoi). Tämän perusteella simuloi lämpötilan nousun.
+	// Seruaa onko jäähdytys päällä. Tämän perusteella laskee lämpötilaa.
 	_refHmi			: REFERENCE TO ST_RoomTempHmi;
 	_bInit			: BOOL;
 	_nCycleTime		: REAL := 0.01;
@@ -12,6 +14,7 @@ VAR
 	
 	// Interfaces
 	_iGenerator		: I_Generator;
+	
 	
 END_VAR
 ]]></Declaration>
@@ -22,10 +25,12 @@ IF _iGenerator.bRunning THEN
 	
 	_nRoomTemp := _nRoomTemp + (_nHeatingRate * _nCycleTime);
 
-ELSIF NOT _iGenerator.bRunning THEN
+ELSIF NOT _iGenerator.bRunning AND _nRoomTemp >= 20.0 THEN
 	_nRoomTemp := _nRoomTemp - (0.0005 * _nCycleTime);
 	
 END_IF
+
+
 
 UpdateHmi();]]></ST>
     </Implementation>

@@ -30,10 +30,16 @@
     <Compile Include="20_RoomTemp\DUTs\ST_RoomTempHmi.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="20_RoomTemp\POUs\FB_CoolingControl.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="20_RoomTemp\POUs\FB_RoomTemp.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="20_RoomTemp\POUs\FB_RoomTempControl.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="50_Library\Motors\ITFs\I_Motor.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="99_ESIMERKKI\DUTs\ST_Esimerkki.TcDUT">
@@ -49,6 +55,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GVLs\GVL.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="GVLs\Motors.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="GVLs\Safety.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -75,6 +89,14 @@
     <Folder Include="20_RoomTemp\DUTs" />
     <Folder Include="20_RoomTemp\ITFs" />
     <Folder Include="20_RoomTemp\POUs" />
+    <Folder Include="50_Library\IO\DUTs" />
+    <Folder Include="50_Library\IO\ITFs" />
+    <Folder Include="50_Library\IO\POUs" />
+    <Folder Include="50_Library\Motors" />
+    <Folder Include="50_Library\IO" />
+    <Folder Include="50_Library\Motors\DUTs" />
+    <Folder Include="50_Library\Motors\ITFs" />
+    <Folder Include="50_Library\Motors\POUs" />
     <Folder Include="99_ESIMERKKI\DUTs" />
     <Folder Include="99_ESIMERKKI\POUs" />
     <Folder Include="DUTs" />
@@ -82,6 +104,7 @@
     <Folder Include="99_ESIMERKKI" />
     <Folder Include="10_Generator" />
     <Folder Include="20_RoomTemp" />
+    <Folder Include="50_Library" />
     <Folder Include="POUs\10_aika_ennen_meitä" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
@@ -109,8 +132,8 @@
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-  <Data>
-    <o xml:space="preserve" t="OptionKey">
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
@@ -180,14 +203,14 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-  </Data>
-  <TypeList>
-    <Type n="Boolean">System.Boolean</Type>
-    <Type n="Hashtable">System.Collections.Hashtable</Type>
-    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-    <Type n="String">System.String</Type>
-  </TypeList>
-</XmlArchive>
+        </Data>
+        <TypeList>
+          <Type n="Boolean">System.Boolean</Type>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>

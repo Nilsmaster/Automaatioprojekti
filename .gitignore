@@ -58,3 +58,11 @@ LineIDs.dbg.bak
 
 # TwinCAT Measurement
 *.vsm
+
+
+# TwinCAT HMI (generated / user-specific files)
+**/.hmishare/
+*.hmiproj.user
+**/engineering.html
+**/bin/
+**/obj/

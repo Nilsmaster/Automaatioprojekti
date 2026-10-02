@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_DataLogger" Id="{af099f21-a285-43de-870f-7470cc2a9101}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_DataLogger
+
+VAR
+	bTestMode:			BOOL;	(* FALSE: PC, TRUE: PLC *)
+	uDevState AT%I*:	UINT;
+
+	bInit:			BOOL := TRUE;
+	bStop:			BOOL;
+	bDB_Operate:	BOOL;
+	fbStartDB: 		NT_StartProcess;	// Start database from USB-stick
+	fbStopDB: 		NT_StartProcess;	// Stop database from USB-stick
+	fbTON_Init:		TON := (PT:=T#10S);
+	fbTON_StopDB:	TON := (PT:=T#10S);
+	_fbPlcDBMode	: FB_PLC_DB_Mode;
+	_fbSqlDBMode	: FB_SQL_DB_Mode;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF(bInit) THEN
+	fbStartDB(
+	NETID:= SEL(bTestMode, '157.24.182.82.1.1', ''),
+	PATHSTR:= SEL(bTestMode, 'D:\testMariaStart.bat', 'D:\testMariaStartPLC.bat'),
+	DIRNAME:= SEL(bTestMode, 'D:\', 'D:\'),
+	COMNDLINE:= ,
+	START:= TRUE,
+	TMOUT:= T#5S,
+	BUSY=> ,
+	ERR=> ,
+	ERRID=> );
+
+	
+	bInit	:= SEL(NOT(fbStartDB.BUSY OR fbStartDB.ERR) AND fbTON_Init.Q, bInit, FALSE);
+	bDB_Operate	:= NOT(bInit);
+	fbTON_Init(IN:=bInit);
+END_IF
+
+IF(bStop) THEN
+	fbStopDB(
+	NETID:= SEL(bTestMode, '157.24.182.82.1.1', ''),
+	PATHSTR:= SEL(bTestMode, 'D:\testMariaStop.bat', 'D:\testMariaStopPLC.bat'),
+	DIRNAME:= SEL(bTestMode, 'D:\', 'D:\'),
+	COMNDLINE:= ,
+	START:= TRUE,
+	TMOUT:= T#5S,
+	BUSY=> ,
+	ERR=> ,
+	ERRID=> );
+
+	bStop	:= SEL(NOT(fbStopDB.BUSY OR fbStopDB.ERR) AND fbTON_StopDB.Q, bStop, FALSE);
+	bDB_Operate	:= FALSE;
+	fbTON_StopDB(IN:=bStop);
+END_IF
+
+IF(NOT(bInit) AND bDB_Operate) THEN
+	_fbPlcDBMode();
+	
+	_fbSqlDBMode();
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

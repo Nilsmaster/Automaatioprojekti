@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_PLC_DB_Mode" Id="{9d2f7d28-6935-478c-8d16-66c3f315f594}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PLC_DB_Mode
+
+VAR
+	arrDataName:	ARRAY [0..3] OF STRING(50) := ['reactor_name', 'temperature', 'pressure', 'flow_rate'];	// Database header
+	stMeas_1:	ST_Process_1_Measurements	:= (sName:='Reactor 1', fTemperature:=0.1, fPressure:=0.2, fFlowRate:=0.3); // Handled values of the process measurements
+	
+	fbDB_PLC:	FB_PLCDBWriteEvt(sNetID := '157.24.182.82.1.1', tTimeout := T#5S);	
+	//fbDB_PLC:	FB_PLCDBWriteEvt(sNetID := '', tTimeout := T#5S);	// For local DB use
+
+	nCntr:			INT;	// Simple variation for "measurements"
+	bWriteRequest:	BOOL;	// Trig single write operation
+	bDB_WriteDone:	BOOL;
+
+	tcMessage       :  I_TcMessage;	// For Eventlogger development needs
+
+	fbTON_DataSample:	TON := (PT:=T#5S);
+	fbTON_DataStorage:	TON := (PT:=T#1M);
+	bLoggingActive:	BOOL;	// Manual activation
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	// Create 5s/1min write cycle
+fbTON_DataSample(IN:=bLoggingActive);
+fbTON_DataStorage(IN:=bLoggingActive);
+
+IF(fbTON_DataSample.Q) THEN
+	bWriteRequest	:= TRUE;
+	fbTON_DataSample(IN:=FALSE);
+END_IF
+bLoggingActive	:= SEL(fbTON_DataStorage.Q, bLoggingActive, FALSE);
+
+nCntr	:= SEL(nCntr >= 1000, nCntr + 1, 1);
+
+stMeas_1.fTemperature	:= (INT_TO_LREAL(nCntr)/1000) + 75;
+stMeas_1.fPressure		:= (INT_TO_LREAL(nCntr)/1000)*1.5 + 4.1;
+stMeas_1.fFlowRate		:= (INT_TO_LREAL(nCntr)/1000)*2.75 + 125;
+
+	// Write used structure into DB
+IF(bWriteRequest) THEN
+	IF fbDB_PLC.WriteStruct(
+        hDBID := 1,
+        sTableName := 'reactor_logs',
+        pRecord := ADR(stMeas_1),
+        cbRecord := SIZEOF(stMeas_1),
+        pColumnNames := ADR(arrDataName),
+        cbColumnNames := SIZEOF(arrDataName)
+    )
+    THEN
+		IF(NOT(fbDB_PLC.bBusy)) THEN
+			bWriteRequest 	:= FALSE;
+			bDB_WriteDone	:= TRUE;
+		ELSIF(fbDB_PLC.bError) THEN
+			tcMessage := fbDB_PLC.ipTcResult;
+			bWriteRequest	:= FALSE;
+			bDB_WriteDone	:= FALSE;
+		END_IF
+	END_IF
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

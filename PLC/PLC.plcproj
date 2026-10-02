@@ -39,6 +39,18 @@
     <Compile Include="20_RoomTemp\POUs\FB_RoomTempControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="40_Data\DUTs\ST_Process_1_Measurements.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="40_Data\POUs\FB_DataLogger.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="40_Data\POUs\FB_PLC_DB_Mode.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="40_Data\POUs\FB_SQL_DB_Mode.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="50_Library\Motors\ITFs\I_Motor.TcIO">
       <SubType>Code</SubType>
     </Compile>
@@ -89,6 +101,8 @@
     <Folder Include="20_RoomTemp\DUTs" />
     <Folder Include="20_RoomTemp\ITFs" />
     <Folder Include="20_RoomTemp\POUs" />
+    <Folder Include="40_Data\DUTs" />
+    <Folder Include="40_Data\POUs" />
     <Folder Include="50_Library\IO\DUTs" />
     <Folder Include="50_Library\IO\ITFs" />
     <Folder Include="50_Library\IO\POUs" />
@@ -105,6 +119,7 @@
     <Folder Include="10_Generator" />
     <Folder Include="20_RoomTemp" />
     <Folder Include="50_Library" />
+    <Folder Include="40_Data" />
     <Folder Include="POUs\10_aika_ennen_meitä" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />

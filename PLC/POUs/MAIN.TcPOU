@@ -10,7 +10,7 @@ VAR
 	fbTime:					FB_AIKA;
 	fbRank:					FB_RANK_PRICES;
 
-
+	
 
 
 	nTila					: INT;
@@ -58,6 +58,10 @@ GVL.fbGenerator();
 // Huoneen lämpötilan simulointi
 GVL.fbRoomtemp.Init();
 GVL.fbRoomtemp();
+
+// Database yhteys
+GVL.fbDataLogger();
+
 
 
 ]]></ST>

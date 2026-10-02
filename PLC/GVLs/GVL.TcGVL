@@ -23,6 +23,8 @@ VAR_GLOBAL
 	
 	stRoomTemp				: ST_RoomTempHmi;
 	fbRoomtemp				: FB_RoomTemp;
+	
+	fbDataLogger			: FB_DataLogger;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

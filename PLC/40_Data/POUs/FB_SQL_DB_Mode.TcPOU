@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_SQL_DB_Mode" Id="{332af01c-b846-48f1-a6fe-976448ab1a47}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SQL_DB_Mode
+
+VAR
+	nCntr:		INT;
+
+	fbMariaConnection:	FB_SQLDatabaseEvt(sNetID:= '157.24.182.82.1.1', tTimeout:= T#5S);	// DB connection handling
+	fbSQLCommand:		FB_SQLCommandEvt(sNetID:= '157.24.182.82.1.1', tTimeout:= T#5S);	// DB read/write operations
+
+	bWriteRequest:		BOOL;	// Trig single write operation
+	
+	bSQLExecute:		BOOL;
+	bSQLDone:			BOOL;
+	
+	sSQLCmd:			STRING(256);	// Actual SQL command structure to write into DB
+	sValue:				STRING(256);	// Stored data into DB
+
+	fbTON_DataSample:	TON := (PT:=T#5S);
+	fbTON_DataStorage:	TON := (PT:=T#1M);
+	
+	bLoggingActive:		BOOL;	// Manual activation
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	// Create 5s/1min write cycle
+fbTON_DataSample(IN:=bLoggingActive);
+fbTON_DataStorage(IN:=bLoggingActive);
+
+bWriteRequest	:= SEL(fbTON_DataSample.Q, bWriteRequest, TRUE);
+bLoggingActive	:= SEL(fbTON_DataStorage.Q, bLoggingActive, FALSE);
+
+nCntr	:= SEL(nCntr >= 1000, nCntr + 1, 1);
+
+	// Create connection
+IF(NOT(fbMariaConnection.bConnected) AND bWriteRequest) THEN
+	fbMariaConnection.Connect(1);
+END_IF
+
+	// Create SQL command
+IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
+
+	sValue	:= REAL_TO_STRING(INT_TO_REAL(nCntr)/100.0 + 70);
+	//sSQLCmd	:= 'INSERT INTO process_measurements (timestamp, tag_name, value, unit) VALUES ( $'2026-09-23 11:01:13$', $'TT_01$', 22.2, $'°C$')';
+	sSQLCmd	:= CONCAT('INSERT INTO process_measurements (timestamp, tag_name, value, unit) VALUES (NOW(6),$'TT_01$', ', CONCAT(sValue, ', $'°C$')'));
+
+	fbMariaConnection.CreateCmd(ADR(fbSQLCommand));
+	bSQLExecute	:= TRUE;
+	bWriteRequest	:= FALSE;
+	fbTON_DataSample(IN:=FALSE);
+END_IF
+
+	// Execute SQL command
+IF(bSQLExecute) THEN
+	fbSQLCommand.Execute(
+		pSQLCmd:= ADR(sSQLCmd),
+		cbSQLCmd:= SIZEOF(sSQLCmd));
+
+	IF(NOT(fbSQLCommand.bBusy)) THEN
+		bSQLExecute := FALSE;
+		bSQLDone := TRUE;
+	END_IF
+END_IF
+
+	// Release connection
+IF(NOT(fbSQLCommand.bBusy) AND fbMariaConnection.bConnected AND NOT(bLoggingActive)) THEN
+	fbMariaConnection.Disconnect();
+	bWriteRequest	:= FALSE;
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

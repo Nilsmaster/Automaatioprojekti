@@ -24,6 +24,8 @@ VAR_GLOBAL
 	stRoomTemp				: ST_RoomTempHmi;
 	fbRoomtemp				: FB_RoomTemp;
 	
+	stCoolingControl		: ST_CoolingControlHmi;
+	
 	fbDataLogger			: FB_DataLogger;
 END_VAR]]></Declaration>
   </GVL>

@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_MotorAbb880" Id="{eafde16a-d9d2-49c8-9aef-75aff923c034}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MotorAbb880 IMPLEMENTS I_Motor
+
+VAR
+	stControlWord		AT %Q* : ST_ControlWord;
+	stStatusWord		AT %I* : ST_StatusWord;
+    nSpeedRef       	AT %Q* : INT;    
+    nSpeedActual   	 	AT %I* : INT;
+
+	_bEnable				   : BOOL;
+	_bAuto					   : BOOL;
+
+	_ftrig						: F_TRIG;      
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Tilakone — käynnistyssarja automaattisesti
+IF stStatusWord.Fault THEN
+    // Vika — disable voltage
+    stControlWord.SwitchOn          := 0;
+    stControlWord.EnableVoltage     := 0;
+    stControlWord.QuickStop         := 1;
+    stControlWord.EnableOperation   := 0;
+
+ELSIF NOT stStatusWord.OperationEnabled THEN
+    // Käynnistyssarja
+    IF NOT stStatusWord.ReadyToSwitchOn THEN
+        // Shutdown komento
+        stControlWord.SwitchOn          := 0;
+        stControlWord.EnableVoltage     := 1;
+        stControlWord.QuickStop         := 1;
+        stControlWord.EnableOperation   := 0;
+
+    ELSIF NOT stStatusWord.SwitchedOn THEN
+        // SwitchOn komento
+        stControlWord.SwitchOn          := 1;
+        stControlWord.EnableVoltage     := 1;
+        stControlWord.QuickStop         := 1;
+        stControlWord.EnableOperation   := 0;
+
+    ELSE
+        // EnableOperation komento
+        stControlWord.SwitchOn          := 1;
+        stControlWord.EnableVoltage     := 1;
+        stControlWord.QuickStop         := 1;
+        stControlWord.EnableOperation   := _bAuto;
+    END_IF
+
+ELSE
+    // OperationEnabled — normaali ajo
+    stControlWord.SwitchOn          := _bEnable;
+    stControlWord.EnableVoltage     := 1;
+    stControlWord.QuickStop         := 1;
+    stControlWord.EnableOperation   := _bAuto;
+END_IF
+
+// Fault reset — auto clear
+_ftrig(CLK := stControlWord.FaultReset);
+IF _ftrig.Q THEN
+    stControlWord.FaultReset := 0;
+END_IF
+
+// Nopeus — 0..100% → 0..20000
+nSpeedRef := MAX(0, MIN(100, nSpeed)) * 200;]]></ST>
+    </Implementation>
+    <Property Name="bAuto" Id="{8618881a-181e-4799-b984-84ef869dd1bb}">
+      <Declaration><![CDATA[{warning 'Add property implementation'}
+PROPERTY bAuto : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{217c4c9c-c872-4aed-ae2b-0a091e4d3a03}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{2e64ae14-0523-4fce-b842-8aea60e55765}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bEnable" Id="{8f9a9245-ec9e-43b7-80e3-36e7354c902d}">
+      <Declaration><![CDATA[{warning 'Add property implementation'}
+PROPERTY bEnable : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{70b1c137-4a62-42ac-9e02-7e2438f90b62}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6327ceaf-562b-42c2-8a07-3995caff1a75}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bRunning" Id="{1fa4d785-3f7a-4693-a48d-02d477c4a06b}">
+      <Declaration><![CDATA[{warning 'Add property implementation'}
+PROPERTY bRunning : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{d30a13e7-32c3-445a-b4c9-42b88a6fe3b2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nSpeed" Id="{20836442-a0ca-4dab-9f25-5119f1241edc}">
+      <Declaration><![CDATA[{warning 'Add property implementation'}
+PROPERTY nSpeed : INT
+]]></Declaration>
+      <Get Name="Get" Id="{d6c7f9c1-dd75-4d51-9436-c3b94b50aed5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{2e20a985-a0f5-456b-b506-dd4ffbcd73ac}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

@@ -3,6 +3,10 @@
   <GVL Name="Motors" Id="{0fd1bec4-5ad5-43cb-9c61-d003cd78f966}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
+	
+	stMotors		: ST_Motors;
+	
+	// coolingMotor		: FB_MotorFq
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

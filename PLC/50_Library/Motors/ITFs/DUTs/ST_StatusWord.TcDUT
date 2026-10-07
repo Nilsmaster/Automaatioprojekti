@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_StatusWord" Id="{9fc9dcbb-8ffa-4cdc-b658-c4b4dc844524}">
+    <Declaration><![CDATA[TYPE ST_StatusWord :
+STRUCT
+    // Bitti 0-7: Tilakone status
+    ReadyToSwitchOn     : BIT;  // Bit 0
+    SwitchedOn          : BIT;  // Bit 1
+    OperationEnabled    : BIT;  // Bit 2
+    Fault               : BIT;  // Bit 3
+    VoltageEnabled      : BIT;  // Bit 4
+    QuickStop           : BIT;  // Bit 5 — 0 = quick stop aktivoitu
+    SwitchOnDisabled    : BIT;  // Bit 6
+    Warning             : BIT;  // Bit 7
+
+    // Bitti 8-15
+    ManufacturerSpec    : BIT;  // Bit 8
+    Remote              : BIT;  // Bit 9  — 1 = väylä ohjaa
+    TargetReached       : BIT;  // Bit 10 — 1 = tavoite saavutettu
+    InternalLimitActive : BIT;  // Bit 11
+    OpModeSpecific0     : BIT;  // Bit 12
+    OpModeSpecific1     : BIT;  // Bit 13
+    Reserved14          : BIT;  // Bit 14
+    Reserved15          : BIT;  // Bit 15
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

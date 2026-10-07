@@ -27,7 +27,16 @@
     <Compile Include="10_Generator\POUs\FB_Generator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="20_RoomTemp\DUTs\E_CoolingControlState.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="20_RoomTemp\DUTs\ST_CoolingControlHmi.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="20_RoomTemp\DUTs\ST_RoomTempHmi.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="20_RoomTemp\ITFs\I_RoomTemp.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="20_RoomTemp\POUs\FB_CoolingControl.TcPOU">
@@ -51,7 +60,16 @@
     <Compile Include="40_Data\POUs\FB_SQL_DB_Mode.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="50_Library\Motors\ITFs\DUTs\ST_ControlWord.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="50_Library\Motors\ITFs\DUTs\ST_StatusWord.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="50_Library\Motors\ITFs\I_Motor.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="50_Library\Motors\POUs\FB_MotorAbb880.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="99_ESIMERKKI\DUTs\ST_Esimerkki.TcDUT">
@@ -64,6 +82,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\PriceItem.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_Motors.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GVLs\GVL.TcGVL">
@@ -108,8 +129,8 @@
     <Folder Include="50_Library\IO\POUs" />
     <Folder Include="50_Library\Motors" />
     <Folder Include="50_Library\IO" />
-    <Folder Include="50_Library\Motors\DUTs" />
     <Folder Include="50_Library\Motors\ITFs" />
+    <Folder Include="50_Library\Motors\ITFs\DUTs" />
     <Folder Include="50_Library\Motors\POUs" />
     <Folder Include="99_ESIMERKKI\DUTs" />
     <Folder Include="99_ESIMERKKI\POUs" />

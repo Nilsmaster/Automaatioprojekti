@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_Motors" Id="{c59df9fd-ec04-4345-bb63-65b5c825334e}">
+    <Declaration><![CDATA[TYPE ST_Motors :
+STRUCT
+	sName		: STRING;
+	bAuto		: BOOL;
+	bManual		: BOOL;
+	bStop		: BOOL;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

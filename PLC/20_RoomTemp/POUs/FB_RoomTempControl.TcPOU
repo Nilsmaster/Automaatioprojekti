@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_RoomTempControl" Id="{85271c55-e02b-400b-8b22-1ffc8f0ff4f7}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_RoomTempControl
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RoomTempControl IMPLEMENTS I_RoomTemp
 
 VAR
 	// Seuraa onko generaattori päällä (tuottaa/varastoi). Tämän perusteella simuloi lämpötilan nousun.
@@ -68,6 +68,17 @@ _bInit := FALSE;
 END_IF]]></ST>
       </Implementation>
     </Method>
+    <Property Name="nRoomTemp" Id="{4df236b3-0f9c-47bc-8c84-3737b29a926c}">
+      <Declaration><![CDATA[PROPERTY nRoomTemp : REAL]]></Declaration>
+      <Get Name="Get" Id="{80c69a70-c044-4ae1-a9c5-b7833e2e74af}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nRoomTemp := _nRoomTemp;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Method Name="UpdateHmi" Id="{0c9e6156-ecfc-4699-a54f-b2beaa50eb86}">
       <Declaration><![CDATA[METHOD INTERNAL UpdateHmi
 VAR_INPUT

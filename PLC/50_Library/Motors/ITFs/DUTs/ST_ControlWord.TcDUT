@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_ControlWord" Id="{0fb7570d-c389-4425-9000-45e390f656d3}">
+    <Declaration><![CDATA[TYPE ST_ControlWord :
+STRUCT
+    // Bitti 0-3: Tilakone ohjaus
+    SwitchOn            : BIT;  // Bit 0
+    EnableVoltage       : BIT;  // Bit 1
+    QuickStop           : BIT;  // Bit 2 — 0 = quick stop aktivoitu
+    EnableOperation     : BIT;  // Bit 3
+
+    // Bitti 4-6: Operaatiomoodi spesifinen
+    OperationMode0      : BIT;  // Bit 4
+    OperationMode1      : BIT;  // Bit 5
+    OperationMode2      : BIT;  // Bit 6
+
+    // Bitti 7: Vikareset
+    FaultReset          : BIT;  // Bit 7 — nouseva reuna resetoi vian
+
+    // Bitti 8: Halt
+    Halt                : BIT;  // Bit 8 — 1 = pysäytä
+
+    // Bitti 9-15: Valmistaja spesifinen
+    Reserved9           : BIT;
+    Reserved10          : BIT;
+    Reserved11          : BIT;
+    Reserved12          : BIT;
+    Reserved13          : BIT;
+    Reserved14          : BIT;
+    Reserved15          : BIT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

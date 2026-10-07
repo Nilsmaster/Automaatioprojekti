@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="E_CoolingControlState" Id="{098181c0-dc10-4dcc-a2af-9fe5379c77c1}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_CoolingControlState :
+(
+	Auto := 0,
+	Manual := 1,
+	Stop	:= 2,
+	Error	:= 3
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

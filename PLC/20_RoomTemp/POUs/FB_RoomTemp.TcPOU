@@ -10,16 +10,15 @@ VAR
 	_fbRoomTempControl		: FB_RoomTempControl;
 	_fbCoolingControl		: FB_CoolingControl;
 	
-	// Motors
-		// Tähän tulee ABB 880 tamu FB, linkitetään initissä cooling controliin
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
 _fbRoomTempControl();
-//_fbCoolingControl(); EI ole aloitettu
+_fbCoolingControl();
 
-// ASDASD]]></ST>
+]]></ST>
     </Implementation>
     <Method Name="FB_Init" Id="{eba7c06a-cc1a-472b-a54e-5993b983ee8a}">
       <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
@@ -47,6 +46,11 @@ END_VAR
 _fbRoomTempControl.Init(	refHmi		:= GVL.stRoomTemp,
 							sName		:= 'Generaattori huone',
 							iGenerator	:= GVL.fbGenerator);
+
+_fbCoolingControl.Init(	refHmi		:= GVL.stCoolingControl,
+						sName		:= 'Generaattori huoneen jäähdytys',
+						iMotor		:= 0,
+						iRoomTemp	:= _fbRoomTempControl );
 
 
 _bInit := FALSE;

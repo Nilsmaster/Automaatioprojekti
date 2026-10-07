@@ -6,13 +6,30 @@
 VAR
 	_bInit			: BOOL;
 	
+	_refHmi			: REFERENCE TO ST_CoolingControlHmi;
 	_iMotor			: I_Motor;
-//	_iRoomtemp		: I_RoomTemp yms... 
+	_iRoomTemp		: I_RoomTemp;
+	
+	eCoolingState	: E_CoolingControlState;
+	
+	_fbBasicPID		: FB_BasicPID;
+	_nPidOut		: LREAL;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[// rajapinnan kautta valvotaan huoneen läpmötilaa. keksitään PID yms säädin, joka nostaa tamun tehoja 
-// kun lämpötila nousee...]]></ST>
+// kun lämpötila nousee...
+
+IF _iMotor.bAuto THEN
+	eCoolingState := E_CoolingControlState.Auto;
+	
+ELSIF NOT _iMotor.bAuto THEN
+	eCoolingState := E_CoolingControlState.Manual;
+	
+	
+END_IF
+
+StateMachine();]]></ST>
     </Implementation>
     <Method Name="FB_Init" Id="{fcfc5886-4c00-430c-bcfe-6efe2b92512a}">
       <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
@@ -31,12 +48,20 @@ END_VAR]]></Declaration>
     <Method Name="Init" Id="{41d1ef6e-1d92-4a89-a068-5cd5a1e489d5}">
       <Declaration><![CDATA[METHOD Init : BOOL
 VAR_INPUT
+	
+	refHmi			: REFERENCE TO ST_CoolingControlHmi;
+	sName			: STRING;
+	iMotor			: I_Motor;
+	iRoomTemp		: I_RoomTemp;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF _bInit THEN
 	
-
+	_refHmi			REF= refHmi;
+	_refHmi.sName	:= sName;
+	_iMotor			:= iMotor;
+	_iRoomTemp		:= iRoomTemp;
 
 
 
@@ -45,6 +70,51 @@ END_VAR
 	_bInit := FALSE;
 		
 END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MotorControl" Id="{fca439e2-536d-4a5e-b82f-23ba2cccf372}">
+      <Declaration><![CDATA[METHOD PRIVATE MotorControl
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StateMachine" Id="{fc3a95a4-aa4c-4d2d-b42b-fbab5f8880e3}">
+      <Declaration><![CDATA[METHOD PRIVATE StateMachine : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE eCoolingState OF
+	
+	E_CoolingControlState.Auto:
+		IF _iRoomTemp.nRoomTemp > _refHmi.paramRoomTempSet THEN
+			
+			_fbBasicPID(	fSetpointValue:= REAL_TO_LREAL(_refHmi.paramRoomTempSet), 
+							fActualValue:= REAL_TO_LREAL(_iRoomTemp.nRoomTemp), 
+							bReset:= 0, 
+							fCtrlCycleTime:= 0.01, 
+							fKp:= _refHmi.param_P, 
+							fTn:= _refHmi.param_I, 
+							fTv:= _refHmi.Param_D, 
+							fTd:= 0, 
+							fCtrlOutput=> _nPidOut, 
+							nErrorStatus=> );
+							_iMotor.nSpeed := LREAL_TO_INT( MAX(0.0, MIN(100.0, _nPidOut)));
+							
+		END_IF
+	E_CoolingControlState.Manual:
+	;
+	
+	E_CoolingControlState.Stop:
+	;
+	
+	E_CoolingControlState.Error:
+	;
+	
+END_CASE]]></ST>
       </Implementation>
     </Method>
   </POU>

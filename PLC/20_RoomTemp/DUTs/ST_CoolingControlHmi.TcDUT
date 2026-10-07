@@ -5,12 +5,13 @@
 STRUCT
 	// HMI -> PLC
 	sName					: STRING;
-	paramRoomTempSet		: REAL;
-	param_P					: REAL;
-	param_I					: REAL;
-	Param_D					: REAL;
+	paramRoomTempSet		: REAL; //
+	param_P					: REAL;	//--- PID säätimen parametrit hmi:ltä
+	param_I					: REAL;	//
+	Param_D					: REAL;	//
 	
-	nMotorManualSpeed		: INT;
+	bAuto					: BOOL; // Automaatti tila hmi:ltä
+	nMotorManualSpeed		: INT;	// Manuaaliajon nopeus hmi:ltä
 END_STRUCT
 END_TYPE
 ]]></Declaration>

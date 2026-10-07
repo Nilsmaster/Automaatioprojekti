@@ -14,13 +14,14 @@ VAR
 	
 	_fbBasicPID		: FB_BasicPID;
 	_nPidOut		: LREAL;
+	_nPidOutAbs		: LREAL;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[// rajapinnan kautta valvotaan huoneen läpmötilaa. keksitään PID yms säädin, joka nostaa tamun tehoja 
 // kun lämpötila nousee...
 
-IF _iMotor.bAuto THEN
+IF _iMotor.bAuto AND _refHmi.bAuto THEN
 	eCoolingState := E_CoolingControlState.Auto;
 	
 ELSIF NOT _iMotor.bAuto THEN
@@ -102,9 +103,17 @@ END_VAR
 							fTd:= 0, 
 							fCtrlOutput=> _nPidOut, 
 							nErrorStatus=> );
-							_iMotor.nSpeed := LREAL_TO_INT( MAX(0.0, MIN(100.0, _nPidOut)));
+							
+							_nPidOutAbs := ABS(_nPidOut);
+							_iMotor.nSpeed := LREAL_TO_INT( MAX(0.0, MIN(100.0, _nPidOutAbs)));
 							
 		END_IF
+		
+		IF _nPidOutAbs > 5 THEN
+		_iMotor.bEnable := TRUE;
+		END_IF
+		
+		
 	E_CoolingControlState.Manual:
 	;
 	

@@ -3,144 +3,448 @@
   <POU Name="FB_MotorAbb880" Id="{eafde16a-d9d2-49c8-9aef-75aff923c034}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_MotorAbb880 IMPLEMENTS I_Motor
 
+VAR CONSTANT
+	cScale				: REAL := 200.0;	// 1 % = 200 (100 % = 20000, vrt. ACS880 par. 46.01)
+	cStopSpeedLimit		: REAL := 2.0;		// [%] tämän alle -> ajo voidaan estää pysäytyksessä
+END_VAR
+
 VAR
+	// --- Prosessikuva
 	stControlWord		AT %Q* : ST_ControlWord;
 	stStatusWord		AT %I* : ST_StatusWord;
-    nSpeedRef       	AT %Q* : INT;    
-    nSpeedActual   	 	AT %I* : INT;
+	nSpeedRef			AT %Q* : INT;
+	nSpeedActual		AT %I* : INT;
 
-	_bEnable				   : BOOL;
-	_bAuto					   : BOOL;
+	_bInit				: BOOL;
+	_refHmi				: REFERENCE TO ST_Motors;
 
-	_ftrig						: F_TRIG;      
-	
+	// --- Komennot (propertyjen kautta)
+	_bEnable			: BOOL;			// Taajuusmuuttajan päävirta/valmius (SwitchOn)
+	_bAuto				: BOOL;			// Käyntikäsky automaattiajossa
+	_nSpeed				: INT;			// Nopeusohje automaattiajossa [%]
+	_bManual			: BOOL;			// Valinta: TRUE = käsiajo, FALSE = automaatti
+	_bManualFwd			: BOOL;			// Käsiajo eteen (pidä painettuna)
+	_bManualRev			: BOOL;			// Käsiajo taakse (pidä painettuna)
+	_fManualSpeed		: REAL := 10.0;	// Käsiajon nopeus [%]
+	_fManualMax			: REAL := 20.0;	// Käsiajon nopeusraja [%]
+	_bReset				: BOOL;			// Vikakuittaus
+	_bQuickStop			: BOOL;			// TRUE = pikapysäytys (kytke NC-hätäseisoista: NOT bOk)
+
+	// --- Sisäiset
+	_eState				: (DRV_DISABLED := 0, DRV_READY, DRV_SWITCHED_ON, DRV_RUNNING, DRV_FAULT);
+	_bActiveManual		: BOOL;			// Oikeasti käytössä oleva ajotapa
+	_bRunInhibit		: BOOL;			// Vaatii uuden käynnistyskäskyn (tilanvaihto/vian jälkeen)
+	_bPowerReq			: BOOL;
+	_bRunReq			: BOOL;
+	_fSpeedCmd			: REAL;
+	_fSpeedRef			: REAL;
+	_fSpeedActual		: REAL;
+	_tStopTimeout		: TIME := T#10S;	// Max aika hallittuun pysäytykseen
+
+	bRunRaw				: BOOL;
+	bModeChangePending	: BOOL;
+	bStopping			: BOOL;
+	bKeepOperation		: BOOL;
+	bWaiting			: BOOL;
+
+	_rtReset			: R_TRIG;
+	_tpReset			: TP;
+	_tonStop			: TON;
+	_tonWatch			: TON;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// Tilakone — käynnistyssarja automaattisesti
+      <ST><![CDATA[HmiCommands();
+
+// ============================================================
+// 1. Tilan tulkinta statussanasta (CiA 402 -tilakone)
+// ============================================================
 IF stStatusWord.Fault THEN
-    // Vika — disable voltage
-    stControlWord.SwitchOn          := 0;
-    stControlWord.EnableVoltage     := 0;
-    stControlWord.QuickStop         := 1;
-    stControlWord.EnableOperation   := 0;
+    _eState := DRV_FAULT;
+ELSIF stStatusWord.OperationEnabled THEN
+    _eState := DRV_RUNNING;
+ELSIF stStatusWord.SwitchedOn THEN
+    _eState := DRV_SWITCHED_ON;
+ELSIF stStatusWord.ReadyToSwitchOn THEN
+    _eState := DRV_READY;
+ELSE
+    _eState := DRV_DISABLED;     // Not ready / Switch on disabled
+END_IF
 
-ELSIF NOT stStatusWord.OperationEnabled THEN
-    // Käynnistyssarja
-    IF NOT stStatusWord.ReadyToSwitchOn THEN
-        // Shutdown komento
-        stControlWord.SwitchOn          := 0;
-        stControlWord.EnableVoltage     := 1;
-        stControlWord.QuickStop         := 1;
-        stControlWord.EnableOperation   := 0;
+_fSpeedActual := INT_TO_REAL(nSpeedActual) / cScale;
 
-    ELSIF NOT stStatusWord.SwitchedOn THEN
-        // SwitchOn komento
-        stControlWord.SwitchOn          := 1;
-        stControlWord.EnableVoltage     := 1;
-        stControlWord.QuickStop         := 1;
-        stControlWord.EnableOperation   := 0;
+// ============================================================
+// 2. Ajotavan valinta (vaihto vain pysäytettynä)
+// ============================================================
+bModeChangePending := (_bManual <> _bActiveManual);
+IF bModeChangePending AND (_eState <> DRV_RUNNING) THEN
+    _bActiveManual     := _bManual;
+    _bRunInhibit       := TRUE;          // ei automaattista käynnistystä vaihdon jälkeen
+    bModeChangePending := FALSE;
+END_IF
 
-    ELSE
-        // EnableOperation komento
-        stControlWord.SwitchOn          := 1;
-        stControlWord.EnableVoltage     := 1;
-        stControlWord.QuickStop         := 1;
-        stControlWord.EnableOperation   := _bAuto;
+IF _bActiveManual THEN
+    bRunRaw    := _bManualFwd XOR _bManualRev;
+    _fSpeedCmd := LIMIT(0.0, _fManualSpeed, _fManualMax);
+    IF _bManualRev THEN
+        _fSpeedCmd := -_fSpeedCmd;
     END_IF
+ELSE
+    bRunRaw    := _bAuto;
+    _fSpeedCmd := LIMIT(-100.0, INT_TO_REAL(_nSpeed), 100.0);   // rajaa 0..100 jos peruutus ei sallittu
+END_IF
+
+IF bModeChangePending THEN
+    bRunRaw := FALSE;                    // pysäytä ensin
+END_IF
+
+// ============================================================
+// 3. Käyntiluvat
+// ============================================================
+IF _eState = DRV_FAULT THEN
+    _bRunInhibit := TRUE;                // vian jälkeen vaaditaan uusi käynnistyskäsky
+END_IF
+IF NOT bRunRaw THEN
+    _bRunInhibit := FALSE;
+END_IF
+
+_bPowerReq := _bEnable AND NOT _bQuickStop;
+_bRunReq   := _bPowerReq AND bRunRaw AND NOT _bRunInhibit;
+
+// Hallittu pysäytys: nopeusohje 0 -> odota kunnes pysähtynyt (tai timeout) -> EnableOperation pois
+bStopping      := (_eState = DRV_RUNNING) AND NOT _bRunReq AND _bPowerReq;
+_tonStop(IN := bStopping, PT := _tStopTimeout);
+bKeepOperation := bStopping AND (ABS(_fSpeedActual) > cStopSpeedLimit) AND NOT _tonStop.Q;
+
+// Valvonta: pyydetty tila ei toteudu 5 s kuluessa (STO, local-tila, kenttäväylä...)
+bWaiting := (_bPowerReq AND (_eState = DRV_DISABLED OR _eState = DRV_READY))
+         OR (_bRunReq   AND _eState = DRV_SWITCHED_ON);
+_tonWatch(IN := bWaiting, PT := T#5S);
+
+// ============================================================
+// 4. Vikakuittaus — nouseva reuna, pulssi 200 ms
+// ============================================================
+_rtReset(CLK := _bReset);
+_tpReset(IN := _rtReset.Q AND (_eState = DRV_FAULT), PT := T#200MS);
+stControlWord.FaultReset := _tpReset.Q;
+
+// ============================================================
+// 5. Ohjaussana
+// ============================================================
+IF _eState = DRV_FAULT THEN
+    // Vika: disable voltage, odotetaan kuittausta
+    stControlWord.SwitchOn        := FALSE;
+    stControlWord.EnableVoltage   := FALSE;
+    stControlWord.QuickStop       := TRUE;
+    stControlWord.EnableOperation := FALSE;
+
+ELSIF _bQuickStop THEN
+    // Quick stop
+    stControlWord.SwitchOn        := FALSE;
+    stControlWord.EnableVoltage   := TRUE;
+    stControlWord.QuickStop       := FALSE;
+    stControlWord.EnableOperation := FALSE;
+
+ELSIF NOT _bEnable THEN
+    // Shutdown
+    stControlWord.SwitchOn        := FALSE;
+    stControlWord.EnableVoltage   := TRUE;
+    stControlWord.QuickStop       := TRUE;
+    stControlWord.EnableOperation := FALSE;
 
 ELSE
-    // OperationEnabled — normaali ajo
-    stControlWord.SwitchOn          := _bEnable;
-    stControlWord.EnableVoltage     := 1;
-    stControlWord.QuickStop         := 1;
-    stControlWord.EnableOperation   := _bAuto;
+    stControlWord.EnableVoltage   := TRUE;
+    stControlWord.QuickStop       := TRUE;
+    CASE _eState OF
+        DRV_DISABLED:       // Shutdown
+            stControlWord.SwitchOn        := FALSE;
+            stControlWord.EnableOperation := FALSE;
+        DRV_READY:          // Switch on
+            stControlWord.SwitchOn        := TRUE;
+            stControlWord.EnableOperation := FALSE;
+        DRV_SWITCHED_ON:    // Enable operation vain käyntikäskyllä
+            stControlWord.SwitchOn        := TRUE;
+            stControlWord.EnableOperation := _bRunReq;
+        DRV_RUNNING:
+            stControlWord.SwitchOn        := TRUE;
+            stControlWord.EnableOperation := _bRunReq OR bKeepOperation;
+    END_CASE
 END_IF
 
-// Fault reset — auto clear
-_ftrig(CLK := stControlWord.FaultReset);
-IF _ftrig.Q THEN
-    stControlWord.FaultReset := 0;
+// ============================================================
+// 6. Nopeusohje (-100..100 % -> -20000..20000)
+// ============================================================
+IF _bRunReq THEN
+    _fSpeedRef := _fSpeedCmd;
+ELSE
+    _fSpeedRef := 0.0;                   // pysäytys ramppia pitkin ajon aikana
 END_IF
-
-// Nopeus — 0..100% → 0..20000
-nSpeedRef := MAX(0, MIN(100, nSpeed)) * 200;]]></ST>
+nSpeedRef := REAL_TO_INT(LIMIT(-100.0, _fSpeedRef, 100.0) * cScale);
+]]></ST>
     </Implementation>
     <Property Name="bAuto" Id="{8618881a-181e-4799-b984-84ef869dd1bb}">
-      <Declaration><![CDATA[{warning 'Add property implementation'}
-PROPERTY bAuto : BOOL
+      <Declaration><![CDATA[PROPERTY bAuto : BOOL
 ]]></Declaration>
-      <Get Name="Get" Id="{217c4c9c-c872-4aed-ae2b-0a091e4d3a03}">
+      <Get Name="Get" Id="{d9d98bf6-fec5-4a69-946e-fc62f09273af}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[bAuto := _bAuto;]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{2e64ae14-0523-4fce-b842-8aea60e55765}">
+      <Set Name="Set" Id="{e362960b-616c-4838-a45f-4b90912d678c}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[_bAuto := bAuto;]]></ST>
         </Implementation>
       </Set>
     </Property>
     <Property Name="bEnable" Id="{8f9a9245-ec9e-43b7-80e3-36e7354c902d}">
-      <Declaration><![CDATA[{warning 'Add property implementation'}
-PROPERTY bEnable : BOOL
+      <Declaration><![CDATA[PROPERTY bEnable : BOOL
 ]]></Declaration>
-      <Get Name="Get" Id="{70b1c137-4a62-42ac-9e02-7e2438f90b62}">
+      <Get Name="Get" Id="{afe158e3-af94-493a-9b93-41db75825348}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[bEnable := _bEnable;]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{6327ceaf-562b-42c2-8a07-3995caff1a75}">
+      <Set Name="Set" Id="{de86dc6e-e117-4807-bf7f-e1a8335cec0f}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[_bEnable := bEnable;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bFault" Id="{d2c2bee8-03ea-4580-a1b1-62e31918905a}">
+      <Declaration><![CDATA[PROPERTY bFault : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{1545711b-157f-4413-838f-470acb7dd06e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bFault := _eState = DRV_FAULT;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="bManual" Id="{a2d4a816-621c-4707-abc5-6754bb84ee44}">
+      <Declaration><![CDATA[PROPERTY bManual : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{028e3361-eccb-48e6-9952-f0c7e8e93cef}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bManual := _bManual;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{f459f5de-44ec-4620-b5e3-e8863197d107}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bManual := bManual;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bManualActive" Id="{11b8a966-ddcf-4050-9056-f4c6f83eeb5a}">
+      <Declaration><![CDATA[PROPERTY bManualActive : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{cde5e8a9-62e1-484a-b2c5-9653bf71a0a2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bManualActive := _bActiveManual;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="bManualFwd" Id="{552f7125-b6eb-47ba-a36d-397fc7f6607a}">
+      <Declaration><![CDATA[PROPERTY bManualFwd : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{e7e1c9d3-6c41-430b-977c-2b43cbbeddc9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bManualFwd := bManualFwd;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bManualRev" Id="{1e6c91ed-1039-42a1-aee3-c9fe29a86b00}">
+      <Declaration><![CDATA[PROPERTY bManualRev : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{22481690-3ddd-493d-84f5-bb7f4a3e2133}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bManualRev := bManualRev;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bQuickStop" Id="{3120ea7f-5688-4b97-a306-b8e2924a4092}">
+      <Declaration><![CDATA[PROPERTY bQuickStop : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{0fe082d1-d38c-4766-b80b-fc61c6565aa9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bQuickStop := bQuickStop OR _refHmi.bStop;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bReset" Id="{16a94efa-b997-4702-86eb-e98c13bfc6f9}">
+      <Declaration><![CDATA[PROPERTY bReset : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{48db6ad1-de65-495d-8e42-e033417b982a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bReset := bReset;]]></ST>
         </Implementation>
       </Set>
     </Property>
     <Property Name="bRunning" Id="{1fa4d785-3f7a-4693-a48d-02d477c4a06b}">
-      <Declaration><![CDATA[{warning 'Add property implementation'}
-PROPERTY bRunning : BOOL
+      <Declaration><![CDATA[PROPERTY bRunning : BOOL
 ]]></Declaration>
-      <Get Name="Get" Id="{d30a13e7-32c3-445a-b4c9-42b88a6fe3b2}">
+      <Get Name="Get" Id="{a2c81aef-a803-4d32-b331-218a0f0deecf}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[bRunning := _eState = DRV_RUNNING;]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Property Name="nSpeed" Id="{20836442-a0ca-4dab-9f25-5119f1241edc}">
-      <Declaration><![CDATA[{warning 'Add property implementation'}
-PROPERTY nSpeed : INT
+    <Property Name="bTimeout" Id="{93301c03-51b7-4812-9e5e-411ff6799f02}">
+      <Declaration><![CDATA[PROPERTY bTimeout : BOOL
 ]]></Declaration>
-      <Get Name="Get" Id="{d6c7f9c1-dd75-4d51-9436-c3b94b50aed5}">
+      <Get Name="Get" Id="{43a02fc7-62b2-41cc-ad48-f80838c9c016}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[bTimeout := _tonWatch.Q;]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{2e20a985-a0f5-456b-b506-dd4ffbcd73ac}">
+    </Property>
+    <Method Name="FB_Init" Id="{fcd88a25-239f-459f-b4dc-8b11ef31c357}">
+      <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
+//The return value is not evaluated. For a specific influence, you can also declare the
+//methods explicitly and provide additional code there with the standard initialization
+//code. You can evaluate the return value.
+METHOD FB_Init: BOOL
+VAR_INPUT
+    bInitRetains: BOOL; // TRUE: the retain variables are initialized (reset warm / reset cold)
+    bInCopyCode: BOOL;  // TRUE: the instance will be copied to the copy code afterward (online change)   
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bInit := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="fManualSpeed" Id="{201eb5e4-613a-49ed-9556-d99a3d7f46c7}">
+      <Declaration><![CDATA[PROPERTY fManualSpeed : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{710872eb-27b5-4a66-8189-6702bd092504}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[fManualSpeed := _fManualSpeed;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{63658fb3-e55f-4156-89fc-474ba76971a6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ IF _refHmi.nManualSpeed > fManualSpeed THEN
+	_fManualSpeed := _refHmi.nManualSpeed;
+ELSE
+	_fManualSpeed := fManualSpeed;
+END_IF
+
+					]]></ST>
         </Implementation>
       </Set>
+    </Property>
+    <Property Name="fSpeedActual" Id="{74a36abc-7604-4a50-99a2-c697211935ef}">
+      <Declaration><![CDATA[PROPERTY fSpeedActual : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{5a3feee0-bada-41c8-9032-0ce61cb2087f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fSpeedActual := _fSpeedActual;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="HmiCommands" Id="{4c850631-6bc7-4e13-9386-e1642356329b}">
+      <Declaration><![CDATA[METHOD INTERNAL HmiCommands
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bAuto := _refHmi.bAuto;
+bManual := _refHmi.bManual AND NOT _refHmi.bAuto;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{d510b2bb-44fc-4979-8d98-a0c064f5975d}">
+      <Declaration><![CDATA[METHOD Init
+VAR_INPUT
+	sName		: STRING;
+	refHmi		: REFERENCE TO ST_Motors;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _binit THEN
+	_refHmi REF= refHmi;
+	_refHmi.sName := sName;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="nSpeed" Id="{20836442-a0ca-4dab-9f25-5119f1241edc}">
+      <Declaration><![CDATA[PROPERTY nSpeed : INT
+]]></Declaration>
+      <Get Name="Get" Id="{5f74a9b1-97e6-463c-8416-264b79875f41}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nSpeed := _nSpeed;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{e2ffacf8-c223-4b56-adc6-aa640c09c76e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_nSpeed := nSpeed;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="nState" Id="{efcede8a-cb95-49cc-b265-4dcad6a08c83}">
+      <Declaration><![CDATA[PROPERTY nState : INT
+]]></Declaration>
+      <Get Name="Get" Id="{cbb649ab-360d-4341-8c17-ce7f43e50183}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nState := TO_INT(_eState);]]></ST>
+        </Implementation>
+      </Get>
     </Property>
   </POU>
 </TcPlcObject>

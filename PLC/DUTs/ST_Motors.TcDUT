@@ -3,10 +3,14 @@
   <DUT Name="ST_Motors" Id="{c59df9fd-ec04-4345-bb63-65b5c825334e}">
     <Declaration><![CDATA[TYPE ST_Motors :
 STRUCT
-	sName		: STRING;
-	bAuto		: BOOL;
-	bManual		: BOOL;
-	bStop		: BOOL;
+	sName			: STRING;
+	bAuto			: BOOL;
+	bManual			: BOOL;
+	bStop			: BOOL;
+	bManualFw		: BOOL;
+	bManualBw		: BOOL;
+	nManualSpeed	: REAL := 20.0;
+	bReset			: BOOL;
 	
 END_STRUCT
 END_TYPE

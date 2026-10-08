@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="FB_MotorAbb880" Id="{eafde16a-d9d2-49c8-9aef-75aff923c034}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_MotorAbb880 IMPLEMENTS I_Motor
+  <POU Name="FB_MotorAbb880_malli" Id="{eafde16a-d9d2-49c8-9aef-75aff923c034}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MotorAbb880_malli IMPLEMENTS I_Motor
 
 VAR CONSTANT
 	cScale				: REAL := 200.0;	// 1 % = 200 (100 % = 20000, vrt. ACS880 par. 46.01)

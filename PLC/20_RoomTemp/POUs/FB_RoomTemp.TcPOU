@@ -10,7 +10,7 @@ VAR
 	_fbRoomTempControl		: FB_RoomTempControl;
 	_fbCoolingControl		: FB_CoolingControl;
 	
-	_fbMotorCooling			: FB_MotorAbb880;
+	_fbMotorCooling			: FB_MotorAbb880_malli;
 	
 	
 END_VAR

@@ -238,7 +238,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{4B91B89C-030E-4E15-AEFD-5BCB1D4D9E2A}" Name="PLC" PrjFilePath="PLC\PLC.plcproj" TmcFilePath="PLC\PLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{7F0A5527-70B2-6EF1-1261-1625A3023176}" TmcPath="PLC\PLC.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{641353F5-2FC1-D9FF-A304-545E031CEAAB}" TmcPath="PLC\PLC.tmc">
 					<Name>PLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -256,16 +256,16 @@
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
 						<Var>
-							<Name>GVL.fbDataLogger.uDevState</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
 							<Name>GVL.fbRoomtemp._fbMotorCooling.stStatusWord</Name>
 							<Type GUID="{82FBF23A-40E3-682D-86B3-FA3D91CDD1AE}">ST_StatusWord</Type>
 						</Var>
 						<Var>
 							<Name>GVL.fbRoomtemp._fbMotorCooling.nSpeedActual</Name>
 							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>GVL.fbDataLogger.uDevState</Name>
+							<Type>UINT</Type>
 						</Var>
 					</Vars>
 					<Contexts>

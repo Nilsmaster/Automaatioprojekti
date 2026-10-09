@@ -6,7 +6,13 @@ VAR_GLOBAL
 	
 	stMotors		: ST_Motors;
 	
-	// coolingMotor		: FB_MotorFq
+	
+	// Motors
+    {attribute 'TcLinkTo' := '.wControlWord := TIID^Device 1 (EtherCAT)^moottori (FECA-01)^RxPDO 6 map^Controlword;
+                              .wStatusWord 	:= TIID^Device 1 (EtherCAT)^moottori (FECA-01)^TxPDO 6 map^Statusword;
+							  .nSpeedRef	:= TIID^Device 1 (EtherCAT)^moottori (FECA-01)^RxPDO 6 map^vl target velocity;
+							  .nSpeedActual := TIID^Device 1 (EtherCAT)^moottori (FECA-01)^TxPDO 6 map^vl velocity actual value'}	
+	coolingMotor		: FB_MotorAbb;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

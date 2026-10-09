@@ -1,0 +1,517 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_MotorAbb_1" Id="{0f5bbb36-62ef-4dc0-8765-495c23b2230e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MotorAbb_1
+
+VAR
+	// I/O
+	wControlWord		AT %Q* : WORD;
+	wStatusWord			AT %I* : WORD;
+	nSpeedRef			AT %Q* : INT;
+	nSpeedActual		AT %I* : INT;
+
+	_bInit				: BOOL;
+	_refHmi				: REFERENCE TO ST_Motors;
+
+	// States
+	_eState				: ( Not_ready_to_switch_on, Switch_on_disabled, Ready_to_Switch_on, Switched_on, Operation_enabled, Quick_stop_active, Fault_reaction_active, Fault, Unknown_state );
+	_eDriveMode			: ( Disabled, Manual, Auto );					// pyydetty ajotapa
+	_eActiveMode		: ( Act_Disabled, Act_Manual, Act_Auto );		// käytössä oleva ajotapa
+
+	// Komennot
+	_bQuickStop			: BOOL;			// TRUE = pikapysäytys (kytke NC-hätäseisoista: NOT bOk)
+	_bEnable			: BOOL;			// Käyttölupa / päävirta (Switch on)
+	_bAuto				: BOOL;			// Ajotavan valinta: automaatti
+	_bManual			: BOOL;			// Ajotavan valinta: käsi
+	_bAutoRun			: BOOL;			// Käyntikäsky automaattiajossa
+	_bReset				: BOOL;			// Vikakuittaus
+	_fSpeed				: REAL;			// Automaattiajon nopeus [%]
+	_fManualSpeed		: REAL := 10.0;	// Käsiajon nopeus [%]
+	_fManualMax			: REAL := 20.0;	// Käsiajon nopeusraja [%]
+	_bManualFw			: BOOL;
+	_bManualBw			: BOOL;
+
+	// Sisäiset
+	_bRunRaw			: BOOL;			// Käyntikäsky valitusta lähteestä
+	_bRun				: BOOL;			// Lopullinen käyntipyyntö (luvat + inhibit huomioitu)
+	_bPowerReq			: BOOL;			// Päävirta pyydetty (Switch on)
+	_bRunInhibit		: BOOL;			// Vaatii uuden käynnistyskäskyn (vika / ajotavan vaihto)
+	_bModeChangePending	: BOOL;
+	_fSpeedCmd			: REAL;			// Nopeusohje valitusta lähteestä [%]
+	_fSpeedRef			: REAL;			// Muuttajalle menevä ohje [%]
+	_fSpeedActual		: REAL;			// Toteutunut nopeus [%]
+	_bStopping			: BOOL;			// Pysäytys käynnissä (ajo päättyy)
+	_bStopped			: BOOL;			// Nopeus alle pysähtymisrajan
+	_bRampDown			: BOOL;			// Rampitus kesken -> pidä EnableOperation
+	_bWaiting			: BOOL;
+
+	_tStopTimeout		: TIME := T#10S;
+	_tonStop			: TON;
+	_tonWatch			: TON;
+	_rtReset			: R_TRIG;
+	_tpReset			: TP;
+END_VAR
+VAR CONSTANT
+	cScale				: REAL := 200.0;	// 1 % = 200 (100 % = 20000, vrt. ACS880 par. 46.01)
+	cStopSpeedLimit		: REAL := 2.0;		// [%] tämän alle -> ajo voidaan estää pysäytyksessä
+
+	// StatusWord: maskit ja kuviot (CiA 402)
+	SwMask4F				: WORD := 16#004F;	// bitit 0,1,2,3,6
+	SwMask6F				: WORD := 16#006F;	// bitit 0,1,2,3,5,6
+	SwNotReady				: WORD := 16#0000;	// maski 4F
+	SwSwitchOnDisabled 		: WORD := 16#0040;	// maski 4F
+	SwFaultReaction			: WORD := 16#000F;	// maski 4F
+	SwFault					: WORD := 16#0008;	// maski 4F
+	SwReadyToSwitchOn		: WORD := 16#0021;	// maski 6F
+	SwSwitchedOn			: WORD := 16#0023;	// maski 6F
+	SwOperationEnabled		: WORD := 16#0027;	// maski 6F
+	SwQuickStopActive		: WORD := 16#0007;	// maski 6F
+	SwBitWarning			: WORD := 16#0080;	// bitti 7
+	SwBitRemote				: WORD := 16#0200;	// bitti 9
+
+	// ControlWord
+	CwDisableVoltage		: WORD := 16#0004;	// 9, 12; EV=0 (QS pidetään 1:ssä)
+	CwShutDown				: WORD := 16#0006;	// 2, 6, 8
+	CwSwitchOn				: WORD := 16#0007;	// 3
+	CwEnableOperation		: WORD := 16#000F;	// 4
+	CwDisableOperation		: WORD := 16#0007;	// 5
+	CwQuickStop				: WORD := 16#0002;	// 7, 10, 11
+	CwBitFaultReset			: WORD := 16#0080;	// 15: bitti 7, nouseva reuna
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// ============================================================
+// 0. Ajotavan valinta ja käsiajon suunta HMI:ltä
+// ============================================================
+DriveMode();
+
+// ============================================================
+// 1. Tilan valinta bittimaskilla (kuvio verrataan maskattuun statussanaan)
+//    Jos asema ei raportoi bittiä 5: maski 6F -> 4F ja kuviot 21/23/27 -> 01/03/07
+// ============================================================
+IF    (wStatusWord AND SwMask4F) = SwNotReady			THEN _eState := Not_ready_to_switch_on;
+ELSIF (wStatusWord AND SwMask4F) = SwSwitchOnDisabled	THEN _eState := Switch_on_disabled;
+ELSIF (wStatusWord AND SwMask4F) = SwFaultReaction		THEN _eState := Fault_reaction_active;
+ELSIF (wStatusWord AND SwMask4F) = SwFault				THEN _eState := Fault;
+ELSIF (wStatusWord AND SwMask6F) = SwReadyToSwitchOn	THEN _eState := Ready_to_Switch_on;
+ELSIF (wStatusWord AND SwMask6F) = SwSwitchedOn			THEN _eState := Switched_on;
+ELSIF (wStatusWord AND SwMask6F) = SwOperationEnabled	THEN _eState := Operation_enabled;
+ELSIF (wStatusWord AND SwMask6F) = SwQuickStopActive	THEN _eState := Quick_stop_active;
+ELSE                                                         _eState := Unknown_state;
+END_IF
+
+_fSpeedActual := INT_TO_REAL(nSpeedActual) / cScale;
+
+// ============================================================
+// 2. Ajotavan vaihto vain pysäytettynä
+// ============================================================
+CASE _eDriveMode OF
+	Disabled:	_bModeChangePending := (_eActiveMode <> Act_Disabled);
+	Manual:		_bModeChangePending := (_eActiveMode <> Act_Manual);
+	Auto:		_bModeChangePending := (_eActiveMode <> Act_Auto);
+END_CASE
+
+IF _bModeChangePending AND (_eState <> Operation_enabled) THEN
+	CASE _eDriveMode OF
+		Disabled:	_eActiveMode := Act_Disabled;
+		Manual:		_eActiveMode := Act_Manual;
+		Auto:		_eActiveMode := Act_Auto;
+	END_CASE
+	_bRunInhibit        := TRUE;		// ei automaattista käynnistystä vaihdon jälkeen
+	_bModeChangePending := FALSE;
+END_IF
+
+// ============================================================
+// 3. Käyntikäsky ja nopeusohje valitusta lähteestä (joka kierroksella)
+// ============================================================
+CASE _eActiveMode OF
+	Act_Auto:
+		_bRunRaw   := _bAutoRun;
+		_fSpeedCmd := LIMIT(-100.0, _fSpeed, 100.0);			// rajaa 0..100 jos peruutus ei sallittu
+
+	Act_Manual:
+		_bRunRaw   := _bManualFw XOR _bManualBw;
+		_fSpeedCmd := LIMIT(0.0, _fManualSpeed, _fManualMax);
+		IF _bManualBw THEN
+			_fSpeedCmd := -_fSpeedCmd;
+		END_IF
+
+	ELSE
+		_bRunRaw   := FALSE;
+		_fSpeedCmd := 0.0;
+END_CASE
+
+IF _bModeChangePending THEN
+	_bRunRaw := FALSE;						// pysäytä ensin
+END_IF
+
+IF _eState = Fault OR _eState = Fault_reaction_active THEN
+	_bRunInhibit := TRUE;					// vian jälkeen vaaditaan uusi käynnistyskäsky
+END_IF
+IF NOT _bRunRaw THEN
+	_bRunInhibit := FALSE;
+END_IF
+
+_bPowerReq := _bEnable AND NOT _bQuickStop AND (_eActiveMode <> Act_Disabled);
+_bRun      := _bPowerReq AND _bRunRaw AND NOT _bRunInhibit;
+
+// ============================================================
+// 4. Hallittu pysäytys: ohje 0 -> odota pysähtymistä (tai timeout) -> Disable operation
+// ============================================================
+_bStopping := (_eState = Operation_enabled) AND _bPowerReq AND NOT _bRun;
+_tonStop(IN := _bStopping, PT := _tStopTimeout);
+_bStopped  := ABS(_fSpeedActual) < cStopSpeedLimit;
+_bRampDown := _bStopping AND NOT _bStopped AND NOT _tonStop.Q;		// rampitus kesken
+
+// Valvonta: pyydetty tila ei toteudu 5 s kuluessa (STO, Local-tila, kenttäväylä...)
+_bWaiting := (_bPowerReq AND (_eState = Not_ready_to_switch_on
+                           OR _eState = Switch_on_disabled
+                           OR _eState = Ready_to_Switch_on))
+          OR (_bRun      AND _eState = Switched_on);
+_tonWatch(IN := _bWaiting, PT := T#5S);
+
+// ============================================================
+// 5. Vikakuittaus: pulssi 200 ms (bitti 7 on ennen sitä 0 -> nouseva reuna)
+// ============================================================
+_rtReset(CLK := _bReset);
+_tpReset(IN := _rtReset.Q AND (_eState = Fault), PT := T#200MS);
+
+// ============================================================
+// 6. Ohjaussana tiloittain (oletus joka kierroksella = ei vanhoja arvoja)
+// ============================================================
+wControlWord := CwDisableVoltage;
+
+CASE _eState OF
+
+	Not_ready_to_switch_on,
+	Fault_reaction_active,
+	Unknown_state:
+		wControlWord := CwDisableVoltage;				// muuttuja hoitaa itse (0, 1, 14)
+
+	Fault:
+		IF _tpReset.Q THEN
+			wControlWord := CwDisableVoltage OR CwBitFaultReset;	// (15)
+		END_IF
+
+	Switch_on_disabled:
+		IF _bPowerReq THEN
+			wControlWord := CwShutDown;					// (2)
+		END_IF
+
+	Ready_to_Switch_on:
+		IF _bPowerReq THEN
+			wControlWord := CwSwitchOn;					// (3)
+		END_IF											// muuten (7) Disable voltage
+
+	Switched_on:
+		IF _bPowerReq THEN
+			IF _bRun THEN
+				wControlWord := CwEnableOperation;		// (4)
+			ELSE
+				wControlWord := CwSwitchOn;
+			END_IF
+		ELSIF _bQuickStop THEN
+			wControlWord := CwQuickStop;				// (10)
+		ELSE
+			wControlWord := CwShutDown;					// (6)
+		END_IF
+
+	Operation_enabled:
+		IF _bPowerReq THEN
+			IF _bRun OR _bRampDown THEN
+				wControlWord := CwEnableOperation;		// ajo / hallittu pysäytys
+			ELSE
+				wControlWord := CwDisableOperation;		// (5) pysähtynyt
+			END_IF
+		ELSIF _bQuickStop THEN
+			wControlWord := CwQuickStop;				// (11), ensisijainen
+		ELSE
+			wControlWord := CwShutDown;					// (8) lupa pois / Disabled-tila
+		END_IF
+
+	Quick_stop_active:
+		IF _bQuickStop THEN
+			wControlWord := CwQuickStop;				// pidä kunnes pysähtynyt
+		END_IF											// muuten (12) Disable voltage
+END_CASE
+
+// ============================================================
+// 7. Nopeusohje joka kierroksella (-100..100 % -> -20000..20000)
+// ============================================================
+IF _bRun THEN
+	_fSpeedRef := _fSpeedCmd;
+ELSE
+	_fSpeedRef := 0.0;						// pysäytys ramppia pitkin
+END_IF
+nSpeedRef := REAL_TO_INT(LIMIT(-100.0, _fSpeedRef, 100.0) * cScale);
+]]></ST>
+    </Implementation>
+    <Property Name="bAuto" Id="{627ad2b8-db7e-40ab-ae2e-04f95dd0442c}">
+      <Declaration><![CDATA[PROPERTY bAuto : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{a8835379-be76-495b-8bb9-c6c17344476a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bAuto := _bAuto;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{d1d2ef8d-a6b0-46f7-9108-05907a9b2ca2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bAuto := bAuto;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bAutoRun" Id="{c61c68a6-976b-4700-acc8-09012b9e7f30}">
+      <Declaration><![CDATA[PROPERTY bAutoRun : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{bfb77a56-9189-4635-bed4-76ed37074b7c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bAutoRun := _bAutoRun;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{400d369f-e7b9-425b-9c81-e01c209df9d8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bAutoRun := bAutoRun;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bEnable" Id="{abf95151-140a-4c62-b902-88ce1bba9209}">
+      <Declaration><![CDATA[PROPERTY bEnable : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{c7baa816-32f6-4329-b957-a1ac895a2e8b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bEnable := _bEnable;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{70a9ca0e-f54c-4b4c-811b-4135c709d7a6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bEnable := bEnable;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bFault" Id="{e0dc487c-8e0d-4270-aef8-cc394e5631e4}">
+      <Declaration><![CDATA[PROPERTY bFault : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{9d196b61-f02f-49ce-b095-75a437c4ec14}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bFault := (_eState = Fault) OR (_eState = Fault_reaction_active);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="bManual" Id="{dfb5fb5a-ecc1-4dc0-859c-e9edfcc3bec7}">
+      <Declaration><![CDATA[PROPERTY bManual : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{b8466f5f-64b6-4034-b3a7-8c2b492c31c5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bManual := _bManual;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{3098a344-dc02-49f3-9f27-5c7f8dafd93b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bManual := bManual;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bQuickStop" Id="{94af7cec-ef4e-440a-baa7-765a21087d81}">
+      <Declaration><![CDATA[PROPERTY bQuickStop : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{7df557e9-6bfb-42d5-ab08-b908014a38ac}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bQuickStop := bQuickStop;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bRemote" Id="{6e1af3f3-3d34-4e41-b62e-b75ea70d4501}">
+      <Declaration><![CDATA[PROPERTY bRemote : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{17aa0e6b-6288-420c-9985-ec2794eff4b1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bRemote := (wStatusWord AND SwBitRemote) <> 0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="bReset" Id="{835ef28b-e3bc-4293-8cbc-68ff1ff61247}">
+      <Declaration><![CDATA[PROPERTY bReset : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{5d9beb84-61e8-46ac-a628-bf292145852a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bReset := bReset;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bRunning" Id="{fb57bed6-bab0-4f3c-a60a-e78c6f50b151}">
+      <Declaration><![CDATA[PROPERTY bRunning : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{179b9181-004f-4f4f-a5f9-db55025c830d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bRunning := _eState = Operation_enabled;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="bTimeout" Id="{80fe5fd0-1101-4939-b88b-d5a42dd0b3ee}">
+      <Declaration><![CDATA[PROPERTY bTimeout : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{ab9e74eb-8df1-4b3b-8679-554bc150b8b1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bTimeout := _tonWatch.Q;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="bWarning" Id="{52030919-b6d9-4369-a62c-aec92954bbf3}">
+      <Declaration><![CDATA[PROPERTY bWarning : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{c4d34eed-5a88-4e21-8352-a19b284bca3c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bWarning := (wStatusWord AND SwBitWarning) <> 0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="DriveMode" Id="{b78c8679-e706-4d29-8726-5b4fb576d512}">
+      <Declaration><![CDATA[METHOD INTERNAL DriveMode : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF _bAuto AND NOT _bManual THEN
+	_eDriveMode := Auto;
+ELSIF _bManual AND NOT _bAuto THEN
+	_eDriveMode := Manual;
+ELSE
+	_eDriveMode := Disabled;			// molemmat tai ei kumpaakaan -> pois
+END_IF
+
+// Käsiajon suunta HMI:ltä: molemmat painettuna = ei ajoa
+_bManualFw := FALSE;
+_bManualBw := FALSE;
+IF __ISVALIDREF(_refHmi) AND (_eDriveMode = Manual) THEN
+	_bManualFw := _refHmi.bManualFw AND NOT _refHmi.bManualBw;
+	_bManualBw := _refHmi.bManualBw AND NOT _refHmi.bManualFw;
+END_IF
+
+DriveMode := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="fManualSpeed" Id="{c707f267-c896-478f-8c41-feb8919c20b9}">
+      <Declaration><![CDATA[PROPERTY fManualSpeed : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{7d07159b-7f9e-4327-91a0-764bb4209979}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fManualSpeed := _fManualSpeed;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{1ba95737-267d-4c86-a754-c3a8e75ee55b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_fManualSpeed := fManualSpeed;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="fSpeedActual" Id="{313e300f-0afc-4cbd-b32d-46a5414a1e7e}">
+      <Declaration><![CDATA[PROPERTY fSpeedActual : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{189dd8a6-a372-4aac-af55-89314fe50cd7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fSpeedActual := _fSpeedActual;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nActiveMode" Id="{b9f23fe4-8dce-49a5-942c-36abb0b90a06}">
+      <Declaration><![CDATA[PROPERTY nActiveMode : INT
+]]></Declaration>
+      <Get Name="Get" Id="{775b7d63-7ce9-49f4-98dd-3d2475a0fa87}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nActiveMode := TO_INT(_eActiveMode);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nState" Id="{d04dfe19-2432-4a73-8a60-7f2637aad82e}">
+      <Declaration><![CDATA[PROPERTY nState : INT
+]]></Declaration>
+      <Get Name="Get" Id="{e8a38e46-fd1a-4996-ac13-da5a4b9ff911}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nState := TO_INT(_eState);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="SetHmi" Id="{cef67595-cee4-4d22-ad5b-0cc13e6b588c}">
+      <Declaration><![CDATA[METHOD SetHmi
+VAR_IN_OUT
+	stHmi		: ST_Motors;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_refHmi REF= stHmi;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetSpeed" Id="{25c95e95-5975-406f-91de-35590e5bb0e9}">
+      <Declaration><![CDATA[METHOD SetSpeed : INT
+VAR_INPUT
+	fSpeed		: REAL;		// Automaattiajon nopeus [%]
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fSpeed := fSpeed;
+SetSpeed := REAL_TO_INT(LIMIT(-100.0, fSpeed, 100.0) * cScale);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

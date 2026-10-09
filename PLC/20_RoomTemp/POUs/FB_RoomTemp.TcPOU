@@ -10,7 +10,7 @@ VAR
 	_fbRoomTempControl		: FB_RoomTempControl;
 	_fbCoolingControl		: FB_CoolingControl;
 	
-	_fbMotorCooling			: FB_MotorAbb880_malli;
+	//_fbMotorCooling			: FB_MotorAbb;
 	
 	
 END_VAR
@@ -20,7 +20,8 @@ END_VAR
 _fbRoomTempControl();
 _fbCoolingControl();
 
-_fbMotorCooling();]]></ST>
+//_fbMotorCooling();
+Motors.coolingMotor();]]></ST>
     </Implementation>
     <Method Name="FB_Init" Id="{eba7c06a-cc1a-472b-a54e-5993b983ee8a}">
       <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
@@ -45,8 +46,7 @@ END_VAR
         <ST><![CDATA[IF _bInit THEN
 	
 
-_fbMotorCooling.Init( 	sName := 'Generaattorihuone jäähdytys moottori',
-						refHmi := Motors.stMotors);
+
 
 _fbRoomTempControl.Init(	refHmi		:= GVL.stRoomTemp,
 							sName		:= 'Generaattori huone',
@@ -54,7 +54,7 @@ _fbRoomTempControl.Init(	refHmi		:= GVL.stRoomTemp,
 
 _fbCoolingControl.Init(	refHmi		:= GVL.stCoolingControl,
 						sName		:= 'Generaattori huoneen jäähdytys',
-						iMotor		:= _fbMotorCooling,
+						iMotor		:= Motors.coolingMotor,
 						iRoomTemp	:= _fbRoomTempControl );
 
 

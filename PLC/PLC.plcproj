@@ -60,19 +60,16 @@
     <Compile Include="40_Data\POUs\FB_SQL_DB_Mode.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="50_Library\Motors\ITFs\DUTs\ST_ControlWord.TcDUT">
+    <Compile Include="50_Library\Motors\DUTs\ST_ControlWord.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="50_Library\Motors\ITFs\DUTs\ST_StatusWord.TcDUT">
+    <Compile Include="50_Library\Motors\DUTs\ST_StatusWord.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="50_Library\Motors\ITFs\I_Motor.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="50_Library\Motors\POUs\FB_MotorAbb.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="50_Library\Motors\POUs\FB_MotorAbb_1.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="99_ESIMERKKI\DUTs\ST_Esimerkki.TcDUT">
@@ -132,8 +129,8 @@
     <Folder Include="50_Library\IO\POUs" />
     <Folder Include="50_Library\Motors" />
     <Folder Include="50_Library\IO" />
+    <Folder Include="50_Library\Motors\DUTs" />
     <Folder Include="50_Library\Motors\ITFs" />
-    <Folder Include="50_Library\Motors\ITFs\DUTs" />
     <Folder Include="50_Library\Motors\POUs" />
     <Folder Include="99_ESIMERKKI\DUTs" />
     <Folder Include="99_ESIMERKKI\POUs" />

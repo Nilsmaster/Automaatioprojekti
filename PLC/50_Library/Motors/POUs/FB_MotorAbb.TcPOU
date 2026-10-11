@@ -25,10 +25,14 @@ VAR
 	
 	_bQuickStop			: BOOL;
 	_bEnable			: BOOL;
+	_bReset				: BOOL;
 	_bRun				: BOOL;
+	_bPowerReq			: BOOL;
 	_nSpeed				: REAL;
 	_nSpeedCmd			: REAL;
 	_bStopping			: BOOL;
+	_bStopped			: BOOL;
+	_bModeChange		: BOOL;
 	_bAuto				: BOOL;
 	_bManual			: BOOL;
 	_bManualFw			: BOOL;
@@ -38,31 +42,35 @@ VAR
 	_bRampDown			: BOOL;
 	
 	_tonStop			: TON;
+	_rtrigReset			: R_TRIG;
+	_tofReset			: TOF;
 END_VAR
 VAR CONSTANT
 	cScale				: REAL := 200.0;	// 1 % = 200 (100 % = 20000, vrt. ACS880 par. 46.01)
-	cStopSpeedLimit		: REAL := 2.0;		// [%] tämän alle -> ajo voidaan estää pysäytyksessä
+	cStopSpeedLimit		: REAL := 2.0;		// tämän alle -> ajo voidaan estää pysäytyksessä
 	
 	// StatusWord
 	SwMask4F				: WORD := 16#004F;	// bitit 0,1,2,3,6     Päällä
-	SwMask6F				: WORD := 16#006F;	// bitit 0,1,2,3,5,6
+	SwMask6F				: WORD := 16#006F;	// bitit 0,1,2,3,5,6   Päällä
 	SwSwitchOnDisabled 		: WORD := 16#0040;
 	SwReadyToSwitchOn		: WORD := 16#0021;
 	SwSwitchedOn			: WORD := 16#0023;
 	SwOperationEnabled		: WORD := 16#0027;
 	SwQuickStopActive		: WORD := 16#0007;
-	SwFault					: WORD := 16#0004;
+	SwFault					: WORD := 16#0008;
 	
 	// ControlWord
 	CwShutDown				: WORD := 16#0006; // 2, 6, 8
 	CwSwitchOn				: WORD := 16#0007; // 3
 	CwEnableOperation		: WORD := 16#000F; // 4
 	CwDisableOperation		: WORD := 16#0007; // 5
+	CwDisableVoltage		: WORD := 16#0000; // 9, 12
 	CwQuickStop				: WORD := 16#0002; // 7, 10, 11
+	CwFaultReset			: WORD := 16#0080; // 15
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-// select state
+      <ST><![CDATA[HmiCommands();
+// tilan luku
 
 
 IF    (wStatusWord AND SwMask4F) = SwSwitchOnDisabled	THEN _eState := Switch_on_disabled;
@@ -75,67 +83,139 @@ ELSE                                                         _eState := Unknown_
 END_IF
 
 
+IF	_eDriveMode = Auto AND (_bManual OR NOT _bAuto) OR
+	_eDriveMode = Manual AND (_bAuto OR NOT _bManual) THEN
+	_bModeChange := TRUE;
+	
+END_IF
+
+_bPowerReq := _bEnable AND NOT _bQuickStop AND _eState <> Fault;
+
 // Hallittu pysäytys
-_bStopping      := (_eState = Operation_enabled) AND NOT _bEnable;
-_toNStop(IN := _bStopping, PT := T#3S);
-_bRampDown := _bStopping AND (ABS(nSpeedActual) < cStopSpeedLimit) AND NOT _tonStop.Q;
-	
-DriveMode();
+_bStopping      := (_eState = Operation_enabled) AND NOT _bEnable OR (_eState = Operation_enabled) AND _bModeChange;
+_tonStop(IN := _bStopping, PT := T#3S);
+_bRampDown := _bStopping AND ABS(nSpeedActual) > cStopSpeedLimit AND NOT _tonStop.Q;
+_bStopped := ABS(nSpeedActual) <= cStopSpeedLimit;
 
-CASE _eState OF
-	
-	Quick_stop_active:
-	;
-	
-	Fault:
-	;
 
-	Switch_on_disabled:
-	wControlWord := CwShutDown;
-	
-	Ready_to_Switch_on:
-	wControlWord := CwSwitchOn;
-	
-	Switched_on:
-	IF _bEnable THEN
-		wControlWord := CwEnableOperation;
-	END_IF
-	
-	Operation_enabled:
-	IF _bQuickStop THEN
-		wControlWord := CwQuickStop;
-	END_IF
-	
-	IF _bStopping THEN
-	_nSpeedCmd := 0.0;
-		IF _bRampDown THEN	
-			wControlWord := CwDisableOperation;
-		END_IF
-	
+// ajotila
+
+IF NOT _bEnable OR _bModeChange THEN
+	_eDriveMode := Disabled;
+END_IF
+
+IF _eDriveMode = Disabled AND _bPowerReq THEN
+	IF _bAuto AND _bStopped AND NOT _bManual THEN
+		_eDriveMode := Auto;
+		_bModeChange := FALSE;
+		
+	ELSIF _bManual AND _bStopped AND NOT _bAuto THEN
+		_eDriveMode := Manual;
+		_bModeChange := FALSE;
+		
 	ELSE
+		_eDriveMode := Disabled;
+	END_IF
+END_IF
+
 		CASE _eDriveMode OF
 			Disabled:
 			_bRun := FALSE;
-			_nSpeedCmd := 0.0;
+			IF NOT _bRampDown THEN
+			_bModeChange := FALSE;
+			END_IF
 			
 			Manual:
+			IF NOT _bManual THEN
+				_eDriveMode := Disabled;
+				
+			ELSE
+			
 				IF _bManualFw XOR _bManualBw THEN
 					_bRun 		:= TRUE;
 					_nSpeedCmd 	:= _nManualSpeed;
+					IF _bManualBw THEN
+						_nSpeedCmd := -_nSpeedCmd;
+					END_IF
 				ELSE
 					_bRun := FALSE;
-					_nSpeedCmd 	:= 0.0;
+					
 				END_IF
-				
+			END_IF
 			Auto:
-			_bRun 		:= _bAuto;
-			_nSpeedCmd 	:= _nSpeed;
-			
+			IF NOT _bAuto THEN
+				_eDriveMode := Disabled;
+			ELSE
+				_bRun 		:= _bAuto;
+				_nSpeedCmd 	:= _nSpeed;
+			END_IF
 		END_CASE
-	END_IF
+
+// vian kuittaus
+_rtrigReset( CLK := _bReset);
+_tofReset( IN := _rtrigReset.Q, PT := T#200MS);
+
+// word nollaus
+wControlWord := CwDisableVoltage;
+CASE _eState OF
 	
+	Quick_stop_active:
+	wControlWord := CwDisableVoltage;
+	
+	Fault:
+		_bRun := FALSE;
+		_eDriveMode := Disabled;
+		IF _tofReset.Q THEN
+			wControlWord := CwFaultReset; // 15
+		END_IF
+
+	Switch_on_disabled:
+		wControlWord := CwShutDown; // 2
+	
+	Ready_to_Switch_on:
+		IF _bPowerReq THEN
+			wControlWord := CwSwitchOn; // 3
+		ELSE
+			wControlWord := CwShutDown; // 7
+		END_IF
+	
+	Switched_on:
+		IF _bPowerReq THEN
+			IF _bRun THEN
+			wControlWord := CwEnableOperation; // 4
+			ELSE
+			wControlWord := CwSwitchOn; // pysy 3
+			
+			END_IF
+			
+		ELSIF _bQuickStop THEN
+			wControlWord := CwQuickStop; // 10
+		ELSE
+			wControlWord := CwShutDown; // 6
+		END_IF
+	
+	Operation_enabled:
+		IF _bQuickStop THEN
+			wControlWord := CwQuickStop; // 11	
+			
+		ELSIF _bPowerReq OR _bRampDown THEN
+			IF _bRun OR _bRampDown THEN
+				wControlWord := CwEnableOperation; // pysyy
+			ELSE
+				wControlWord := CwDisableOperation; // 5
+			END_IF
+
+		ELSE 
+			wControlWord := CwShutDown; // 8
+		END_IF
 	
 END_CASE
+
+IF _bRun AND NOT _bRampDown THEN
+	_nSpeed := _nSpeedCmd;
+ELSE
+	_nSpeed := 0.0;
+END_IF
 
 nSpeedRef := REAL_TO_INT(LIMIT(-100.0, _nSpeed, 100.0) * cScale);	
 	
@@ -183,6 +263,18 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
+    <Property Name="bQuickStop" Id="{977fb5c2-a8bb-4f42-82b8-21f222960733}">
+      <Declaration><![CDATA[PROPERTY bQuickStop : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{cd6e7d75-00b7-434b-bdd9-938a5c4facab}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_bQuickStop := bQuickStop;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Property Name="bRunning" Id="{251a9b1f-b57c-4461-9294-e6d29359e21b}">
       <Declaration><![CDATA[{warning 'Add property implementation'}
 PROPERTY bRunning : BOOL
@@ -192,37 +284,61 @@ PROPERTY bRunning : BOOL
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[bRunning := _eState = Operation_enabled;]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Method Name="DriveMode" Id="{40916e8b-3691-40d1-bb4b-71ea2c04ca20}">
-      <Declaration><![CDATA[METHOD INTERNAL DriveMode : BOOL
+    <Method Name="FB_Init" Id="{2e60556b-bb07-4942-b4c0-399e448809ec}">
+      <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
+//The return value is not evaluated. For a specific influence, you can also declare the
+//methods explicitly and provide additional code there with the standard initialization
+//code. You can evaluate the return value.
+METHOD FB_Init: BOOL
+VAR_INPUT
+    bInitRetains: BOOL; // TRUE: the retain variables are initialized (reset warm / reset cold)
+    bInCopyCode: BOOL;  // TRUE: the instance will be copied to the copy code afterward (online change)   
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bInit := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HmiCommands" Id="{fcc62b7e-0341-4754-be3d-ef1faf38719c}">
+      <Declaration><![CDATA[METHOD INTERNAL HmiCommands
 VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[IF  __ISVALIDREF(_refHmi) THEN
+_bAuto 			:= _refHmi.bAuto;
+_bManual 		:= _refHmi.bManual;
+_bManualBw 		:= _refHmi.bManualBw;
+_bManualFw 		:= _refHmi.bManualFw;
+_bReset 		:= _refHmi.bReset;
+_nManualSpeed 	:= _refHmi.nManualSpeed;
 
-IF _bAuto AND NOT _bManual THEN
-	_eDriveMode := AUTO;
+	IF _refHmi.bStop THEN
+		_bEnable := FALSE;
 
-ELSIF _bManual AND NOT _bAuto THEN
-	_eDriveMode := MANUAL;
-
-ELSE
-	_eDriveMode := DISABLED;
+	END_IF
 END_IF
 
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{6e5d4457-b3dd-4203-8df0-d4823adc332a}">
+      <Declaration><![CDATA[METHOD Init
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _bInit THEN
+	
 
-_bManualFw := FALSE;
-_bManualBw := FALSE;
-IF NOT _bAuto AND _refHmi.bManualFw AND NOT _bManualBw THEN
-	_bManualFw := TRUE;
-END_IF
 
-IF NOT _bAuto AND _refHmi.bManualBw AND NOT _bManualFw THEN
-	_bManualBw := TRUE;
+
+
+
+_bInit := FALSE;
 END_IF]]></ST>
       </Implementation>
     </Method>

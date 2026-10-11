@@ -110,7 +110,9 @@ END_VAR
 		END_IF
 		
 		IF _nPidOutAbs > 5 THEN
-		_iMotor.bEnable := TRUE;
+			_iMotor.bEnable := TRUE;
+		ELSE
+			_iMotor.bEnable := FALSE;
 		END_IF
 		
 		

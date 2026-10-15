@@ -17,6 +17,8 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
+
+
 _fbRoomTempControl();
 _fbCoolingControl();
 
@@ -45,17 +47,20 @@ END_VAR
       <Implementation>
         <ST><![CDATA[IF _bInit THEN
 	
+// Motors 
+Motors.coolingMotor.Init(	refHmi	:= Motors.stMotors,
+							sName 	:= 'Generaattori tilan jäähdytin');
 
-
-
+// Controls
 _fbRoomTempControl.Init(	refHmi		:= GVL.stRoomTemp,
 							sName		:= 'Generaattori huone',
-							iGenerator	:= GVL.fbGenerator);
+							iGenerator	:= GVL.fbGenerator,
+							iCooling	:= _fbCoolingControl);
 
-_fbCoolingControl.Init(	refHmi		:= GVL.stCoolingControl,
-						sName		:= 'Generaattori huoneen jäähdytys',
-						iMotor		:= Motors.coolingMotor,
-						iRoomTemp	:= _fbRoomTempControl );
+_fbCoolingControl.Init(		refHmi		:= GVL.stCoolingControl,
+							sName		:= 'Generaattori huoneen jäähdytys',
+							iMotor		:= Motors.coolingMotor,
+							iRoomTemp	:= _fbRoomTempControl );
 
 
 _bInit := FALSE;

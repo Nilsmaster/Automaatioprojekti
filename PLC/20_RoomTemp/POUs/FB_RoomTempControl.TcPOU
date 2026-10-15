@@ -14,6 +14,7 @@ VAR
 	
 	// Interfaces
 	_iGenerator		: I_Generator;
+	_iCooling		: I_Cooling;
 	
 	
 END_VAR
@@ -30,7 +31,9 @@ ELSIF NOT _iGenerator.bRunning AND _nRoomTemp >= 20.0 THEN
 	
 END_IF
 
-
+IF _iCooling.bRunning THEN
+	_nRoomTemp := _nRoomTemp - ( _iCooling.nSpeed * 0.5);
+END_IF
 
 UpdateHmi();]]></ST>
     </Implementation>
@@ -54,6 +57,7 @@ VAR_INPUT
 	refHmi			: REFERENCE TO ST_RoomTempHmi;
 	sName			: STRING;
 	iGenerator		: I_Generator;
+	iCooling		: I_Cooling;
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -63,6 +67,7 @@ _refHmi 			REF= refHmi;
 
 _refHmi.sName		:= sName;
 _iGenerator			:= iGenerator;
+_iCooling			:= iCooling;
 
 _bInit := FALSE;
 END_IF]]></ST>

@@ -36,6 +36,9 @@
     <Compile Include="20_RoomTemp\DUTs\ST_RoomTempHmi.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="20_RoomTemp\ITFs\I_Cooling.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="20_RoomTemp\ITFs\I_RoomTemp.TcIO">
       <SubType>Code</SubType>
     </Compile>

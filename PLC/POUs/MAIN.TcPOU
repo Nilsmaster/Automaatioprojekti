@@ -55,7 +55,7 @@ GVL.fbGenerator.nRank 		:= fbRank.rank[fbTime.onIndex];
 GVL.fbGenerator.nArvonta 	:= fbArvonta.arrPrices[fbTime.onIndex];
 GVL.fbGenerator();
 
-// Huoneen lämpötilan simulointi
+// Huoneen lämpötilan simulointi + jäähdytys
 GVL.fbRoomtemp.Init();
 GVL.fbRoomtemp();
 

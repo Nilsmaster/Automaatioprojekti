@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_CoolingControl" Id="{c09f89a4-7fd2-41a6-a90f-53be9d89a7cd}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_CoolingControl
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CoolingControl IMPLEMENTS I_Cooling
 
 VAR
 	_bInit			: BOOL;
@@ -30,8 +30,20 @@ ELSIF NOT _iMotor.bAuto THEN
 	
 END_IF
 
-StateMachine();]]></ST>
+StateMachine();
+MotorControl();]]></ST>
     </Implementation>
+    <Property Name="bRunning" Id="{624f05f4-380a-49d8-8c3e-5f6815dbcbe2}">
+      <Declaration><![CDATA[PROPERTY bRunning : BOOL]]></Declaration>
+      <Get Name="Get" Id="{5d559f55-6d2a-4389-b098-fc08ff71713f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bRunning := _iMotor.bRunning;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Method Name="FB_Init" Id="{fcfc5886-4c00-430c-bcfe-6efe2b92512a}">
       <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
 //The return value is not evaluated. For a specific influence, you can also declare the
@@ -79,9 +91,23 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[
+
+_iMotor.bAuto := eCoolingState = E_CoolingControlState.Auto;
+_iMotor.Update();]]></ST>
       </Implementation>
     </Method>
+    <Property Name="nSpeed" Id="{590c0e67-0194-4f7e-98b8-d6334a5dcd49}">
+      <Declaration><![CDATA[PROPERTY nSpeed : REAL]]></Declaration>
+      <Get Name="Get" Id="{79630616-91ec-4ec4-9867-719260715bcd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Method Name="StateMachine" Id="{fc3a95a4-aa4c-4d2d-b42b-fbab5f8880e3}">
       <Declaration><![CDATA[METHOD PRIVATE StateMachine : BOOL
 VAR_INPUT
@@ -117,13 +143,13 @@ END_VAR
 		
 		
 	E_CoolingControlState.Manual:
-	;
+		_fbBasicPID(bReset := TRUE);
 	
 	E_CoolingControlState.Stop:
-	;
+		_fbBasicPID(bReset := TRUE);
 	
 	E_CoolingControlState.Error:
-	;
+		_fbBasicPID(bReset := TRUE);
 	
 END_CASE]]></ST>
       </Implementation>

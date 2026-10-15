@@ -222,7 +222,7 @@ nSpeedRef := REAL_TO_INT(LIMIT(-100.0, _nSpeed, 100.0) * cScale);
 ]]></ST>
     </Implementation>
     <Property Name="bAuto" Id="{e810fce6-12fc-467f-b334-474b3afec2cb}">
-      <Declaration><![CDATA[{warning 'Add property implementation'}
+      <Declaration><![CDATA[
 PROPERTY bAuto : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{929102aa-bc15-46fb-b7d7-f55228ac7150}">
@@ -230,7 +230,7 @@ PROPERTY bAuto : BOOL
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[bAuto := _bAuto;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{72cf7562-f247-4915-935f-54820f883a81}">
@@ -238,12 +238,12 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[_bAuto := bAuto;]]></ST>
         </Implementation>
       </Set>
     </Property>
     <Property Name="bEnable" Id="{31026524-40fb-4a4a-a880-fb87d7e4eb0d}">
-      <Declaration><![CDATA[{warning 'Add property implementation'}
+      <Declaration><![CDATA[
 PROPERTY bEnable : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{290c2039-5d4a-4850-81ad-575df0b7decd}">
@@ -251,7 +251,7 @@ PROPERTY bEnable : BOOL
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[bEnable := _bEnable;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{2efcd310-d93d-4041-a777-8f0eb053d164}">
@@ -259,13 +259,22 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[_bEnable := bEnable;]]></ST>
         </Implementation>
       </Set>
     </Property>
     <Property Name="bQuickStop" Id="{977fb5c2-a8bb-4f42-82b8-21f222960733}">
       <Declaration><![CDATA[PROPERTY bQuickStop : BOOL
 ]]></Declaration>
+      <Get Name="Get" Id="{49a34b6b-43e6-4b4a-8b4b-9517a7de36f3}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bQuickStop := _bQuickStop;]]></ST>
+        </Implementation>
+      </Get>
       <Set Name="Set" Id="{cd6e7d75-00b7-434b-bdd9-938a5c4facab}">
         <Declaration><![CDATA[VAR
 END_VAR
@@ -276,7 +285,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="bRunning" Id="{251a9b1f-b57c-4461-9294-e6d29359e21b}">
-      <Declaration><![CDATA[{warning 'Add property implementation'}
+      <Declaration><![CDATA[
 PROPERTY bRunning : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{86039136-adf1-4404-80b5-6bacb58303c8}">
@@ -317,8 +326,10 @@ _bReset 		:= _refHmi.bReset;
 _nManualSpeed 	:= _refHmi.nManualSpeed;
 
 	IF _refHmi.bStop THEN
-		_bEnable := FALSE;
-
+		bQuickStop := TRUE;
+		
+		ELSIF bQuickStop AND_THEN _bReset THEN
+			bQuickStop := FALSE;
 	END_IF
 END_IF
 
@@ -328,13 +339,17 @@ END_IF
     <Method Name="Init" Id="{6e5d4457-b3dd-4203-8df0-d4823adc332a}">
       <Declaration><![CDATA[METHOD Init
 VAR_INPUT
+	
+refHmi		: REFERENCE TO ST_Motors;
+sName		: STRING;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF _bInit THEN
 	
 
-
+_refHmi REF= refHmi;
+_refHmi.sName := sName;
 
 
 
@@ -343,15 +358,15 @@ END_IF]]></ST>
       </Implementation>
     </Method>
     <Property Name="nSpeed" Id="{d7f40367-b56a-4c95-883b-ed2f1bfa690b}">
-      <Declaration><![CDATA[{warning 'Add property implementation'}
-PROPERTY nSpeed : INT
+      <Declaration><![CDATA[
+PROPERTY nSpeed : REAL
 ]]></Declaration>
       <Get Name="Get" Id="{92244c31-b591-4af3-aee6-a2f1281ea945}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[nSpeed := _nSpeed;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{6f36374a-3f48-4c92-8264-528a5bb0e2d7}">
@@ -359,7 +374,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[_nSpeed := nSpeed;]]></ST>
         </Implementation>
       </Set>
     </Property>
@@ -371,6 +386,15 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Update" Id="{01e5dfb5-8252-4de6-ade8-fa18bc07c890}">
+      <Declaration><![CDATA[METHOD Update
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^();]]></ST>
       </Implementation>
     </Method>
   </POU>

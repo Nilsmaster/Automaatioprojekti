@@ -28,7 +28,7 @@
       </Get>
     </Property>
     <Property Name="nSpeed" Id="{1b9f1cc0-8438-4c22-a52c-75b0388d68fd}">
-      <Declaration><![CDATA[PROPERTY nSpeed : INT]]></Declaration>
+      <Declaration><![CDATA[PROPERTY nSpeed : REAL]]></Declaration>
       <Get Name="Get" Id="{f55835ad-359a-463a-9c3e-bba3564f1341}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
@@ -36,5 +36,11 @@
         <Declaration><![CDATA[]]></Declaration>
       </Set>
     </Property>
+    <Method Name="Update" Id="{5d0d5588-a356-480f-8c60-ddf84ee1e2cf}">
+      <Declaration><![CDATA[METHOD Update
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
   </Itf>
 </TcPlcObject>

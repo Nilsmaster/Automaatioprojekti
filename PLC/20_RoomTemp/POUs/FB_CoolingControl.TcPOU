@@ -8,7 +8,7 @@ VAR
 	
 	_refHmi			: REFERENCE TO ST_CoolingControlHmi;
 	_iMotor			: I_Motor;
-	_iRoomTemp		: I_RoomTemp;
+	_iRoomTemp		: I_RoomTempControl;
 	
 	eCoolingState	: E_CoolingControlState;
 	
@@ -44,6 +44,16 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
+    <Method Name="DataLogger" Id="{e2070f59-1543-46b4-8e65-a69e7fabe871}">
+      <Declaration><![CDATA[METHOD DataLogger
+VAR_INPUT
+	SendData	:  I_Logger;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SendData.CoolingControlLogger(THIS^);]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="FB_Init" Id="{fcfc5886-4c00-430c-bcfe-6efe2b92512a}">
       <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
 //The return value is not evaluated. For a specific influence, you can also declare the
@@ -65,7 +75,7 @@ VAR_INPUT
 	refHmi			: REFERENCE TO ST_CoolingControlHmi;
 	sName			: STRING;
 	iMotor			: I_Motor;
-	iRoomTemp		: I_RoomTemp;
+	iRoomTemp		: I_RoomTempControl;
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -104,7 +114,7 @@ _iMotor.Update();]]></ST>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[nSpeed := LREAL_TO_REAL(MAX(0.0, MIN(100.0, _nPidOutAbs)));]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -117,7 +127,7 @@ END_VAR
         <ST><![CDATA[CASE eCoolingState OF
 	
 	E_CoolingControlState.Auto:
-		IF _iRoomTemp.nRoomTemp > _refHmi.paramRoomTempSet THEN
+		
 			
 			_fbBasicPID(	fSetpointValue:= REAL_TO_LREAL(_refHmi.paramRoomTempSet), 
 							fActualValue:= REAL_TO_LREAL(_iRoomTemp.nRoomTemp), 
@@ -133,7 +143,7 @@ END_VAR
 							_nPidOutAbs := ABS(_nPidOut);
 							_iMotor.nSpeed := LREAL_TO_INT( MAX(0.0, MIN(100.0, _nPidOutAbs)));
 							
-		END_IF
+		
 		
 		IF _nPidOutAbs > 5 THEN
 			_iMotor.bEnable := TRUE;

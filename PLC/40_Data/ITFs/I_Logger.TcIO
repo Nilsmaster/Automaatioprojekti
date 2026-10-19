@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_Logger" Id="{92cddb01-eea6-442d-b63b-21c2366cb85a}">
+    <Declaration><![CDATA[INTERFACE I_Logger
+]]></Declaration>
+    <Method Name="CoolingControlLogger" Id="{d94e3267-3e83-4ce0-a58d-38680bfb3a7a}">
+      <Declaration><![CDATA[METHOD CoolingControlLogger
+VAR_INPUT
+	iLogger		: I_Cooling;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="RoomTempLogger" Id="{20ddc7e7-9977-486b-aa83-88fba53294fc}">
+      <Declaration><![CDATA[METHOD RoomTempLogger : BOOL
+VAR_INPUT
+	iLogger			: I_RoomTempControl;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

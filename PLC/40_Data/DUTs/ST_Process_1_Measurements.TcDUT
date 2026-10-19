@@ -6,9 +6,9 @@ STRUCT
 	//nID:			LINT;
 	//tTime:		DATE_AND_TIME;
 	sName:			STRING(50);
-	fTemperature:	LREAL;
-	fPressure:		LREAL;
-	fFlowRate:		LREAL;
+	fTemperature:		LREAL;
+	CoolingRunning:		BOOL;
+	CoolingSpeed:		LREAL;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

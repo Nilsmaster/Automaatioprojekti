@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_RoomTempControl" Id="{85271c55-e02b-400b-8b22-1ffc8f0ff4f7}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_RoomTempControl IMPLEMENTS I_RoomTemp
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RoomTempControl IMPLEMENTS I_RoomTempControl
 
 VAR
 	// Seuraa onko generaattori päällä (tuottaa/varastoi). Tämän perusteella simuloi lämpötilan nousun.
@@ -15,6 +15,7 @@ VAR
 	// Interfaces
 	_iGenerator		: I_Generator;
 	_iCooling		: I_Cooling;
+
 	
 	
 END_VAR
@@ -31,12 +32,22 @@ ELSIF NOT _iGenerator.bRunning AND _nRoomTemp >= 20.0 THEN
 	
 END_IF
 
-IF _iCooling.bRunning THEN
-	_nRoomTemp := _nRoomTemp - ( _iCooling.nSpeed * 0.5);
+IF _iCooling.bRunning AND _nRoomTemp > 19 THEN
+	_nRoomTemp := _nRoomTemp - ( _iCooling.nSpeed * 0.0001);
 END_IF
 
 UpdateHmi();]]></ST>
     </Implementation>
+    <Method Name="DataLogger" Id="{35a02a6c-66d2-472b-ae33-d256289c6905}">
+      <Declaration><![CDATA[METHOD DataLogger
+VAR_INPUT
+	SendData	:  I_Logger;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SendData.RoomTempLogger(THIS^);]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="FB_Init" Id="{a8415529-4b20-40d4-b1e3-770eda8edf35}">
       <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
 //The return value is not evaluated. For a specific influence, you can also declare the
@@ -58,6 +69,7 @@ VAR_INPUT
 	sName			: STRING;
 	iGenerator		: I_Generator;
 	iCooling		: I_Cooling;
+
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -68,6 +80,7 @@ _refHmi 			REF= refHmi;
 _refHmi.sName		:= sName;
 _iGenerator			:= iGenerator;
 _iCooling			:= iCooling;
+
 
 _bInit := FALSE;
 END_IF]]></ST>

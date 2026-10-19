@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <Itf Name="I_RoomTemp" Id="{7f258d7a-27bc-4e5b-bac9-670543498c63}">
-    <Declaration><![CDATA[INTERFACE I_RoomTemp
+  <Itf Name="I_RoomTempControl" Id="{7f258d7a-27bc-4e5b-bac9-670543498c63}">
+    <Declaration><![CDATA[INTERFACE I_RoomTempControl
 ]]></Declaration>
     <Property Name="nRoomTemp" Id="{e1b4056e-a903-4bcb-85d8-1d188783f658}">
       <Declaration><![CDATA[PROPERTY nRoomTemp : REAL]]></Declaration>

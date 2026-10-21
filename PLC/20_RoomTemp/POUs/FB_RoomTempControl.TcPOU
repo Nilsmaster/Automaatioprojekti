@@ -11,6 +11,8 @@ VAR
 	_nCycleTime		: REAL := 0.01;
 	_nRoomTemp		: REAL := 20.0;
 	_nHeatingRate	: REAL;
+	_nCoolingRate	: REAL;
+	_nCoolingMax 	: REAL := 0.01;
 	
 	// Interfaces
 	_iGenerator		: I_Generator;
@@ -33,7 +35,8 @@ ELSIF NOT _iGenerator.bRunning AND _nRoomTemp >= 20.0 THEN
 END_IF
 
 IF _iCooling.bRunning AND _nRoomTemp > 19 THEN
-	_nRoomTemp := _nRoomTemp - ( _iCooling.nSpeed * 0.0001);
+	_nCoolingRate := _iCooling.nSpeed / 100.0;
+	_nRoomTemp := _nRoomTemp - (_nCoolingMax * _nCoolingRate * _nCoolingRate);
 END_IF
 
 UpdateHmi();]]></ST>

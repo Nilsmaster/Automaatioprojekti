@@ -24,9 +24,11 @@ END_VAR
 IF _iMotor.bAuto AND _refHmi.bAuto THEN
 	eCoolingState := E_CoolingControlState.Auto;
 	
-ELSIF NOT _iMotor.bAuto THEN
+ELSIF _refHmi.bManual THEN
 	eCoolingState := E_CoolingControlState.Manual;
-	
+
+ELSE
+	eCoolingState := E_CoolingControlState.Stop;
 	
 END_IF
 
@@ -129,16 +131,16 @@ END_VAR
 	E_CoolingControlState.Auto:
 		
 			
-			_fbBasicPID(	fSetpointValue:= REAL_TO_LREAL(_refHmi.paramRoomTempSet), 
-							fActualValue:= REAL_TO_LREAL(_iRoomTemp.nRoomTemp), 
-							bReset:= 0, 
-							fCtrlCycleTime:= 0.01, 
-							fKp:= _refHmi.param_P, 
-							fTn:= _refHmi.param_I, 
-							fTv:= _refHmi.Param_D, 
-							fTd:= 0, 
-							fCtrlOutput=> _nPidOut, 
-							nErrorStatus=> );
+			_fbBasicPID(	fSetpointValue	:= REAL_TO_LREAL(_refHmi.paramRoomTempSet), 
+							fActualValue	:= REAL_TO_LREAL(_iRoomTemp.nRoomTemp), 
+							bReset			:= 0, 
+							fCtrlCycleTime	:= 0.01, 
+							fKp				:= _refHmi.param_P, 
+							fTn				:= _refHmi.param_I, 
+							fTv				:= _refHmi.Param_D, 
+							fTd				:= 0, 
+							fCtrlOutput		=> _nPidOut, 
+							nErrorStatus	=> );
 							
 							_nPidOutAbs := ABS(_nPidOut);
 							_iMotor.nSpeed := LREAL_TO_INT( MAX(0.0, MIN(100.0, _nPidOutAbs)));

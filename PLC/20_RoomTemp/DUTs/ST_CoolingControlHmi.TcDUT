@@ -11,6 +11,8 @@ STRUCT
 	Param_D					: REAL;	//
 	
 	bAuto					: BOOL; // Automaatti tila hmi:ltä
+	bManual					: BOOL;
+	bStop					: BOOL;
 	nMotorManualSpeed		: INT;	// Manuaaliajon nopeus hmi:ltä
 END_STRUCT
 END_TYPE

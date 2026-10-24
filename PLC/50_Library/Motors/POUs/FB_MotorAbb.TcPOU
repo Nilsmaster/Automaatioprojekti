@@ -67,6 +67,7 @@ VAR CONSTANT
 	CwDisableVoltage		: WORD := 16#0000; // 9, 12
 	CwQuickStop				: WORD := 16#0002; // 7, 10, 11
 	CwFaultReset			: WORD := 16#0080; // 15
+	CwEnableRun 			: WORD := 16#007F;  // Operation enabled + ramp bitit 4-6
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[HmiCommands();
@@ -170,7 +171,11 @@ CASE _eState OF
 		END_IF
 
 	Switch_on_disabled:
-		wControlWord := CwShutDown; // 2
+		IF _bPowerReq THEN
+			wControlWord := CwShutDown; // 2
+		ELSE
+			wControlWord := CwShutDown; // 7
+		END_IF
 	
 	Ready_to_Switch_on:
 		IF _bPowerReq THEN
@@ -200,7 +205,7 @@ CASE _eState OF
 			
 		ELSIF _bPowerReq OR _bRampDown THEN
 			IF _bRun OR _bRampDown THEN
-				wControlWord := CwEnableOperation; // pysyy
+				wControlWord := CwEnableRun; // pysyy
 			ELSE
 				wControlWord := CwDisableOperation; // 5
 			END_IF

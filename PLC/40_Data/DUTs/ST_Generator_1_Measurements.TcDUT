@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <DUT Name="ST_Process_1_Measurements" Id="{7acde29a-c453-4510-8865-5b94d2d2fc86}">
-    <Declaration><![CDATA[TYPE ST_Process_1_Measurements :
+  <DUT Name="ST_Generator_1_Measurements" Id="{7acde29a-c453-4510-8865-5b94d2d2fc86}">
+    <Declaration><![CDATA[TYPE ST_Generator_1_Measurements :
 STRUCT
 	//nID:			LINT;
 	//tTime:		DATE_AND_TIME;

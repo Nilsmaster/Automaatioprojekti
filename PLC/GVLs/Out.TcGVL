@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="Out" Id="{f5dcc463-15a3-4edc-9337-062b34989f62}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	fbIoOutGroup		: FB_IoGroup;
+
+
+	
+	{attribute 'TcLinkTo' := '._bHw  := TIID^Device 1 (EtherCAT)^Term 18 (EK1200)^Term 22 (EL2008)^Channel 1^Output'}
+    liServiceLight        : FB_IoOutput(fbIoOutGroup);
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

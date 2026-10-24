@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_IoBase" Id="{a414fd6f-6217-4683-a2ae-eb3302fcd51a}">
+    <Declaration><![CDATA[INTERFACE I_IoBase
+]]></Declaration>
+    <Method Name="Update" Id="{1d304fa5-17b2-4307-9b2b-3b02dc801f3f}">
+      <Declaration><![CDATA[METHOD Update
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

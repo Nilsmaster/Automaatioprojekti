@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_IoOutput" Id="{3ef9086d-7c3f-4027-a1e4-b4895bc417b2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_IoOutput IMPLEMENTS I_IoBit
+
+VAR
+	_bHw	AT %Q* : BOOL;
+	_ftrig			: BOOL;
+	_rtrig			: BOOL;
+	_Q				: BOOL;
+	
+	_HwRtrig		: R_TRIG;
+	_HwFtrig		: F_TRIG;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+_HwRtrig( CLK := _ftrig );
+_HwFtrig( CLK := _rtrig );
+
+_bHw		:= _Q OR _HwRtrig.Q OR _HwFtrig.Q;]]></ST>
+    </Implementation>
+    <Method Name="FB_Init" Id="{cdf08fc8-67a6-4b60-bfdf-e26a535869c4}">
+      <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
+//The return value is not evaluated. For a specific influence, you can also declare the
+//methods explicitly and provide additional code there with the standard initialization
+//code. You can evaluate the return value.
+METHOD FB_Init: BOOL
+VAR_INPUT
+    bInitRetains: BOOL; // TRUE: the retain variables are initialized (reset warm / reset cold)
+    bInCopyCode: BOOL;  // TRUE: the instance will be copied to the copy code afterward (online change) 
+	IoGroup		: I_IoGroup;  
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IoGroup.AddIo(THIS^);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ftrig" Id="{40a55b4a-837e-456b-b22e-f0f86dd8543a}">
+      <Declaration><![CDATA[
+PROPERTY ftrig : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{399603d2-de70-4b5f-a8be-8e3d95dac64c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{150c2fcc-6de9-4e9c-ac66-b062c2bffaa0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_ftrig := ftrig;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Q" Id="{95230719-a139-471a-8e76-bfd3c6179708}">
+      <Declaration><![CDATA[
+PROPERTY Q : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{1996fe04-ae59-4e9d-a634-9e4a2f0d63ea}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b377f567-9e59-4b6a-94e7-240b0fcee85e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Q := Q;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="rtrig" Id="{32aede6c-bdc5-44cb-8eb7-5a7f1e1a3ee1}">
+      <Declaration><![CDATA[
+PROPERTY rtrig : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{e6a94d7b-7a5f-40af-8394-44c289fcd462}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{d67be2b7-a462-454a-a4a8-55662df097e1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_rtrig := rtrig;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Update" Id="{d6750e84-f9a8-4ba0-a616-fcf06a4b0d3d}">
+      <Declaration><![CDATA[
+METHOD Update
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

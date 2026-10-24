@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_IoGroup" Id="{384c065e-b6a2-4bce-804b-2301a51c0a14}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_IoGroup IMPLEMENTS I_IoGroup
+
+VAR
+	aIoArray	: ARRAY [1..30] OF I_IoBase;
+	nIoIndex	: INT := 0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Update();]]></ST>
+    </Implementation>
+    <Method Name="AddIo" Id="{f63768c2-3bfe-411c-aabc-594490ffa8e1}">
+      <Declaration><![CDATA[
+METHOD AddIo
+VAR_INPUT
+	bIo	: I_IoBit;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bIo <> 0 THEN
+	nIoIndex  := nIoIndex + 1;
+	aIoArray[nIoIndex] := bIo;
+	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Update" Id="{d71c24d0-f573-417c-b717-61ca25a7712e}">
+      <Declaration><![CDATA[
+METHOD Update
+VAR
+    i : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i := 1 TO nIoIndex DO
+	aIoArray[i].Update();
+	
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

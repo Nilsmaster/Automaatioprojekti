@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_IoGroup" Id="{43e5735c-166e-471f-b546-8f72f9ab0af3}">
+    <Declaration><![CDATA[INTERFACE I_IoGroup EXTENDS I_IoBase
+]]></Declaration>
+    <Method Name="AddIo" Id="{7044145b-f295-45a4-b20f-5bbba23c3e73}">
+      <Declaration><![CDATA[METHOD AddIo
+VAR_INPUT
+	bIo		: I_IoBit;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

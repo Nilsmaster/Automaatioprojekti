@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_IoBit" Id="{4c8a557e-4677-4e4f-a074-934e8ef598b1}">
+    <Declaration><![CDATA[INTERFACE I_IoBit EXTENDS I_IoBase
+]]></Declaration>
+    <Property Name="ftrig" Id="{36b1dff4-b3a6-455b-b902-afb68be29cdd}">
+      <Declaration><![CDATA[PROPERTY ftrig : BOOL]]></Declaration>
+      <Get Name="Get" Id="{e2da75fc-c981-4453-b59b-593dcaa3c7a9}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{89f6fb45-35d5-44c4-b642-3de7a7505330}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Q" Id="{d840fc8f-f573-47e4-9e5f-3d3ad7a79148}">
+      <Declaration><![CDATA[PROPERTY Q : BOOL]]></Declaration>
+      <Get Name="Get" Id="{4d4b5465-6152-46ae-a729-07dc9aa06957}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{e6eeaf8d-ae0c-483b-a3c5-db6fa4ec7717}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="rtrig" Id="{cc3d6f26-b3e3-494e-a9ae-0100b97b793a}">
+      <Declaration><![CDATA[PROPERTY rtrig : BOOL]]></Declaration>
+      <Get Name="Get" Id="{c23d3a32-ed0d-4544-b194-34f61f6b2fb4}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{3aa53ac3-3cd3-4ea3-91e9-16d3fd112db7}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

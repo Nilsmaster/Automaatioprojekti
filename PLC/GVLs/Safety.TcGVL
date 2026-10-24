@@ -3,6 +3,15 @@
   <GVL Name="Safety" Id="{6a582cab-e4d6-423c-b57e-300a55c0abfe}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
+	
+	// PLC -> Safety
+	ErrAck			 	AT %Q* : BOOL;
+	bRunStop			AT %Q* : BOOL;
+	
+	// Safety -> PLC
+	bElevatorInUse		AT %I* : BOOL;
+	bElevatorNotInUse	AT %I* : BOOL;
+	
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

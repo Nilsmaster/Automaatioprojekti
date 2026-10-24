@@ -18,7 +18,10 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[fbTime();
+      <ST><![CDATA[// Read all inputs
+In.fbIoInGroup();
+
+fbTime();
 fbRank(arrPrices:=fbArvonta.arrPrices);
 gvl.fprice:= fbArvonta.arrPrices[fbTime.onIndex];
 nTila	:= GVL.fbGenerator.nTila;
@@ -63,7 +66,8 @@ GVL.fbRoomtemp();
 GVL.fbDataLogger();
 
 
-
+// Write all outputs
+Out.fbIoOutGroup();
 ]]></ST>
     </Implementation>
   </POU>

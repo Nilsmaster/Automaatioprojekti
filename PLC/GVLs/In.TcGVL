@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="In" Id="{9b53b74f-e894-4f24-91da-ccc92badf1f3}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	fbIoInGroup		: FB_IoGroup;
+
+
+    {attribute 'TcLinkTo' := '._bHw  := TIID^Device 1 (EtherCAT)^Term 18 (EK1200)^Term 20 (EL1008)^Channel 1^Input'}
+    StartStopBtn         : FB_IoInput(fbIoInGroup);
+
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

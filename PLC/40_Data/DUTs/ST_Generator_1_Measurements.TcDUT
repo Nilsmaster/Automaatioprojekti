@@ -9,6 +9,7 @@ STRUCT
 	fTemperature:		LREAL;
 	CoolingRunning:		BOOL;
 	CoolingSpeed:		LREAL;
+	bAlarm		: BOOL;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

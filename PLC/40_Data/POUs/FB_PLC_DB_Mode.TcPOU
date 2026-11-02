@@ -81,7 +81,8 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[stMeas_1.fTemperature := iLogger.nRoomTemp;]]></ST>
+        <ST><![CDATA[stMeas_1.fTemperature := iLogger.nRoomTemp;
+stMeas_1.bAlarm :=  iLogger.bAlarm;]]></ST>
       </Implementation>
     </Method>
   </POU>

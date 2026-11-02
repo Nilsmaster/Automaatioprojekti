@@ -8,7 +8,12 @@ VAR
 
 	fbMariaConnection:	FB_SQLDatabaseEvt(sNetID:= '192.168.68.113.1.1', tTimeout:= T#5S);	// DB connection handling
 	fbSQLCommand:		FB_SQLCommandEvt(sNetID:= '192.168.68.113.1.1', tTimeout:= T#5S);	// DB read/write operations
-
+	
+	// Structurit tähän	DUT kansiosta
+		// häly..
+		// lämpö..
+	
+	
 	bWriteRequest:		BOOL;	// Trig single write operation
 	
 	bSQLExecute:		BOOL;
@@ -52,6 +57,8 @@ IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
 	bWriteRequest	:= FALSE;
 	fbTON_DataSample(IN:=FALSE);
 END_IF
+
+
 
 	// Execute SQL command
 IF(bSQLExecute) THEN

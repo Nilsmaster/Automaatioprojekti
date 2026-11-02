@@ -24,7 +24,7 @@ IF(bInit) THEN
 	fbStartDB(
 	NETID:= SEL(bTestMode, '157.24.182.82.1.1', ''),
 	PATHSTR:= SEL(bTestMode, 'D:\testMariaStart.bat', 'E:\MariaStartPLC.bat'),
-	DIRNAME:= SEL(bTestMode, 'D:\', 'D:\'),
+	DIRNAME:= SEL(bTestMode, 'D:\', 'E:\'),
 	COMNDLINE:= ,
 	START:= TRUE,
 	TMOUT:= T#5S,
@@ -41,8 +41,8 @@ END_IF
 IF(bStop) THEN
 	fbStopDB(
 	NETID:= SEL(bTestMode, '157.24.182.82.1.1', ''),
-	PATHSTR:= SEL(bTestMode, 'D:\testMariaStop.bat', 'D:\testMariaStopPLC.bat'),
-	DIRNAME:= SEL(bTestMode, 'D:\', 'D:\'),
+	PATHSTR:= SEL(bTestMode, 'D:\testMariaStop.bat', 'E:\testMariaStopPLC.bat'),
+	DIRNAME:= SEL(bTestMode, 'D:\', 'E:\'),
 	COMNDLINE:= ,
 	START:= TRUE,
 	TMOUT:= T#5S,

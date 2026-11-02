@@ -54,6 +54,12 @@
     <Compile Include="40_Data\DUTs\ST_Generator_1_Measurements.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="40_Data\DUTs\ST_Halytykset.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="40_Data\DUTs\ST_Lampotilat.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="40_Data\ITFs\I_Logger.TcIO">
       <SubType>Code</SubType>
     </Compile>

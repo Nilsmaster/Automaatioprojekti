@@ -12,7 +12,7 @@ VAR
 	// Structurit tähän	DUT kansiosta
 		// häly..
 		// lämpö..
-	
+	stLampotilat:		ST_Lampotilat;
 	
 	bWriteRequest:		BOOL;	// Trig single write operation
 	
@@ -50,7 +50,13 @@ IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
 	sValue	:= REAL_TO_STRING(INT_TO_REAL(nCntr)/100.0 + 70);
 	//sSQLCmd	:= 'INSERT INTO process_measurements (timestamp, tag_name, value, unit) VALUES ( $'2026-09-23 11:01:13$', $'TT_01$', 22.2, $'°C$')';
 	//sSQLCmd	:= CONCAT('INSERT INTO process_measurements (timestamp, tag_name, value, unit) VALUES (NOW(6),$'TT_01$', ', CONCAT(sValue, ', $'°C$')'));
-	sSQLCmd := CONCAT('INSERT INTO lampotilat (aikaleima, mittauspiste, lampotila, yksikko) VALUES (NOW(6), $'TT_01$', ', CONCAT(sValue, ', $'C$')'));
+	//sSQLCmd := CONCAT('INSERT INTO lampotilat (aikaleima, mittauspiste, lampotila, yksikko) VALUES (NOW(6), $'TT_01$', ', CONCAT(sValue, ', $'C$')'));
+	
+	//Tää toimii!!!!		
+	sSQLCmd := CONCAT('INSERT INTO lampotilat (aikaleima, mittauspiste, lampotila, yksikko) VALUES (NOW(6), ', 
+				CONCAT('$'', concat(stLampotilat.sMittauspiste, CONCAT('$', ', 
+					CONCAT(LREAL_TO_STRING(stLampotilat.fLampotila), CONCAT(', ', 
+						CONCAT('$'', concat(stLampotilat.sYksikko, '$')'))))))));
 
 	fbMariaConnection.CreateCmd(ADR(fbSQLCommand));
 	bSQLExecute	:= TRUE;

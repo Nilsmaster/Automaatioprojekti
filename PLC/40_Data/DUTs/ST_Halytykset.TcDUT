@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_Halytykset" Id="{9a263320-f20b-417d-a0f2-392ebf9d0608}">
+    <Declaration><![CDATA[TYPE ST_Halytykset :
+STRUCT
+	nID:				LINT;
+	tAikaleima:			DATE_AND_TIME;
+	flampotila:			LREAL;
+	balarm:				BOOL;
+	fraja_arvo:			LREAL;
+	sToimintatila:		STRING(9);
+	skuvaus:			STRING(255);
+
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_Tapahtumaloki" Id="{51130b9f-bee3-41a2-bf83-5378b8e48a55}">
+    <Declaration><![CDATA[TYPE ST_Tapahtumaloki :
+STRUCT
+	nID:				LINT;
+	tAikaleima:			DATE_AND_TIME;
+	sTila:				STRING(9);
+
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

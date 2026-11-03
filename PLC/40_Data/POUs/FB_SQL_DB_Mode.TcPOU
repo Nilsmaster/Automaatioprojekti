@@ -13,31 +13,22 @@ VAR
 		// häly..
 		// lämpö..
 	stLampotilat:		ST_Lampotilat;
-	
 	bWriteRequest:		BOOL;	// Trig single write operation
-	
 	bSQLExecute:		BOOL;
 	bSQLDone:			BOOL;
-	
 	sSQLCmd:			STRING(256);	// Actual SQL command structure to write into DB
-	sValue:				STRING(256);	// Stored data into DB
-
-	fbTON_DataSample:	TON := (PT:=T#5S);
-	fbTON_DataStorage:	TON := (PT:=T#1M);
-	
+	fbTON_DataSample:	TON := (PT:=T#1M);
 	bLoggingActive:		BOOL;	// Manual activation
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-	// Create 5s/1min write cycle
+      <ST><![CDATA[fbTON_DataSample.PT	 :=stLampotilat.tKirjoitussykli;
+
+// Create 5s/1min write cycle
 fbTON_DataSample(IN:=bLoggingActive);
-fbTON_DataStorage(IN:=bLoggingActive);
+
 
 bWriteRequest	:= SEL(fbTON_DataSample.Q, bWriteRequest, TRUE);
-bLoggingActive	:= SEL(fbTON_DataStorage.Q, bLoggingActive, FALSE);
-
-nCntr	:= SEL(nCntr >= 1000, nCntr + 1, 1);
 
 	// Create connection
 IF(NOT(fbMariaConnection.bConnected) AND bWriteRequest) THEN
@@ -46,13 +37,8 @@ END_IF
 
 	// Create SQL command
 IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
-
-	sValue	:= REAL_TO_STRING(INT_TO_REAL(nCntr)/100.0 + 70);
-	//sSQLCmd	:= 'INSERT INTO process_measurements (timestamp, tag_name, value, unit) VALUES ( $'2026-09-23 11:01:13$', $'TT_01$', 22.2, $'°C$')';
-	//sSQLCmd	:= CONCAT('INSERT INTO process_measurements (timestamp, tag_name, value, unit) VALUES (NOW(6),$'TT_01$', ', CONCAT(sValue, ', $'°C$')'));
-	//sSQLCmd := CONCAT('INSERT INTO lampotilat (aikaleima, mittauspiste, lampotila, yksikko) VALUES (NOW(6), $'TT_01$', ', CONCAT(sValue, ', $'C$')'));
 	
-	//Tää toimii!!!!		
+	//Tää toimii!!!!	Lämpötilan kirjoitus 	
 	sSQLCmd := CONCAT('INSERT INTO lampotilat (aikaleima, mittauspiste, lampotila, yksikko) VALUES (NOW(6), ', 
 				CONCAT('$'', concat(stLampotilat.sMittauspiste, CONCAT('$', ', 
 					CONCAT(LREAL_TO_STRING(stLampotilat.fLampotila), CONCAT(', ', 
@@ -63,6 +49,8 @@ IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
 	bWriteRequest	:= FALSE;
 	fbTON_DataSample(IN:=FALSE);
 END_IF
+
+
 
 
 

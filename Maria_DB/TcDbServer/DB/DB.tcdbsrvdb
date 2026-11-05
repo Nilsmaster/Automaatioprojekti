@@ -3,7 +3,7 @@
   <ID>1</ID>
   <Name>DB</Name>
   <ServerName>127.0.0.1</ServerName>
-  <DatabaseName>huoltotilan_valvonta</DatabaseName>
+  <DatabaseName>VesivoimalaDB</DatabaseName>
   <TableName />
   <Authentication>True</Authentication>
   <UserID>operator</UserID>

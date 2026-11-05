@@ -50,8 +50,22 @@ IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
 	fbTON_DataSample(IN:=FALSE);
 END_IF
 
+//	Hälyn kirjoitus 
 
+(*IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
+	
+		
 
+	sSQLCmd := CONCAT('INSERT INTO lampotilat (aikaleima, mittauspiste, lampotila, yksikko) VALUES (NOW(6), ', 
+				CONCAT('$'', concat(stLampotilat.sMittauspiste, CONCAT('$', ', 
+					CONCAT(LREAL_TO_STRING(stLampotilat.fLampotila), CONCAT(', ', 
+						CONCAT('$'', concat(stLampotilat.sYksikko, '$')'))))))));
+
+	fbMariaConnection.CreateCmd(ADR(fbSQLCommand));
+	bSQLExecute	:= TRUE;
+	bWriteRequest	:= FALSE;
+	fbTON_DataSample(IN:=FALSE);
+END_IF*)
 
 
 	// Execute SQL command

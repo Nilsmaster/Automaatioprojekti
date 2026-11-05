@@ -16,17 +16,21 @@ VAR
 	fbTON_StopDB:	TON := (PT:=T#10S);
 	_fbPlcDBMode	: FB_PLC_DB_Mode;
 	_fbSqlDBMode	: FB_SQL_DB_Mode;
+	rTrigStart 		: R_TRIG;
+	rTrigStop		: R_TRIG;
+    nStartErrID 	: UDINT;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
+rTrigStart(CLK := bInit);
 IF(bInit) THEN
 	fbStartDB(
 	NETID:= SEL(bTestMode, '157.24.182.82.1.1', ''),
-	PATHSTR:= SEL(bTestMode, 'D:\testMariaStart.bat', 'E:\MariaStartPLC.bat'),
-	DIRNAME:= SEL(bTestMode, 'D:\', 'E:\'),
+	PATHSTR:= SEL(bTestMode, 'D:\MariaStartPLC.bat', 'D:\MariaStartPLC.bat'),
+	DIRNAME:= SEL(bTestMode, 'D:\', 'D:\'),
 	COMNDLINE:= ,
-	START:= TRUE,
+	START:= rTrigStart.Q,
 	TMOUT:= T#5S,
 	BUSY=> ,
 	ERR=> ,
@@ -38,13 +42,14 @@ IF(bInit) THEN
 	fbTON_Init(IN:=bInit);
 END_IF
 
+rTrigStop(CLK := bStop);
 IF(bStop) THEN
 	fbStopDB(
 	NETID:= SEL(bTestMode, '157.24.182.82.1.1', ''),
-	PATHSTR:= SEL(bTestMode, 'D:\testMariaStop.bat', 'E:\testMariaStopPLC.bat'),
-	DIRNAME:= SEL(bTestMode, 'D:\', 'E:\'),
+	PATHSTR:= SEL(bTestMode, 'D:\MariaStopPLC.bat', 'D:\MariaStopPLC.bat'),
+	DIRNAME:= SEL(bTestMode, 'D:\', 'D:\'),
 	COMNDLINE:= ,
-	START:= TRUE,
+	START:= rTrigStop.Q,
 	TMOUT:= T#5S,
 	BUSY=> ,
 	ERR=> ,
@@ -58,7 +63,8 @@ END_IF
 IF(NOT(bInit) AND bDB_Operate) THEN
 
 	_fbSqlDBMode();
-END_IF]]></ST>
+END_IF
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

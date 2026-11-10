@@ -60,7 +60,7 @@
     <Compile Include="40_Data\DUTs\ST_Tapahtumaloki.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="40_Data\DUTs\ST_Lampotilat.TcDUT">
+    <Compile Include="40_Data\DUTs\ST_Mittaukset.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="40_Data\ITFs\I_Logger.TcIO">

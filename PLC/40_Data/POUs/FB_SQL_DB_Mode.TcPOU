@@ -12,7 +12,13 @@ VAR
 	// Structurit tähän	DUT kansiosta
 		// häly..
 		// lämpö..
-	stLampotilat:		ST_Lampotilat;
+	stMittaukset:		ST_Mittaukset;
+	stHalytykset:		ST_Halytykset;
+	stTapahtumaloki:	ST_Tapahtumaloki;
+	sLampotila:			STRING;
+	sTeho:				STRING;
+	sPinta:				STRING;
+	sRPM:				STRING;
 	bWriteRequest:		BOOL;	// Trig single write operation
 	bSQLExecute:		BOOL;
 	bSQLDone:			BOOL;
@@ -22,7 +28,7 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[fbTON_DataSample.PT	 :=stLampotilat.tKirjoitussykli;
+      <ST><![CDATA[fbTON_DataSample.PT	 :=stMittaukset.tKirjoitussykli;
 
 // Create 5s/1min write cycle
 fbTON_DataSample(IN:=bLoggingActive);
@@ -35,14 +41,52 @@ IF(NOT(fbMariaConnection.bConnected) AND bWriteRequest) THEN
 	fbMariaConnection.Connect(1);
 END_IF
 
-	// Create SQL command
+
+
+
+(*
+	//Lämpötilan kirjoitus 	
+
 IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
+
+sLampotila:=		LREAL_TO_STRING(stMittaukset.flampotila_c);
+sTeho:=				LREAL_TO_STRING(stMittaukset.fgeneraattorin_teho_kw);
+sPinta:=			LREAL_TO_STRING(stMittaukset.faltaan_pinta_prosenttia);
+sRPM:= 				DINT_TO_STRING(stMittaukset.njaahdytyspumpun_rpm);
+
+
+	sSQLCmd := CONCAT('INSERT INTO mittaukset (aikaleima, lampotila_c, generaattorin_teho_kw, altaan_pinta_prosenttia, jaahdytyspumpun_rpm)
+						VALUES (NOW(6), ', CONCAT('$'', concat(sLampotila, CONCAT('$', ', CONCAT('$'', CONCAT(sTeho, CONCAT('$', ', CONCAT('$'', concat(sPinta, CONCAT('$', ', CONCAT('$'', concat(sRPM, '$')'))))))))))));
+						
+	fbMariaConnection.CreateCmd(ADR(fbSQLCommand));
+	bSQLExecute	:= TRUE;
+	bWriteRequest	:= FALSE;
+	fbTON_DataSample(IN:=FALSE);
+END_IF
+
+	// Execute SQL command
+IF(bSQLExecute) THEN
+	fbSQLCommand.Execute(
+		pSQLCmd:= ADR(sSQLCmd),
+		cbSQLCmd:= SIZEOF(sSQLCmd));
+
+	IF(NOT(fbSQLCommand.bBusy)) THEN
+		bSQLExecute := FALSE;
+		bSQLDone := TRUE;
+	END_IF
+END_IF
 	
-	//Tää toimii!!!!	Lämpötilan kirjoitus 	
-	sSQLCmd := CONCAT('INSERT INTO lampotilat (aikaleima, mittauspiste, lampotila, yksikko) VALUES (NOW(6), ', 
-				CONCAT('$'', concat(stLampotilat.sMittauspiste, CONCAT('$', ', 
-					CONCAT(LREAL_TO_STRING(stLampotilat.fLampotila), CONCAT(', ', 
-						CONCAT('$'', concat(stLampotilat.sYksikko, '$')'))))))));
+
+
+
+
+	//Hälyn kirjoitus 					
+
+IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
+
+	sSQLCmd := CONCAT('INSERT INTO halytykset (aikaleima, koodi, kuvaus)
+						VALUES (NOW(6), ', CONCAT('$'', concat(stHalytykset.sKoodi, CONCAT('$', ', CONCAT('$'', CONCAT(stHalytykset.sKuvaus, '$')'))))));
+
 
 	fbMariaConnection.CreateCmd(ADR(fbSQLCommand));
 	bSQLExecute	:= TRUE;
@@ -50,22 +94,6 @@ IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
 	fbTON_DataSample(IN:=FALSE);
 END_IF
 
-//	Hälyn kirjoitus 
-
-(*IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
-	
-		
-
-	sSQLCmd := CONCAT('INSERT INTO lampotilat (aikaleima, mittauspiste, lampotila, yksikko) VALUES (NOW(6), ', 
-				CONCAT('$'', concat(stLampotilat.sMittauspiste, CONCAT('$', ', 
-					CONCAT(LREAL_TO_STRING(stLampotilat.fLampotila), CONCAT(', ', 
-						CONCAT('$'', concat(stLampotilat.sYksikko, '$')'))))))));
-
-	fbMariaConnection.CreateCmd(ADR(fbSQLCommand));
-	bSQLExecute	:= TRUE;
-	bWriteRequest	:= FALSE;
-	fbTON_DataSample(IN:=FALSE);
-END_IF*)
 
 
 	// Execute SQL command
@@ -79,6 +107,39 @@ IF(bSQLExecute) THEN
 		bSQLDone := TRUE;
 	END_IF
 END_IF
+*)
+
+
+
+
+	//Tapahtumalokin kirjoitus 					
+
+IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
+
+	sSQLCmd := CONCAT('INSERT INTO tapahtumaloki (aikaleima, tapahtuma, kuvaus)
+						VALUES (NOW(6), ', CONCAT('$'', concat(stTapahtumaloki.sTapahtuma, CONCAT('$', ', CONCAT('$'', CONCAT(stTapahtumaloki.sKuvaus, '$')'))))));
+
+
+	fbMariaConnection.CreateCmd(ADR(fbSQLCommand));
+	bSQLExecute	:= TRUE;
+	bWriteRequest	:= FALSE;
+	fbTON_DataSample(IN:=FALSE);
+END_IF
+
+
+
+	// Execute SQL command
+IF(bSQLExecute) THEN
+	fbSQLCommand.Execute(
+		pSQLCmd:= ADR(sSQLCmd),
+		cbSQLCmd:= SIZEOF(sSQLCmd));
+
+	IF(NOT(fbSQLCommand.bBusy)) THEN
+		bSQLExecute := FALSE;
+		bSQLDone := TRUE;
+	END_IF
+END_IF
+
 
 	// Release connection
 IF(NOT(fbSQLCommand.bBusy) AND fbMariaConnection.bConnected AND NOT(bLoggingActive)) THEN

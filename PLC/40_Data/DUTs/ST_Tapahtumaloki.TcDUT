@@ -5,7 +5,8 @@
 STRUCT
 	nID:				LINT;
 	tAikaleima:			DATE_AND_TIME;
-	sTila:				STRING(9);
+	sTapahtuma:			STRING(50);
+	sKuvaus:			STRING(255);
 
 	
 END_STRUCT

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_Mittaukset" Id="{65c62fb9-9d5d-4321-bdb4-490d38dc25c9}">
+    <Declaration><![CDATA[TYPE ST_Mittaukset :
+
+STRUCT
+	nID:						LINT;
+	tAikaleima:					DATE_AND_TIME;
+	flampotila_c:				LREAL;
+	fgeneraattorin_teho_kw:		LREAL;
+	faltaan_pinta_prosenttia:	LREAL;
+	njaahdytyspumpun_rpm:		DINT;
+	tKirjoitussykli:			TIME :=T#10S;
+	
+
+
+	
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -5,11 +5,8 @@
 STRUCT
 	nID:				LINT;
 	tAikaleima:			DATE_AND_TIME;
-	flampotila:			LREAL;
-	balarm:				BOOL;
-	fraja_arvo:			LREAL;
-	sToimintatila:		STRING(9);
-	skuvaus:			STRING(255);
+	sKoodi:				STRING(50);	
+	sKuvaus:			STRING(255);
 
 	
 END_STRUCT

@@ -148,5 +148,27 @@ IF(NOT(fbSQLCommand.bBusy) AND fbMariaConnection.bConnected AND NOT(bLoggingActi
 END_IF
 ]]></ST>
     </Implementation>
+    <Method Name="CoolingControlLogger" Id="{bb720a7f-6ad4-4e96-a65f-6de3fc28d2c0}">
+      <Declaration><![CDATA[METHOD CoolingControlLogger
+VAR_INPUT
+	iLogger		: I_Cooling;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stMeas_1.CoolingRunning := iLogger.bRunning;
+stMeas_1.CoolingSpeed 	:= REAL_TO_LREAL(iLogger.nSpeed);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RoomTempLogger" Id="{e73d5902-d04d-41ec-a2d2-a52f23f24d80}">
+      <Declaration><![CDATA[METHOD RoomTempLogger : BOOL
+VAR_INPUT
+	iLogger			: I_RoomTempControl;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stMeas_1.fTemperature := iLogger.nRoomTemp;
+stMeas_1.bAlarm :=  iLogger.bAlarm;]]></ST>
+      </Implementation>
+    </Method>
   </POU>
 </TcPlcObject>

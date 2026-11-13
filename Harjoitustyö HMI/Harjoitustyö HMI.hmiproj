@@ -128,6 +128,9 @@
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
   <Target Name="ReBuild" DependsOnTargets="Clean; Build" />
   <ItemGroup>
+    <Content Include="Content\Moottorintiedot.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Server\ADS\ADS.Config.default.json">
       <SubType>Content</SubType>
     </Content>
@@ -140,6 +143,13 @@
     </Content>
     <Content Include="Server\TcHmiSqliteHistorize\TcHmiSqliteHistorize.Storage.json">
       <SubType>Content</SubType>
+    </Content>
+    <Content Include="User control\ABBMoottori.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="User control\ABBMoottori.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>User control\ABBMoottori.usercontrol</DependentUpon>
     </Content>
     <Content Include="User control\Anturi.usercontrol">
       <SubType>Content</SubType>

@@ -32,6 +32,14 @@
       "frameworkUserControlConfig": "User control\\Painonappi boolean.usercontrol.json",
       "id": "tchmi:project#/definitions/Painonappi_boolean",
       "type": "object"
+    },
+    "ABBMoottori": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "User control\\ABBMoottori.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/ABBMoottori"
     }
   }
 }

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_SQL_DB_Mode" Id="{332af01c-b846-48f1-a6fe-976448ab1a47}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_SQL_DB_Mode
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SQL_DB_Mode IMPLEMENTS I_Logger, I_Alarm
 
 VAR
 	nCntr:		INT;
@@ -12,8 +12,14 @@ VAR
 	// Structurit tähän	DUT kansiosta
 		// häly..
 		// lämpö..
+	fbLocalTime:		FB_LocalSystemTime;	
+		
 	stMittaukset:		ST_Mittaukset;
 	stHalytykset:		ST_Halytykset;
+	arrStHalytykset		: ARRAY [1..10] OF ST_Halytykset;
+	nHwrite:			INT := 1;
+	nHread:				INT := 1;
+	nhalyId	:			INT;
 	stTapahtumaloki:	ST_Tapahtumaloki;
 	sLampotila:			STRING;
 	sTeho:				STRING;
@@ -24,14 +30,21 @@ VAR
 	bSQLDone:			BOOL;
 	sSQLCmd:			STRING(256);	// Actual SQL command structure to write into DB
 	fbTON_DataSample:	TON := (PT:=T#1M);
-	bLoggingActive:		BOOL;	// Manual activation
+	bLoggingActive:		BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[fbTON_DataSample.PT	 :=stMittaukset.tKirjoitussykli;
+      <ST><![CDATA[fbLocalTime(
+	sNetID   := '',        // tyhjä = paikallinen kone
+    bEnable  := TRUE,
+    dwCycle  := 1,         // päivitysväli sekunteina
+    dwOpt    := 0,
+    tTimeout := T#5S);
+
+fbTON_DataSample.PT	 :=stMittaukset.tKirjoitussykli;
 
 // Create 5s/1min write cycle
-fbTON_DataSample(IN:=bLoggingActive);
+//fbTON_DataSample(IN:=bLoggingActive);
 
 
 bWriteRequest	:= SEL(fbTON_DataSample.Q, bWriteRequest, TRUE);
@@ -41,14 +54,10 @@ IF(NOT(fbMariaConnection.bConnected) AND bWriteRequest) THEN
 	fbMariaConnection.Connect(1);
 END_IF
 
-
-
-
-(*
 	//Lämpötilan kirjoitus 	
 
-IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
-
+IF(fbMariaConnection.bConnected AND bWriteRequest AND NOT bLoggingActive) THEN
+bLoggingActive  := TRUE;
 sLampotila:=		LREAL_TO_STRING(stMittaukset.flampotila_c);
 sTeho:=				LREAL_TO_STRING(stMittaukset.fgeneraattorin_teho_kw);
 sPinta:=			LREAL_TO_STRING(stMittaukset.faltaan_pinta_prosenttia);
@@ -64,26 +73,11 @@ sRPM:= 				DINT_TO_STRING(stMittaukset.njaahdytyspumpun_rpm);
 	fbTON_DataSample(IN:=FALSE);
 END_IF
 
-	// Execute SQL command
-IF(bSQLExecute) THEN
-	fbSQLCommand.Execute(
-		pSQLCmd:= ADR(sSQLCmd),
-		cbSQLCmd:= SIZEOF(sSQLCmd));
-
-	IF(NOT(fbSQLCommand.bBusy)) THEN
-		bSQLExecute := FALSE;
-		bSQLDone := TRUE;
-	END_IF
-END_IF
-	
-
-
-
-
 	//Hälyn kirjoitus 					
 
-IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
-
+IF(fbMariaConnection.bConnected AND arrStHalytykset[nHread].nID <> 0 AND NOT bLoggingActive) THEN
+	bLoggingActive := TRUE;
+	
 	sSQLCmd := CONCAT('INSERT INTO halytykset (aikaleima, koodi, kuvaus)
 						VALUES (NOW(6), ', CONCAT('$'', concat(stHalytykset.sKoodi, CONCAT('$', ', CONCAT('$'', CONCAT(stHalytykset.sKuvaus, '$')'))))));
 
@@ -92,30 +86,19 @@ IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
 	bSQLExecute	:= TRUE;
 	bWriteRequest	:= FALSE;
 	fbTON_DataSample(IN:=FALSE);
+	
+		// hälytys array luku kontrolli
+		arrStHalytykset[nHread].nID := 0;
+		nHread := nHread + 1;
+		IF nHread > 10 THEN
+			nHread := 1;
+		END_IF
 END_IF
-
-
-
-	// Execute SQL command
-IF(bSQLExecute) THEN
-	fbSQLCommand.Execute(
-		pSQLCmd:= ADR(sSQLCmd),
-		cbSQLCmd:= SIZEOF(sSQLCmd));
-
-	IF(NOT(fbSQLCommand.bBusy)) THEN
-		bSQLExecute := FALSE;
-		bSQLDone := TRUE;
-	END_IF
-END_IF
-*)
-
-
-
 
 	//Tapahtumalokin kirjoitus 					
-
-IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
-
+(*
+IF(fbMariaConnection.bConnected (* AND  TAPAHTUMA TRIGGER*) AND NOT bLoggingActive) THEN
+	bLoggingActive := TRUE;
 	sSQLCmd := CONCAT('INSERT INTO tapahtumaloki (aikaleima, tapahtuma, kuvaus)
 						VALUES (NOW(6), ', CONCAT('$'', concat(stTapahtumaloki.sTapahtuma, CONCAT('$', ', CONCAT('$'', CONCAT(stTapahtumaloki.sKuvaus, '$')'))))));
 
@@ -125,7 +108,7 @@ IF(fbMariaConnection.bConnected AND bWriteRequest) THEN
 	bWriteRequest	:= FALSE;
 	fbTON_DataSample(IN:=FALSE);
 END_IF
-
+*)
 
 
 	// Execute SQL command
@@ -137,6 +120,7 @@ IF(bSQLExecute) THEN
 	IF(NOT(fbSQLCommand.bBusy)) THEN
 		bSQLExecute := FALSE;
 		bSQLDone := TRUE;
+		bLoggingActive := FALSE;
 	END_IF
 END_IF
 
@@ -148,6 +132,29 @@ IF(NOT(fbSQLCommand.bBusy) AND fbMariaConnection.bConnected AND NOT(bLoggingActi
 END_IF
 ]]></ST>
     </Implementation>
+    <Method Name="addAlarm" Id="{f0f4c8e5-b8b1-4554-9d09-27473c9bfc8c}">
+      <Declaration><![CDATA[METHOD addAlarm : BOOL
+VAR_INPUT
+	sKoodi		: STRING;
+	sKuvaus		: STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stHalytykset.nID := nhalyId + 1;
+IF fbLocalTime.bValid THEN
+    stHalytykset.tAikaleima := SYSTEMTIME_TO_DT(fbLocalTime.systemTime);
+END_IF
+stHalytykset.sKoodi  := sKoodi;
+stHalytykset.sKuvaus := sKuvaus;
+
+arrStHalytykset[nHwrite] := stHalytykset;
+
+nHwrite := nHwrite + 1;
+IF nHwrite > 10 THEN 
+    nHwrite := 1;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="CoolingControlLogger" Id="{bb720a7f-6ad4-4e96-a65f-6de3fc28d2c0}">
       <Declaration><![CDATA[METHOD CoolingControlLogger
 VAR_INPUT
@@ -155,8 +162,19 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[stMeas_1.CoolingRunning := iLogger.bRunning;
-stMeas_1.CoolingSpeed 	:= REAL_TO_LREAL(iLogger.nSpeed);]]></ST>
+        <ST><![CDATA[//stMittaukset.CoolingRunning := iLogger.bRunning;
+stMittaukset.njaahdytyspumpun_rpm 	:= REAL_TO_DINT(iLogger.nSpeed);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GeneratorLogger" Id="{81aee581-37a4-4130-8779-c15d9df43470}">
+      <Declaration><![CDATA[METHOD GeneratorLogger
+VAR_INPUT
+	iLogger		: I_Generator;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stMittaukset.faltaan_pinta_prosenttia := iLogger.fAltaanpinta;
+stMittaukset.fgeneraattorin_teho_kw	:= iLogger.fgeneraattorin_teho_kw;]]></ST>
       </Implementation>
     </Method>
     <Method Name="RoomTempLogger" Id="{e73d5902-d04d-41ec-a2d2-a52f23f24d80}">
@@ -166,8 +184,8 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[stMeas_1.fTemperature := iLogger.nRoomTemp;
-stMeas_1.bAlarm :=  iLogger.bAlarm;]]></ST>
+        <ST><![CDATA[stMittaukset.flampotila_c := iLogger.nRoomTemp;
+//stMittaukset.bAlarm :=  iLogger.bAlarm;]]></ST>
       </Implementation>
     </Method>
   </POU>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_Alarm" Id="{70f374ee-1dca-4b66-b1b4-e7b455663b12}">
+    <Declaration><![CDATA[INTERFACE I_Alarm
+]]></Declaration>
+    <Method Name="addAlarm" Id="{39386a93-8060-4c8c-926d-f614b9016e67}">
+      <Declaration><![CDATA[METHOD addAlarm : BOOL
+VAR_INPUT
+	sKoodi		: STRING;
+	sKuvaus		: STRING;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

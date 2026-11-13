@@ -10,6 +10,13 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
+    <Method Name="GeneratorLogger" Id="{2e68ee11-4676-4d44-a664-a6c65283ecfb}">
+      <Declaration><![CDATA[METHOD GeneratorLogger
+VAR_INPUT
+	iLogger		: I_Generator;
+END_VAR
+]]></Declaration>
+    </Method>
     <Method Name="RoomTempLogger" Id="{20ddc7e7-9977-486b-aa83-88fba53294fc}">
       <Declaration><![CDATA[METHOD RoomTempLogger : BOOL
 VAR_INPUT

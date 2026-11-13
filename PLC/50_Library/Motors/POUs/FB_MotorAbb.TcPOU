@@ -40,7 +40,7 @@ VAR
 	_nManualSpeed		: REAL := 50;
 	
 	_bRampDown			: BOOL;
-	
+	bSimulation			: BOOL;
 	_tonStop			: TON;
 	_rtrigReset			: R_TRIG;
 	_tofReset			: TOF;
@@ -72,7 +72,10 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[HmiCommands();
 // tilan luku
-
+IF bSimulation THEN
+	wStatusWord := 39;
+	_bAuto := TRUE;
+END_IF
 
 IF    (wStatusWord AND SwMask4F) = SwSwitchOnDisabled	THEN _eState := Switch_on_disabled;
 ELSIF (wStatusWord AND SwMask4F) = SwFault				THEN _eState := Fault;
@@ -82,6 +85,7 @@ ELSIF (wStatusWord AND SwMask6F) = SwOperationEnabled	THEN _eState := Operation_
 ELSIF (wStatusWord AND SwMask6F) = SwQuickStopActive	THEN _eState := Quick_stop_active;
 ELSE                                                         _eState := Unknown_state;
 END_IF
+
 
 
 IF	_eDriveMode = Auto AND (_bManual OR NOT _bAuto) OR

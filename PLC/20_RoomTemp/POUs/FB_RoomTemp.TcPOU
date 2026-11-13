@@ -28,8 +28,8 @@ END_VAR
 _fbRoomTempControl();
 _fbCoolingControl();
 
-_fbRoomTempControl.DataLogger(GVL.fbDataLogger._fbPlcDBMode);
-_fbCoolingControl.DataLogger(GVL.fbDataLogger._fbPlcDBMode);
+_fbRoomTempControl.DataLogger(GVL.fbDataLogger._fbSqlDBMode);
+_fbCoolingControl.DataLogger(GVL.fbDataLogger._fbSqlDBMode);
 
 //_fbMotorCooling();
 ]]></ST>

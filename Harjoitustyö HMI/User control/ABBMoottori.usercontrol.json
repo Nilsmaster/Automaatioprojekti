@@ -1,0 +1,24 @@
+{
+  "parameters": [
+    {
+      "allowSymbolExpressionsInObject": false,
+      "requiredOnCompile": false,
+      "bindable": true,
+      "propertySetterName": "setStabb",
+      "propertyGetterName": "getStabb",
+      "refTo": "",
+      "name": "data-tchmi-stabb",
+      "displayName": "stabb",
+      "visible": true,
+      "type": "tchmi:server#/definitions/ADS-PLC.ST_GeneratorHmi",
+      "category": "",
+      "description": "",
+      "readOnly": false,
+      "heritable": true,
+      "propertyName": "stabb"
+    }
+  ],
+  "virtualRights": [],
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.3.229/runtimes/native1.12-tchmi/Schema/UserControlConfig.Schema.json",
+  "description": ""
+}

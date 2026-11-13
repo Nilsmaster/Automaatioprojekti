@@ -16,7 +16,7 @@
 </div>
 <div id="Parametrit" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Parametrit.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="346" data-tchmi-left-unit="px" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="66" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-nimi="Parametrit" data-tchmi-zindex="11">
 </div>
-<div id="Painonappi_3" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Trendi.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="455" data-tchmi-left-unit="px" data-tchmi-nimi="Trendi" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="66" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-zindex="12">
+<div id="Painonappi_3" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Trendi.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="453" data-tchmi-left-unit="px" data-tchmi-nimi="Trendi" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="66" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-zindex="12">
 </div>
 <div id="TcHmiTextblock_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="592" data-tchmi-left-unit="px" data-tchmi-text="Ajan nopeuskerroin 1-100" data-tchmi-top="85" data-tchmi-top-unit="px" data-tchmi-width="136" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="13">
 </div>
@@ -149,5 +149,7 @@
 <div id="Stop" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Etusivu.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="346" data-tchmi-left-unit="px" data-tchmi-nimi="Stop" data-tchmi-target-user-control="User control/Painonappi boolean.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-kohde="%s%ADS.PLC.GVL.stGenerator::bStop%/s%" data-tchmi-zindex="21">
 </div>
 <div id="TcHmiTextblock_10" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="39" data-tchmi-height-unit="px" data-tchmi-left="101" data-tchmi-left-unit="px" data-tchmi-text="Pumppuvoimalaitos" data-tchmi-top="17" data-tchmi-top-unit="px" data-tchmi-width="514" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-size="30">
+</div>
+<div id="Painonappi_8" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Moottorintiedot.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="462" data-tchmi-left-unit="px" data-tchmi-nimi="moottori" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
 </div>
 </div>

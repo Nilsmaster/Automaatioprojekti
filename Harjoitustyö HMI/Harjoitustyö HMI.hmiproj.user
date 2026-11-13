@@ -29,6 +29,42 @@
       "DesignAreaPosition": "Left",
       "CodeAreaPosition": "Right",
       "SplitPercentage": 0.5
+    },
+    {
+      "Path": "User control\\ABBMoottori.usercontrol",
+      "DesignAreaSplitSize": "Full",
+      "CodeAreaSplitSize": "Minimized",
+      "Orientation": "Horizontal",
+      "DesignAreaPosition": "Left",
+      "CodeAreaPosition": "Right",
+      "SplitPercentage": 0.5
+    },
+    {
+      "Path": "User control\\Painonappi sivut.usercontrol",
+      "DesignAreaSplitSize": "Full",
+      "CodeAreaSplitSize": "Minimized",
+      "Orientation": "Horizontal",
+      "DesignAreaPosition": "Left",
+      "CodeAreaPosition": "Right",
+      "SplitPercentage": 0.5
+    },
+    {
+      "Path": "Content\\Parametrit.content",
+      "DesignAreaSplitSize": "Full",
+      "CodeAreaSplitSize": "Minimized",
+      "Orientation": "Horizontal",
+      "DesignAreaPosition": "Left",
+      "CodeAreaPosition": "Right",
+      "SplitPercentage": 0.5
+    },
+    {
+      "Path": "Content\\Moottorintiedot.content",
+      "DesignAreaSplitSize": "Full",
+      "CodeAreaSplitSize": "Minimized",
+      "Orientation": "Horizontal",
+      "DesignAreaPosition": "Left",
+      "CodeAreaPosition": "Right",
+      "SplitPercentage": 0.5
     }
   ]
 }</TcHmiEditor_SplitAreaStates>
@@ -113,5 +149,87 @@
   300.0,
   300.0
 ]</TcHmiEditor_SelectBindingWindowColumnWidths_m_ContextTree>
+    <RecentColors>[
+  {
+    "counter": 0,
+    "color": "#FFEA12F6"
+  },
+  {
+    "counter": 0,
+    "color": "#FF000000"
+  },
+  {
+    "counter": 0,
+    "color": "#FFE3E3E3"
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  },
+  {
+    "counter": 0,
+    "color": null
+  }
+]</RecentColors>
   </PropertyGroup>
 </Project>

@@ -149,8 +149,10 @@ END_VAR
 		
 		IF _nPidOutAbs > 5 THEN
 			_iMotor.bEnable := TRUE;
+			Out.Ledgreen1.Q := TRUE;
 		ELSE
 			_iMotor.bEnable := FALSE;
+			Out.Ledgreen1.Q := FALSE;
 		END_IF
 		
 		

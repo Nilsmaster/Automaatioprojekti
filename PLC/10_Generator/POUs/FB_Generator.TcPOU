@@ -97,7 +97,18 @@ END_VAR]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[fgeneraattorin_teho_kw := _refHmi.nSahkonKulutus;]]></ST>
+          <ST><![CDATA[ IF Safety.bElevatorNotInUse THEN 
+	fgeneraattorin_teho_kw :=_refHmi.nSahkonKulutus;
+	
+	ELSIF Safety.bElevatorInUse THEN
+			IF _refHmi.nSahkonKulutus > 80 THEN
+				fgeneraattorin_teho_kw := 80;
+				
+			ELSE
+				fgeneraattorin_teho_kw := _refHmi.nSahkonKulutus;
+			END_IF
+	END_IF
+]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -109,9 +120,15 @@ END_VAR]]></Declaration>
         <ST><![CDATA[
 IF bPumpataan  THEN
 	_nHeat 		:= 100;
+	IF Safety.bElevatorInUse THEN
+		_nHeat	:= 25;
+	END_IF
 	
 ELSIF bTuotetaan THEN
-	_nHeat 		:= ( _refHmi.nSahkonKulutus / 350.0 ) * 100;
+	_nHeat 		:= ( _refHmi.nSahkonKulutus / 400.0 ) * 100;
+		IF Safety.bElevatorInUse THEN
+		_nHeat	:= 25;
+		END_IF
 
 ELSE
 	_nHeat 		:= 0;

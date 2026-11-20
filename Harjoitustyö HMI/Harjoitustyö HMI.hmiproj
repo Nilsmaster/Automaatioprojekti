@@ -128,7 +128,13 @@
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
   <Target Name="ReBuild" DependsOnTargets="Clean; Build" />
   <ItemGroup>
+    <Content Include="Content\Jarjestelma.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Content\Moottorintiedot.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Content\Service.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Server\ADS\ADS.Config.default.json">
@@ -171,6 +177,13 @@
     <Content Include="User control\Painonappi sivut.usercontrol.json">
       <SubType>Content</SubType>
       <DependentUpon>User control\Painonappi sivut.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="User control\Roomtemp.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="User control\Roomtemp.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>User control\Roomtemp.usercontrol</DependentUpon>
     </Content>
     <Folder Include="Fonts\" />
     <Folder Include="Images" />

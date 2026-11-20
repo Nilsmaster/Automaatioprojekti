@@ -150,6 +150,30 @@
 </div>
 <div id="TcHmiTextblock_10" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="39" data-tchmi-height-unit="px" data-tchmi-left="101" data-tchmi-left-unit="px" data-tchmi-text="Pumppuvoimalaitos" data-tchmi-top="17" data-tchmi-top-unit="px" data-tchmi-width="514" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-size="30">
 </div>
-<div id="Painonappi_8" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Moottorintiedot.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="462" data-tchmi-left-unit="px" data-tchmi-nimi="moottori" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
+<div id="Jäähdyttimenmoottoripainonappi" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Moottorintiedot.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="462" data-tchmi-left-unit="px" data-tchmi-nimi="Jäähdyttimen moottorin tiedot" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
+
+
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
+</div>
+<div id="Servicepainonappi" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Service.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="235" data-tchmi-left-unit="px" data-tchmi-nimi="Service" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="222" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
+</div>
+<div id="Jarjestelmapainonappi" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Jarjestelma.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="355" data-tchmi-left-unit="px" data-tchmi-nimi="Järjestelmä" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="222" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
 </div>
 </div>

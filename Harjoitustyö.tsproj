@@ -1616,7 +1616,7 @@ External Setpoint Generation:
 		</System>
 		<Motion>
 			<NC>
-				<SafTask Disabled="true" Priority="4" CycleTime="20000" AmsPort="501" IoAtBegin="true" AmsNetId="199.4.42.250.1.1" SafTaskInfo="256" HighPrioAds="true">
+				<SafTask Disabled="true" Priority="4" CycleTime="20000" AmsPort="501" IoAtBegin="true" SafTaskInfo="256" HighPrioAds="true">
 					<Name>NC-Task 1 SAF</Name>
 					<Vars VarGrpType="1" InsertType="1">
 						<Name>Inputs</Name>
@@ -1934,6 +1934,31 @@ External Setpoint Generation:
 				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{8BE5A056-B067-70D0-BDC6-D54800DB758C}" TmcPath="PLC\PLC.tmc">
 					<Name>PLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Vars VarGrpType="2" AreaNo="1">
+						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>Safety.ErrAck</Name>
+							<Comment><![CDATA[ PLC -> Safety]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Safety.bRunStop</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Motors.coolingMotor.wControlWord</Name>
+							<Comment><![CDATA[ I/O]]></Comment>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Motors.coolingMotor.nSpeedRef</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>Out.liServiceLight._bHw</Name>
+							<Type>BOOL</Type>
+						</Var>
+					</Vars>
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
 						<Var>
@@ -1960,31 +1985,6 @@ External Setpoint Generation:
 						<Var>
 							<Name>Motors.coolingMotor.nSpeedActual</Name>
 							<Type>INT</Type>
-						</Var>
-					</Vars>
-					<Vars VarGrpType="2" AreaNo="1">
-						<Name>PlcTask Outputs</Name>
-						<Var>
-							<Name>Safety.ErrAck</Name>
-							<Comment><![CDATA[ PLC -> Safety]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Safety.bRunStop</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Motors.coolingMotor.wControlWord</Name>
-							<Comment><![CDATA[ I/O]]></Comment>
-							<Type>WORD</Type>
-						</Var>
-						<Var>
-							<Name>Motors.coolingMotor.nSpeedRef</Name>
-							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>Out.liServiceLight._bHw</Name>
-							<Type>BOOL</Type>
 						</Var>
 					</Vars>
 					<Contexts>

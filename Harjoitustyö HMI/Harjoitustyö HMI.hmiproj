@@ -12,7 +12,7 @@
     <HmiTitle>Harjoitustyö_HMI</HmiTitle>
     <HmiVerboseLevel>2</HmiVerboseLevel>
     <HmiVersion>1.0.0.0</HmiVersion>
-    <HmiCommunicationServerPort>3001</HmiCommunicationServerPort>
+    <HmiCommunicationServerPort>3002</HmiCommunicationServerPort>
     <HmiLogTcHmiServerMessages>false</HmiLogTcHmiServerMessages>
     <HmiLogDesignerModeComMessages>false</HmiLogDesignerModeComMessages>
     <HmiDefaultLanguage>client</HmiDefaultLanguage>
@@ -128,7 +128,7 @@
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
   <Target Name="ReBuild" DependsOnTargets="Clean; Build" />
   <ItemGroup>
-    <Content Include="Content\Jarjestelma.content">
+    <Content Include="Content\Jarjestelmantila.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Content\Moottorintiedot.content">
@@ -164,6 +164,13 @@
       <SubType>Content</SubType>
       <DependentUpon>User control\Anturi.usercontrol</DependentUpon>
     </Content>
+    <Content Include="User control\Yhteydet.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="User control\Yhteydet.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>User control\Yhteydet.usercontrol</DependentUpon>
+    </Content>
     <Content Include="User control\Painonappi boolean.usercontrol">
       <SubType>Content</SubType>
     </Content>
@@ -184,6 +191,13 @@
     <Content Include="User control\Roomtemp.usercontrol.json">
       <SubType>Content</SubType>
       <DependentUpon>User control\Roomtemp.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="User control\LokitiedotMDb.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="User control\LokitiedotMDb.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>User control\LokitiedotMDb.usercontrol</DependentUpon>
     </Content>
     <Folder Include="Fonts\" />
     <Folder Include="Images" />

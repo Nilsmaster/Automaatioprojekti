@@ -76,15 +76,6 @@
       "SplitPercentage": 0.5
     },
     {
-      "Path": "Content\\Jarjestelma.content",
-      "DesignAreaSplitSize": "Full",
-      "CodeAreaSplitSize": "Minimized",
-      "Orientation": "Horizontal",
-      "DesignAreaPosition": "Left",
-      "CodeAreaPosition": "Right",
-      "SplitPercentage": 0.5
-    },
-    {
       "Path": "Content\\Service.content",
       "DesignAreaSplitSize": "Full",
       "CodeAreaSplitSize": "Minimized",
@@ -104,6 +95,33 @@
     },
     {
       "Path": "User control\\Roomtemp.usercontrol",
+      "DesignAreaSplitSize": "Full",
+      "CodeAreaSplitSize": "Minimized",
+      "Orientation": "Horizontal",
+      "DesignAreaPosition": "Left",
+      "CodeAreaPosition": "Right",
+      "SplitPercentage": 0.5
+    },
+    {
+      "Path": "User control\\LokitiedotMDb.usercontrol",
+      "DesignAreaSplitSize": "Full",
+      "CodeAreaSplitSize": "Minimized",
+      "Orientation": "Horizontal",
+      "DesignAreaPosition": "Left",
+      "CodeAreaPosition": "Right",
+      "SplitPercentage": 0.5
+    },
+    {
+      "Path": "User control\\Yhteydet.usercontrol",
+      "DesignAreaSplitSize": "Full",
+      "CodeAreaSplitSize": "Minimized",
+      "Orientation": "Horizontal",
+      "DesignAreaPosition": "Left",
+      "CodeAreaPosition": "Right",
+      "SplitPercentage": 0.5
+    },
+    {
+      "Path": "Content\\Jarjestelmantila.content",
       "DesignAreaSplitSize": "Full",
       "CodeAreaSplitSize": "Minimized",
       "Orientation": "Horizontal",
@@ -197,6 +215,18 @@
     <RecentColors>[
   {
     "counter": 0,
+    "color": "#FF999494"
+  },
+  {
+    "counter": 0,
+    "color": "#FF875D5D"
+  },
+  {
+    "counter": 0,
+    "color": "#FF3B2C2C"
+  },
+  {
+    "counter": 0,
     "color": "#FFEA12F6"
   },
   {
@@ -209,71 +239,59 @@
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
+    "color": ""
   },
   {
     "counter": 0,
-    "color": null
-  },
-  {
-    "counter": 0,
-    "color": null
-  },
-  {
-    "counter": 0,
-    "color": null
-  },
-  {
-    "counter": 0,
-    "color": null
+    "color": ""
   }
 ]</RecentColors>
   </PropertyGroup>

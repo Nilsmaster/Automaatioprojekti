@@ -40,6 +40,14 @@
       "frameworkUserControlConfig": "User control\\ABBMoottori.usercontrol.json",
       "type": "object",
       "id": "tchmi:project#/definitions/ABBMoottori"
+    },
+    "Roomtemp": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "User control\\Roomtemp.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/Roomtemp"
     }
   }
 }

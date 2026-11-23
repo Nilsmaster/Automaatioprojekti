@@ -12,13 +12,13 @@
 
 
 
-<div id="Etusivu" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="235" data-tchmi-left-unit="px" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="66" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-nimi="Etusivu" data-tchmi-content="Content/Etusivu.content" data-tchmi-zindex="10">
+<div id="Etusivu" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="204" data-tchmi-left-unit="px" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="66" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-nimi="Etusivu" data-tchmi-content="Content/Etusivu.content" data-tchmi-zindex="10">
 </div>
-<div id="Parametrit" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Parametrit.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="346" data-tchmi-left-unit="px" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="66" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-nimi="Parametrit" data-tchmi-zindex="11">
+<div id="Parametrit" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Parametrit.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="324" data-tchmi-left-unit="px" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="66" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-nimi="Parametrit" data-tchmi-zindex="11">
 </div>
-<div id="Painonappi_3" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Trendi.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="453" data-tchmi-left-unit="px" data-tchmi-nimi="Trendi" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="66" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-zindex="12">
+<div id="Painonappi_3" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Trendi.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="444" data-tchmi-left-unit="px" data-tchmi-nimi="Trendi" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="66" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-zindex="12">
 </div>
-<div id="TcHmiTextblock_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="592" data-tchmi-left-unit="px" data-tchmi-text="Ajan nopeuskerroin 1-100" data-tchmi-top="85" data-tchmi-top-unit="px" data-tchmi-width="136" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="13">
+<div id="TcHmiTextblock_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="637" data-tchmi-left-unit="px" data-tchmi-text="Ajan nopeuskerroin 1-100" data-tchmi-top="23" data-tchmi-top-unit="px" data-tchmi-width="136" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="13">
 </div>
 <div id="Minuutit_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="109" data-tchmi-left-unit="px" data-tchmi-top="85" data-tchmi-top-unit="px" data-tchmi-width="5" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-horizontal-alignment="Center" data-tchmi-zindex="14" data-tchmi-text=":" data-tchmi-text-vertical-alignment="Center">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
@@ -144,13 +144,13 @@
 }
 </script>
 </div>
-<div id="Start" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Etusivu.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="235" data-tchmi-left-unit="px" data-tchmi-nimi="Start" data-tchmi-target-user-control="User control/Painonappi boolean.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-kohde="%s%ADS.PLC.GVL.stGenerator::bStart%/s%" data-tchmi-zindex="20">
+<div id="Start" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Etusivu.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="204" data-tchmi-left-unit="px" data-tchmi-nimi="Start" data-tchmi-target-user-control="User control/Painonappi boolean.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-kohde="%s%ADS.PLC.GVL.stGenerator::bStart%/s%" data-tchmi-zindex="20">
 </div>
-<div id="Stop" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Etusivu.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="346" data-tchmi-left-unit="px" data-tchmi-nimi="Stop" data-tchmi-target-user-control="User control/Painonappi boolean.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-kohde="%s%ADS.PLC.GVL.stGenerator::bStop%/s%" data-tchmi-zindex="21">
+<div id="Stop" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Etusivu.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="334" data-tchmi-left-unit="px" data-tchmi-nimi="Stop" data-tchmi-target-user-control="User control/Painonappi boolean.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-kohde="%s%ADS.PLC.GVL.stGenerator::bStop%/s%" data-tchmi-zindex="21">
 </div>
 <div id="TcHmiTextblock_10" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="39" data-tchmi-height-unit="px" data-tchmi-left="101" data-tchmi-left-unit="px" data-tchmi-text="Pumppuvoimalaitos" data-tchmi-top="17" data-tchmi-top-unit="px" data-tchmi-width="514" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-size="30">
 </div>
-<div id="Jäähdyttimenmoottoripainonappi" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Moottorintiedot.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="462" data-tchmi-left-unit="px" data-tchmi-nimi="Jäähdyttimen moottorin tiedot" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
+<div id="Jäähdyttimenmoottoripainonappi" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Moottorintiedot.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="564" data-tchmi-left-unit="px" data-tchmi-nimi="Jäähdyttimen moottorin tiedot" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="66" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
 
 
 
@@ -162,14 +162,14 @@
 }
 </script>
 </div>
-<div id="Servicepainonappi" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Service.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="235" data-tchmi-left-unit="px" data-tchmi-nimi="Service" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="222" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
+<div id="Servicepainonappi" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Service.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="495" data-tchmi-left-unit="px" data-tchmi-nimi="Service" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
   "color": "None"
 }
 </script>
 </div>
-<div id="Jarjestelmapainonappi" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Jarjestelma.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="355" data-tchmi-left-unit="px" data-tchmi-nimi="Järjestelmä" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="222" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
+<div id="Jarjestelmapainonappi" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Jarjestelmantila.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="615" data-tchmi-left-unit="px" data-tchmi-nimi="Järjestelmä" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
   "color": "None"

@@ -9,7 +9,7 @@
   data-tchmi-height-unit="px"
   data-tchmi-creator-viewport-width="500"
   data-tchmi-creator-viewport-height="500"
-><div id="TcHmiButton_ManMootEteen" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="184" data-tchmi-left-unit="px" data-tchmi-text="&gt;&gt;" data-tchmi-top="264" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="50" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center">
+ data-tchmi-zindex="1"><div id="TcHmiButton_ManMootEteen" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="184" data-tchmi-left-unit="px" data-tchmi-text="&gt;&gt;" data-tchmi-top="264" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="50" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center" data-tchmi-zindex="1">
 
 <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
 [
@@ -46,7 +46,7 @@
           "objectType": "StaticValue",
           "valueType": "tchmi:framework#/definitions/Color",
           "value": {
-            "color": "rgba(234, 18, 246, 1)"
+            "color": "rgba(71, 138, 90, 1)"
           }
         },
         "asyncWait": true
@@ -56,7 +56,7 @@
 ]
 </script>
 </div>
-<div id="TcHmiButton_ManMootTaakseAjo_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="44" data-tchmi-left-unit="px" data-tchmi-text="&lt;&lt;" data-tchmi-top="264" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="50" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center">
+<div id="TcHmiButton_ManMootTaakseAjo_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="44" data-tchmi-left-unit="px" data-tchmi-text="&lt;&lt;" data-tchmi-top="264" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="50" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center" data-tchmi-zindex="1">
 <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
 [
   {
@@ -92,7 +92,7 @@
           "objectType": "StaticValue",
           "valueType": "tchmi:framework#/definitions/Color",
           "value": {
-            "color": "rgba(234, 18, 246, 1)"
+            "color": "rgba(71, 138, 90, 1)"
           }
         },
         "asyncWait": true
@@ -102,7 +102,7 @@
 ]
 </script>
 </div>
-<div id="TcHmiTextbox_ABBusercntr" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="44" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Taaksepäin ajo" data-tchmi-top="331" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="100" data-tchmi-width-unit="px">
+<div id="TcHmiTextbox_ABBusercntr" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="44" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Taaksepäin ajo" data-tchmi-top="331" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-text-font-size="14">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -113,7 +113,7 @@
 </script>
 
 </div>
-<div id="TcHmiTextbox_ABBusercntr_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="184" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Eteenpäin ajo" data-tchmi-top="331" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="100" data-tchmi-width-unit="px">
+<div id="TcHmiTextbox_ABBusercntr_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="184" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Eteenpäin ajo" data-tchmi-top="331" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-text-font-size="14">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -124,7 +124,7 @@
 </script>
 
 </div>
-<div id="TcHmiLinearGauge_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiLinearGauge" data-tchmi-base-animation-time="1000" data-tchmi-decimal-digits="3" data-tchmi-height="132" data-tchmi-height-unit="px" data-tchmi-label-range="20" data-tchmi-left="6" data-tchmi-left-unit="px" data-tchmi-show-labels="True" data-tchmi-show-ticks="True" data-tchmi-show-value-text="True" data-tchmi-start-from-zero="True" data-tchmi-top="41" data-tchmi-top-unit="px" data-tchmi-width="322" data-tchmi-width-unit="px">
+<div id="TcHmiLinearGauge_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiLinearGauge" data-tchmi-base-animation-time="1000" data-tchmi-decimal-digits="3" data-tchmi-height="132" data-tchmi-height-unit="px" data-tchmi-label-range="50" data-tchmi-left="6" data-tchmi-left-unit="px" data-tchmi-show-labels="True" data-tchmi-show-ticks="True" data-tchmi-show-value-text="True" data-tchmi-start-from-zero="True" data-tchmi-top="41" data-tchmi-top-unit="px" data-tchmi-width="322" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-label-position="Bottom">
 <script data-tchmi-target-attribute="data-tchmi-tick-definition" type="application/json">
 {
   "mainTickRange": 20,
@@ -133,7 +133,7 @@
 </script>
 
 </div>
-<div id="TcHmiTextbox_ABBusercntr_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="87" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Moottorin nopeussäätö" data-tchmi-top="15" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="137" data-tchmi-width-unit="px">
+<div id="TcHmiTextbox_ABBusercntr_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="87" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Moottorin nopeussäätö" data-tchmi-top="15" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="145" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-text-font-size="14">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -150,7 +150,7 @@
   "color": "rgba(135, 93, 93, 1)"
 }
 </script>
-<div id="TcHmiRectangle_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="414" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="10" data-tchmi-top-unit="px" data-tchmi-width="338" data-tchmi-width-unit="px">
+<div id="TcHmiRectangle_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="414" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="10" data-tchmi-top-unit="px" data-tchmi-width="338" data-tchmi-width-unit="px" data-tchmi-zindex="0">
 
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {

@@ -9,4 +9,12 @@
 </div>
 <div id="Yhteydet_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="419" data-tchmi-height-unit="px" data-tchmi-left="359" data-tchmi-left-unit="px" data-tchmi-target-user-control="User control/LokitiedotMDb.usercontrol" data-tchmi-top="191" data-tchmi-top-unit="px" data-tchmi-width="368" data-tchmi-width-unit="px">
 </div>
+<div id="TcHmiImage_3EthercatON" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="71" data-tchmi-height-unit="px" data-tchmi-left="301" data-tchmi-left-unit="px" data-tchmi-src="Imports/Images/cloud-connect-read-write-normal.svg" data-tchmi-top="340" data-tchmi-top-unit="px" data-tchmi-width="64" data-tchmi-width-unit="px">
+</div>
+<div id="TcHmiImage_4EthercatOFF" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="64" data-tchmi-height-unit="px" data-tchmi-left="146" data-tchmi-left-unit="px" data-tchmi-src="Imports/Images/cloud-connect-read-write-pressed.svg" data-tchmi-top="340" data-tchmi-top-unit="px" data-tchmi-width="60" data-tchmi-width-unit="px">
+</div>
+<div id="TcHmiImage_5NettiON" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="60" data-tchmi-height-unit="px" data-tchmi-left="301" data-tchmi-left-unit="px" data-tchmi-src="Imports/Images/connection-normal.svg" data-tchmi-top="265" data-tchmi-top-unit="px" data-tchmi-width="58" data-tchmi-width-unit="px">
+</div>
+<div id="TcHmiImage_6NettiOFF" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="67" data-tchmi-height-unit="px" data-tchmi-left="146" data-tchmi-left-unit="px" data-tchmi-src="Imports/Images/connection-pressed.svg" data-tchmi-top="258" data-tchmi-top-unit="px" data-tchmi-width="59" data-tchmi-width-unit="px">
+</div>
 </div>

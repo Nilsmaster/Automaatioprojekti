@@ -113,12 +113,12 @@
     },
     {
       "Path": "User control\\Yhteydet.usercontrol",
-      "DesignAreaSplitSize": "Full",
-      "CodeAreaSplitSize": "Minimized",
+      "DesignAreaSplitSize": "Splitted",
+      "CodeAreaSplitSize": "Splitted",
       "Orientation": "Horizontal",
       "DesignAreaPosition": "Left",
       "CodeAreaPosition": "Right",
-      "SplitPercentage": 0.5
+      "SplitPercentage": 0.92321116928446789
     },
     {
       "Path": "Content\\Jarjestelmantila.content",
@@ -205,7 +205,7 @@
   300.0
 ]</TcHmiEditor_SelectBindingWindowColumnWidths_m_ControlTypeAttributesTree>
     <TcHmiEditor_SelectBindingWindowColumnWidths_m_ThemedResourceTree>[
-  200.0,
+  214.4,
   300.0
 ]</TcHmiEditor_SelectBindingWindowColumnWidths_m_ThemedResourceTree>
     <TcHmiEditor_SelectBindingWindowColumnWidths_m_ContextTree>[
@@ -215,83 +215,83 @@
     <RecentColors>[
   {
     "counter": 0,
-    "color": "#FF999494"
+    "color": "#FF478A5A"
   },
   {
     "counter": 0,
-    "color": "#FF875D5D"
+    "color": "#FF63AA78"
   },
   {
     "counter": 0,
-    "color": "#FF3B2C2C"
+    "color": "#FF649572"
   },
   {
     "counter": 0,
-    "color": "#FFEA12F6"
+    "color": "#FF4F875F"
   },
   {
     "counter": 0,
-    "color": "#FF000000"
+    "color": "#FF63A676"
   },
   {
     "counter": 0,
-    "color": "#FFE3E3E3"
+    "color": "#FF4E8E60"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FF3D704C"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FF2D6B3E"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FF1F522E"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FF80CB96"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FF609A71"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FF616F65"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FF6E616F"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FF5A4C5A"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FFAAA9AA"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FF8A858A"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FF6F6B6F"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FF847E84"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FFC7B9C8"
   },
   {
     "counter": 0,
-    "color": ""
+    "color": "#FFE72828"
   }
 ]</RecentColors>
   </PropertyGroup>

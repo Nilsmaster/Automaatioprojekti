@@ -7,7 +7,7 @@
   data-tchmi-height="600"
 ><div id="ABBMoottori_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="435" data-tchmi-height-unit="px" data-tchmi-left="448" data-tchmi-left-unit="px" data-tchmi-target-user-control="User control/ABBMoottori.usercontrol" data-tchmi-top="165" data-tchmi-top-unit="px" data-tchmi-width="343" data-tchmi-width-unit="px">
 </div>
-<div id="TcHmiEllipse_AutoMoottori" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="68" data-tchmi-height-unit="px" data-tchmi-left="36" data-tchmi-left-unit="px" data-tchmi-top="192" data-tchmi-top-unit="px" data-tchmi-width="69" data-tchmi-width-unit="px">
+<div id="TcHmiEllipse_AutoMoottori" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="68" data-tchmi-height-unit="px" data-tchmi-left="81" data-tchmi-left-unit="px" data-tchmi-top="187" data-tchmi-top-unit="px" data-tchmi-width="69" data-tchmi-width-unit="px">
 </div>
 <div id="TcHmiToggleButton_AUTO" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="41" data-tchmi-left-unit="px" data-tchmi-text="AUTO" data-tchmi-top="501" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True">
 </div>
@@ -59,7 +59,7 @@
 </script>
 
 </div>
-<div id="TcHmiLinearGauge_Gener.teho" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiLinearGauge" data-tchmi-base-animation-time="1000" data-tchmi-decimal-digits="3" data-tchmi-height="85" data-tchmi-height-unit="px" data-tchmi-label-range="20" data-tchmi-left="19" data-tchmi-left-unit="px" data-tchmi-show-labels="True" data-tchmi-show-ticks="True" data-tchmi-show-value-text="True" data-tchmi-start-from-zero="True" data-tchmi-top="61" data-tchmi-top-unit="px" data-tchmi-width="756" data-tchmi-width-unit="px" data-tchmi-max-value="400">
+<div id="TcHmiLinearGauge_Gener.teho" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiLinearGauge" data-tchmi-base-animation-time="1000" data-tchmi-decimal-digits="3" data-tchmi-height="85" data-tchmi-height-unit="px" data-tchmi-label-range="50" data-tchmi-left="19" data-tchmi-left-unit="px" data-tchmi-show-labels="True" data-tchmi-show-ticks="False" data-tchmi-show-value-text="False" data-tchmi-start-from-zero="True" data-tchmi-top="61" data-tchmi-top-unit="px" data-tchmi-width="756" data-tchmi-width-unit="px" data-tchmi-max-value="400" data-tchmi-label-position="Bottom">
 <script data-tchmi-target-attribute="data-tchmi-tick-definition" type="application/json">
 {
   "mainTickRange": 20,
@@ -68,7 +68,7 @@
 </script>
 
 </div>
-<div id="TcHmiTextbox_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="313" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Generaattorin tehon tuoton määrä" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="182" data-tchmi-width-unit="px">
+<div id="TcHmiTextbox_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="290" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Generaattorin tehon tuoton määrä" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="226" data-tchmi-width-unit="px" data-tchmi-text-font-size="14">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -79,11 +79,60 @@
 </script>
 
 </div>
-<div id="TcHmiEllipse_ManMoottori_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="68" data-tchmi-height-unit="px" data-tchmi-left="226" data-tchmi-left-unit="px" data-tchmi-top="192" data-tchmi-top-unit="px" data-tchmi-width="69" data-tchmi-width-unit="px">
+<div id="TcHmiEllipse_ManMoottori_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="68" data-tchmi-height-unit="px" data-tchmi-left="266" data-tchmi-left-unit="px" data-tchmi-top="192" data-tchmi-top-unit="px" data-tchmi-width="69" data-tchmi-width-unit="px">
 </div>
-<div id="TcHmiEllipse_SeisMoottori_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="68" data-tchmi-height-unit="px" data-tchmi-left="36" data-tchmi-left-unit="px" data-tchmi-top="331" data-tchmi-top-unit="px" data-tchmi-width="69" data-tchmi-width-unit="px">
-</div>
-<div id="TcHmiEllipse_HäiriöMoottori_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="68" data-tchmi-height-unit="px" data-tchmi-left="223" data-tchmi-left-unit="px" data-tchmi-top="331" data-tchmi-top-unit="px" data-tchmi-width="69" data-tchmi-width-unit="px">
+<div id="TcHmiEllipse_SeisMoottori_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="68" data-tchmi-height-unit="px" data-tchmi-left="81" data-tchmi-left-unit="px" data-tchmi-top="331" data-tchmi-top-unit="px" data-tchmi-width="69" data-tchmi-width-unit="px">
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onAttached",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC.MAIN.fbGenerator.nStart%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%TcHmiEllipse_SeisMoottori_1%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/TcHmi.Controls.Beckhoff.TcHmiEllipse",
+                  "value": null
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": []
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
 </div>
 <div id="TcHmiRectangle_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="82" data-tchmi-height-unit="px" data-tchmi-left="32" data-tchmi-left-unit="px" data-tchmi-top="483" data-tchmi-top-unit="px" data-tchmi-width="406" data-tchmi-width-unit="px">
 
@@ -101,5 +150,9 @@
   "bottom": "Solid"
 }
 </script>
+</div>
+<div id="TcHmiImage_Mootto.hairioON" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="80" data-tchmi-height-unit="px" data-tchmi-left="255" data-tchmi-left-unit="px" data-tchmi-src="Imports/Images/warning_rot_pressed.svg" data-tchmi-top="319" data-tchmi-top-unit="px" data-tchmi-width="80" data-tchmi-width-unit="px">
+</div>
+<div id="TcHmiImage_Mootto.hairio.OFF" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="80" data-tchmi-height-unit="px" data-tchmi-left="274" data-tchmi-left-unit="px" data-tchmi-src="Imports/Images/warning_pressed.svg" data-tchmi-top="319" data-tchmi-top-unit="px" data-tchmi-width="80" data-tchmi-width-unit="px">
 </div>
 </div>

@@ -137,6 +137,24 @@
     <Content Include="Content\Service.content">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Imports\Images\cloud-connect-read-write-normal.svg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Imports\Images\cloud-connect-read-write-pressed.svg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Imports\Images\connection-normal.svg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Imports\Images\connection-pressed.svg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Imports\Images\warning_pressed.svg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Imports\Images\warning_rot_pressed.svg">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Server\ADS\ADS.Config.default.json">
       <SubType>Content</SubType>
     </Content>

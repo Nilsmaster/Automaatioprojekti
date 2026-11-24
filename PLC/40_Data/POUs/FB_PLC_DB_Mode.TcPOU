@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_PLC_DB_Mode" Id="{9d2f7d28-6935-478c-8d16-66c3f315f594}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_PLC_DB_Mode IMPLEMENTS I_Logger
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PLC_DB_Mode
 
 VAR
 	arrDataName:	ARRAY [0..3] OF STRING(50) := ['reactor_name', 'temperature', 'pressure', 'flow_rate'];	// Database header
@@ -63,27 +63,5 @@ IF(bWriteRequest) THEN
 END_IF
 ]]></ST>
     </Implementation>
-    <Method Name="CoolingControlLogger" Id="{71cd4e34-8e20-4a48-98fb-24ad2c3a460e}">
-      <Declaration><![CDATA[METHOD CoolingControlLogger
-VAR_INPUT
-	iLogger		: I_Cooling;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[stMeas_1.CoolingRunning := iLogger.bRunning;
-stMeas_1.CoolingSpeed 	:= REAL_TO_LREAL(iLogger.nSpeed);]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="RoomTempLogger" Id="{470eda55-51e3-4759-93d2-5170b4f9c5ff}">
-      <Declaration><![CDATA[METHOD RoomTempLogger : BOOL
-VAR_INPUT
-	iLogger			: I_RoomTempControl;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[stMeas_1.fTemperature := iLogger.nRoomTemp;
-stMeas_1.bAlarm :=  iLogger.bAlarm;]]></ST>
-      </Implementation>
-    </Method>
   </POU>
 </TcPlcObject>

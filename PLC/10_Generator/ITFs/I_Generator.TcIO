@@ -9,6 +9,21 @@
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>
+    <Property Name="fAltaanpinta" Id="{3d98cc82-b05d-4981-a7d5-21a57c79d26d}">
+      <Declaration><![CDATA[PROPERTY fAltaanpinta : REAL]]></Declaration>
+      <Get Name="Get" Id="{8b9376cb-ebda-4cd4-a27e-8f76e853c190}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{b5753265-3b5b-4e8e-8b08-36c0c61ed0aa}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="fgeneraattorin_teho_kw" Id="{aab64c0a-97f6-476a-92e2-dcbf69111afe}">
+      <Declaration><![CDATA[PROPERTY fgeneraattorin_teho_kw : LREAL]]></Declaration>
+      <Get Name="Get" Id="{e2083d43-a607-459c-a910-a0b1ccf2e070}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
     <Property Name="nHeat" Id="{7b1fe630-7ff8-4bf2-b9a7-822bd5a1ed80}">
       <Declaration><![CDATA[PROPERTY nHeat : REAL]]></Declaration>
       <Get Name="Get" Id="{e4ee9f28-3b9b-4823-9a69-4a846ec51fa8}">

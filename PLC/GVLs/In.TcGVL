@@ -7,9 +7,26 @@ VAR_GLOBAL
 	fbIoInGroup		: FB_IoGroup;
 
 
-    {attribute 'TcLinkTo' := '._bHw  := TIID^Device 1 (EtherCAT)^Term 18 (EK1200)^Term 20 (EL1008)^Channel 1^Input'}
-    StartStopBtn         : FB_IoInput(fbIoInGroup);
+{attribute 'TcLinkTo' := '._bHw  := TIID^Device 1 (EtherCAT)^Term 18 (EK1200)^Term 20 (EL1008)^Channel 1^Input'}
+iIobutton : FB_IoInput(fbIoInGroup);
 
+{attribute 'TcLinkTo' := '._bHw  := TIID^Device 1 (EtherCAT)^Term 18 (EK1200)^Term 20 (EL1008)^Channel 2^Input'}
+swOhjausjannite : FB_IoInput(fbIoInGroup);
+
+{attribute 'TcLinkTo' := '._bHw  := TIID^Device 1 (EtherCAT)^Term 18 (EK1200)^Term 20 (EL1008)^Channel 3^Input'}
+iIobutton1 : FB_IoInput(fbIoInGroup);
+
+{attribute 'TcLinkTo' := '._bHw  := TIID^Device 1 (EtherCAT)^Term 18 (EK1200)^Term 20 (EL1008)^Channel 4^Input'}
+iIobutton2 : FB_IoInput(fbIoInGroup);
+
+{attribute 'TcLinkTo' := '._bHw  := TIID^Device 1 (EtherCAT)^Term 18 (EK1200)^Term 20 (EL1008)^Channel 5^Input'}
+iIobutton3 : FB_IoInput(fbIoInGroup);
+
+{attribute 'TcLinkTo' := '._bHw  := TIID^Device 1 (EtherCAT)^Term 18 (EK1200)^Term 20 (EL1008)^Channel 6^Input'}
+iIobutton4 : FB_IoInput(fbIoInGroup);
+
+{attribute 'TcLinkTo' := '._bHw  := TIID^Device 1 (EtherCAT)^Term 18 (EK1200)^Term 20 (EL1008)^Channel 7^Input'}
+iIobutton5 : FB_IoInput(fbIoInGroup);
 
 END_VAR]]></Declaration>
   </GVL>

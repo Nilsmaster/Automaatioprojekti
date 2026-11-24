@@ -32,7 +32,9 @@ StateMachine();
 
 GeneratorHeatSimulation();
 
-UpdateHmi();]]></ST>
+UpdateHmi();
+
+DataLogger(GVL.fbDataLogger._fbSqlDBMode);]]></ST>
     </Implementation>
     <Property Name="bRunning" Id="{d3890f3d-e1f0-473f-a185-fc864f743634}">
       <Declaration><![CDATA[PROPERTY bRunning : BOOL]]></Declaration>
@@ -45,6 +47,16 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
+    <Method Name="DataLogger" Id="{d558d249-e666-4c13-ae90-2bf2391afc3b}">
+      <Declaration><![CDATA[METHOD DataLogger
+VAR_INPUT
+	SendData	:  I_Logger;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SendData.GeneratorLogger(THIS^);]]></ST>
+      </Implementation>
+    </Method>
     <Property Name="fAltaanpinta" Id="{7e7069a5-a1f0-48e6-aa36-cd7054ca119a}">
       <Declaration><![CDATA[PROPERTY fAltaanpinta : REAL]]></Declaration>
       <Get Name="Get" Id="{6299476c-c61c-415a-ad68-0b6c81976e16}">
@@ -78,6 +90,28 @@ END_VAR]]></Declaration>
         <ST><![CDATA[_bInit := TRUE;]]></ST>
       </Implementation>
     </Method>
+    <Property Name="fgeneraattorin_teho_kw" Id="{90fbafa3-3b5d-46ed-a9fd-d8036a13b4c8}">
+      <Declaration><![CDATA[PROPERTY fgeneraattorin_teho_kw : LREAL]]></Declaration>
+      <Get Name="Get" Id="{ca7d18a4-e77a-426b-a837-d0620da28252}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ IF Safety.bElevatorNotInUse THEN 
+	fgeneraattorin_teho_kw :=_refHmi.nSahkonKulutus;
+	
+	ELSIF Safety.bElevatorInUse THEN
+			IF _refHmi.nSahkonKulutus > 80 THEN
+				fgeneraattorin_teho_kw := 80;
+				
+			ELSE
+				fgeneraattorin_teho_kw := _refHmi.nSahkonKulutus;
+			END_IF
+	END_IF
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Method Name="GeneratorHeatSimulation" Id="{45afcf2f-b7e8-4e0a-a897-3a41fcbe1a05}">
       <Declaration><![CDATA[METHOD GeneratorHeatSimulation : REAL
 VAR_INPUT
@@ -86,9 +120,15 @@ END_VAR]]></Declaration>
         <ST><![CDATA[
 IF bPumpataan  THEN
 	_nHeat 		:= 100;
+	IF Safety.bElevatorInUse THEN
+		_nHeat	:= 25;
+	END_IF
 	
 ELSIF bTuotetaan THEN
-	_nHeat 		:= ( _refHmi.nSahkonKulutus / 350.0 ) * 100;
+	_nHeat 		:= ( _refHmi.nSahkonKulutus / 400.0 ) * 100;
+		IF Safety.bElevatorInUse THEN
+		_nHeat	:= 25;
+		END_IF
 
 ELSE
 	_nHeat 		:= 0;

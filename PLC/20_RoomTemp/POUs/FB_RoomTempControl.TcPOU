@@ -39,13 +39,30 @@ IF _iCooling.bRunning AND _nRoomTemp > 19 THEN
 	_nRoomTemp := _nRoomTemp - (_nCoolingMax * _nCoolingRate * _nCoolingRate);
 END_IF
 
-IF _nRoomTemp > 40 THEN
+IF _nRoomTemp > 40 AND NOT _bAlarm THEN
 	_bAlarm := TRUE;
-ELSE
+	Alarm(	SendData := GVL.fbDataLogger._fbSqlDBMode,
+			iKoodi := 'Lämpötila',
+			iKuvaus	:= 'Lämpötila on ylittänyt asetusarvon');
+ELSIF _nRoomTemp < 40 THEN
 	_bAlarm := FALSE;	
 END_IF
+
 UpdateHmi();]]></ST>
     </Implementation>
+    <Method Name="Alarm" Id="{94be2175-5281-47fe-a361-34258e83b09a}">
+      <Declaration><![CDATA[METHOD Alarm
+VAR_INPUT
+	SendData	:  I_Alarm;
+	iKoodi		: STRING;
+	iKuvaus		: STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SendData.addAlarm( sKoodi := iKoodi,
+					sKuvaus := iKuvaus);]]></ST>
+      </Implementation>
+    </Method>
     <Property Name="bAlarm" Id="{ab2888ac-5d26-4743-b95f-7f4eeb557b36}">
       <Declaration><![CDATA[PROPERTY bAlarm : BOOL]]></Declaration>
       <Get Name="Get" Id="{89d1ebbf-6bb3-4aa4-9803-b060b2f22261}">

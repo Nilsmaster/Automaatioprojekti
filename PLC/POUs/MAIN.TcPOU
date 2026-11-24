@@ -52,6 +52,10 @@ IF gvl.nMontakohalvinta+gvl.nMontakokalleinta > 96 THEN
 	gvl.nMontakokalleinta:= 96-gvl.nMontakohalvinta;
 END_IF
 
+// Safety
+safety.bRunStop := In.swOhjausjannite.Q;
+safety.ErrAck	:= In.iIobutton5.Q;
+
 // Generaattori ja veden määrät
 GVL.fbGenerator.Init(		refHmi := GVL.stGenerator);
 GVL.fbGenerator.nRank 		:= fbRank.rank[fbTime.onIndex];
@@ -65,7 +69,7 @@ GVL.fbRoomtemp();
 // Database yhteys
 GVL.fbDataLogger();
 
-
+out.Ledred1.Q := false;
 // Write all outputs
 Out.fbIoOutGroup();
 ]]></ST>

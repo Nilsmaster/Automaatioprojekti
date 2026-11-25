@@ -268,7 +268,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_bEnable := bEnable;]]></ST>
+          <ST><![CDATA[_bEnable := bEnable OR _refHmi.bManual;]]></ST>
         </Implementation>
       </Set>
     </Property>

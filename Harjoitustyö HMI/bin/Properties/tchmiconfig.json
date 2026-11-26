@@ -65,6 +65,9 @@
       "url": "User control/Anturi.usercontrol"
     },
     {
+      "url": "User control/LokitiedotMDb.usercontrol"
+    },
+    {
       "url": "User control/Painonappi boolean.usercontrol"
     },
     {
@@ -72,6 +75,9 @@
     },
     {
       "url": "User control/Roomtemp.usercontrol"
+    },
+    {
+      "url": "User control/Yhteydet.usercontrol"
     }
   ],
   "controls": [],

@@ -169,7 +169,7 @@
 }
 </script>
 </div>
-<div id="Jarjestelmapainonappi" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Jarjestelma.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="615" data-tchmi-left-unit="px" data-tchmi-nimi="Järjestelmä" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
+<div id="Jarjestelmapainonappi" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-content="Content/Jarjestelmantila.content" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="615" data-tchmi-left-unit="px" data-tchmi-nimi="Järjestelmä" data-tchmi-target-user-control="User control/Painonappi sivut.usercontrol" data-tchmi-top="143" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
   "color": "None"

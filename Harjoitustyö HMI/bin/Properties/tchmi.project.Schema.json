@@ -48,6 +48,22 @@
       "frameworkUserControlConfig": "User control\\Roomtemp.usercontrol.json",
       "type": "object",
       "id": "tchmi:project#/definitions/Roomtemp"
+    },
+    "Yhteydet": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "User control\\Yhteydet.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/Yhteydet"
+    },
+    "Lokitiedot": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "User control\\Lokitiedot.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/Lokitiedot"
     }
   }
 }

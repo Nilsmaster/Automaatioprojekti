@@ -233,12 +233,119 @@
                                 "propertyOrder": 2
                             }
                         ]
+                    },
+                    "nSahkonKulutus": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/INT"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
                     }
                 },
                 "required": [
                     "bStart",
                     "bStop",
-                    "bAltaanTaso"
+                    "bAltaanTaso",
+                    "nSahkonKulutus"
+                ],
+                "type": "object"
+            },
+            "ADS-PLC.ST_Motors": {
+                "additionalProperties": false,
+                "properties": {
+                    "bAuto": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "bManual": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "bManualBw": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 6
+                            }
+                        ]
+                    },
+                    "bManualFw": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 5
+                            }
+                        ]
+                    },
+                    "bReset": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    },
+                    "bStop": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
+                    },
+                    "nManualSpeed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/REAL"
+                            },
+                            {
+                                "propertyOrder": 7
+                            }
+                        ]
+                    },
+                    "sName": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/STRING%2880%29"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "sName",
+                    "bAuto",
+                    "bManual",
+                    "bStop",
+                    "bManualFw",
+                    "bManualBw",
+                    "nManualSpeed",
+                    "bReset"
                 ],
                 "type": "object"
             }
@@ -1012,6 +1119,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC.GVL.fbRoomtemp._fbRoomTempControl._bAlarm": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC::GVL::fbRoomtemp::_fbRoomTempControl::_bAlarm",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 8
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC.GVL.fprice": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -1210,6 +1334,16 @@
             "MAPPING": "PLC::MAIN::nTila",
             "SCHEMA": {
                 "$ref": "tchmi:general#/definitions/INT"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC.Motors.stMotors": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC::Motors::stMotors",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/ADS-PLC.ST_Motors"
             },
             "USEMAPPING": true
         },
@@ -4584,6 +4718,7 @@
                 "ADS.AdsSyncReadStateReq": 3,
                 "ADS.CheckLicense": 3,
                 "ADS.Diagnostics": 3,
+                "ADS.PLC.GVL.fbRoomtemp._fbRoomTempControl._bAlarm": 3,
                 "ADS.PLC.GVL.fprice": 3,
                 "ADS.PLC.GVL.nAltaanpinta": 3,
                 "ADS.PLC.GVL.nCycle": 3,
@@ -4602,6 +4737,7 @@
                 "ADS.PLC.MAIN.fbRank.arrPrices": 3,
                 "ADS.PLC.MAIN.fbRank.rank": 3,
                 "ADS.PLC.MAIN.nTila": 3,
+                "ADS.PLC.Motors.stMotors": 3,
                 "ChangeUserSettings": 3,
                 "ConfirmAlarm": 3,
                 "CreateEvent": 3,

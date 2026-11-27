@@ -87,13 +87,11 @@
       {
         "objectType": "WriteToSymbol",
         "active": true,
-        "symbolExpression": "%ctrl%TcHmiButton_ManMootEteen::BackgroundColor%/ctrl%",
+        "symbolExpression": "%pp%stMotor::bManualBw%/pp%",
         "value": {
           "objectType": "StaticValue",
-          "valueType": "tchmi:framework#/definitions/Color",
-          "value": {
-            "color": "rgba(71, 138, 90, 1)"
-          }
+          "valueType": "tchmi:general#/definitions/BOOL",
+          "value": true
         },
         "asyncWait": true
       }

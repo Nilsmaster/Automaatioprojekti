@@ -132,7 +132,7 @@
   ]
 }</TcHmiEditor_SplitAreaStates>
     <TcHmiEditor_SelectBindingWindowColumnWidths_m_SymbolMappedTree>[
-  278.0,
+  414.00000000000239,
   98.0,
   180.0,
   80.0,
@@ -215,6 +215,26 @@
     <RecentColors>[
   {
     "counter": 0,
+    "color": "#FFF61010"
+  },
+  {
+    "counter": 0,
+    "color": "#FFF41B1B"
+  },
+  {
+    "counter": 0,
+    "color": "#FFDD1313"
+  },
+  {
+    "counter": 0,
+    "color": "#FFE71F1F"
+  },
+  {
+    "counter": 0,
+    "color": "#FFED3535"
+  },
+  {
+    "counter": 0,
     "color": "#FF478A5A"
   },
   {
@@ -272,26 +292,6 @@
   {
     "counter": 0,
     "color": "#FFAAA9AA"
-  },
-  {
-    "counter": 0,
-    "color": "#FF8A858A"
-  },
-  {
-    "counter": 0,
-    "color": "#FF6F6B6F"
-  },
-  {
-    "counter": 0,
-    "color": "#FF847E84"
-  },
-  {
-    "counter": 0,
-    "color": "#FFC7B9C8"
-  },
-  {
-    "counter": 0,
-    "color": "#FFE72828"
   }
 ]</RecentColors>
   </PropertyGroup>
